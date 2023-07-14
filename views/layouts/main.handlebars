@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Through the Ages</title>
+  {{!-- <head>/link rel="stylesheet" type="text/css" href="/css/jass.css"> --}}
+  {{!-- <link rel="stylesheet" type="text/css" href="/css/style.css"> --}}
+</head>
+
+<body>
+  <header>
+    <h1>Through the Ages</h1>
+  </header>
+  <nav>
+    <a href="/">Home</a>
+    {{#if loggedIn}}
+    <button id="logout">Logout</button>
+    {{else}}
+    <a href="/login">Login</a>
+    {{/if}}
+    <a href="/copyright">Copyright</a>
+  </nav>
+  <main>
+    <div>
+      {{{body}}}
+    </div>
+  </main>
+  {{#if loggedIn}}
+  <script src="/js/logout.js"></script>
+  {{/if}}
+</body>
+
+</html>
