@@ -1,7 +1,7 @@
 const sequelize = require('../config/connection');
 const seedGoods = require('./goodsData');
-const seedDevelopments = require('./developmentData');
-const seedMonuments = require('./monumentData');
+const seedDevelopments = require('./developmentsData');
+const seedMonuments = require('./monumentsData');
 
 const seedAll = async () => {
   await sequelize.sync({ force: true });

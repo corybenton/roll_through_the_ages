@@ -7,19 +7,29 @@ const goodsData = [
     value: 3,
   },
   {
-    name: 'Wood'
+    name: 'Wood',
+    amount: 0,
+    value: 0,
   },
   {
-    name: 'Stone'
+    name: 'Stone',
+    amount: 0,
+    value: 0,
   },
   {
-    name: 'Pottery'
+    name: 'Pottery',
+    amount: 0,
+    value: 0,
   },
   {
-    name: 'Cloth'
+    name: 'Cloth',
+    amount: 0,
+    value: 0,
   },
   {
-    name: 'Spearheads'
+    name: 'Spearheads',
+    amount: 0,
+    value: 0,
   },
 ];
 
