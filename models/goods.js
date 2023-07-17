@@ -16,14 +16,14 @@ Goods.init(
     },
     value: {
       type: DataTypes.INTEGER,
-      defaultValue: 0,        
+      defaultValue: 0,
     },
     gameState_id: {
-        type: DataTypes.INTEGER,
-        references: {
-            model: 'gameState',
-            key: 'id',
-        }
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'gameState',
+        key: 'id',
+      }
     }
   },
   {

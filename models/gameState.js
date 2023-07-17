@@ -4,27 +4,32 @@ const sequelize = require('../config/connection');
 class GameState extends Model {}
 
 GameState.init(
-{
-      id: {
+  {
+    id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
     },
     cities: {
-        type: DataTypes.INTEGER,
-        defaultValue: 3,
+      type: DataTypes.INTEGER,
+      defaultValue: 3,
     },
     disasters: {
-         type: DataTypes.INTEGER,  
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
     },
     score: {
-        type: DataTypes.INTEGER,
-        defaultValue: 0,
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
     },
     player: {
       type: DataTypes.STRING,
       allowNull: false,
+      references: {
+        model: 'users',
+        key: 'id',
+      }
     }
   },
   {
