@@ -24,10 +24,10 @@ GameState.init(
       defaultValue: 0,
     },
     player: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'users',
+        model: 'user',
         key: 'id',
       }
     }
