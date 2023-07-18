@@ -29,6 +29,8 @@ const signup = async (req, res) => {
 
     req.session.user_id = newUser.id;
 
+    req.session.loggedIn = true;
+
     res.json({ message: 'Signup successful' });
   } catch (err) {
     console.error(err);

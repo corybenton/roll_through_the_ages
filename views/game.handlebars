@@ -1,18 +1,16 @@
-{{#each player as |user|}}
-<section class="game-board">
-    <h3>{{user.username}}</h3>
-    <p>Cities: {{gamestate.cities}}</p>
+{{#each gamestate as |gamestate|}}
+<section id={{gamestate.user.name}} class="game-board">
+    <h3>{{gamestate.user.name}}</h3>
+    <p id="cities">Cities: {{gamestate.cities}}</p>
     <p>Developments: {{> developments}}</p>
     <p>Monuments: {{> monuments}}</p>
     <p>Goods: {{> goods}}</p>
-    <p>Disasters: {{gamestate.disasters}}</p>
-    <p>Score: {{gamestate.score}}</p>
+    <p class="disasters">Disasters: {{gamestate.disasters}}</p>
+    <p class="score">Score: {{gamestate.score}}</p>
 </section>
 {{/each}}
 <aside class="dice-tray">
-    {{#each die as |dice|}}
-    {{die.value}}
-    {{/each}}
+    {{> dice}}
 </aside>
 <aside class="quick-reference">
     <div>
