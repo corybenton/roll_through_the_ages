@@ -12,11 +12,49 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/login', (req, res) => {
-  if (req.session.loggedIn) {
-    res.redirect('/');
-    return;
+  try {
+    if (req.session.loggedIn) {
+      res.redirect('/');
+      return;
+    }
+    res.render('login');
+  } catch (err) {
+    console.log(err);
+    res.status(500).json('Internal Service Error');
   }
-  res.render('login');
+});
+
+router.get('/lobby', async (req, res) => {
+  try {
+    res.render('lobby', {
+      loggedIn: req.session.loggedIn,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json('Internal Service Error');
+  }
+});
+
+router.get('/copyright', async (req, res) => {
+  try {
+    res.render('copyright', {
+      loggedIn: req.session.loggedIn,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json('Internal Service Error');
+  }
+});
+
+router.get('/game', async (req, res) => {
+  try {
+    res.render('game', {
+      loggedIn: req.session.loggedIn,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json('Internal Service Error');
+  }
 });
 
 module.exports = router;

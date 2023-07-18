@@ -10,7 +10,6 @@ const login = async (req, res) => {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
-
     req.session.user_id = user.id;
 
     res.json({ message: 'Login successful' });

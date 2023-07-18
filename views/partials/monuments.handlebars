@@ -1,5 +1,5 @@
 <p class="segment-header">Name Working Needed Points</p>
-{{#each monument}}
+{{#each monuments as |monument|}}
 {{monument.name}}{{monument.worked}}{{monument.needed}}{{monument.pointsFirst}}{{monument.pointsSecond}}
 {{/each}}
 <p>Global Monuments Completed: {{gamestate.monuments}}</p>
