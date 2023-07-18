@@ -1,8 +1,8 @@
 <button>New Game</button>
 <h2>Games Awaiting Players:</h2>
-{{#each game}}
-{{#if !player2}}
-{{player1.name}}
+{{#each game as |game|}}
+{{#if !game.player2}}
+{{game.player1.name}}
 <button>Join</button>
 {{/if}}
 {{/each}}

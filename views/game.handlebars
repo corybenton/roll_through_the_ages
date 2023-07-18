@@ -1,6 +1,6 @@
-{{#each player}}
+{{#each player as |user|}}
 <section class="game-board">
-    <h3>{{player.username}}</h3>
+    <h3>{{user.username}}</h3>
     <p>Cities: {{gamestate.cities}}</p>
     <p>Developments: {{> developments}}</p>
     <p>Monuments: {{> monuments}}</p>
@@ -10,7 +10,7 @@
 </section>
 {{/each}}
 <aside class="dice-tray">
-    {{#each die}}
+    {{#each die as |dice|}}
     {{die.value}}
     {{/each}}
 </aside>
