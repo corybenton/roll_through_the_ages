@@ -12,6 +12,8 @@ const login = async (req, res) => {
 
     req.session.user_id = user.id;
 
+    req.session.loggedIn = true;
+
     res.json({ message: 'Login successful' });
   } catch (err) {
     console.error(err);
@@ -34,7 +36,19 @@ const signup = async (req, res) => {
   }
 };
 
+const logout = async (req, res) => {
+  try {
+    req.session.destroy(() => {
+      res.sendStatus(204);
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 module.exports = {
   login,
   signup,
+  logout,
 };
