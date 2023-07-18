@@ -1,8 +1,10 @@
 const router = require('express').Router();
 
 const homeRoutes = require('./home-routes.js');
-const gameRoutes = require('./game');
-const { login, signup, logout } = require('./userController');
+
+const { login, signup, logout, newGame } = require('./userController');
+
+const gameRoutes = require('./game-routes.js');
 
 router.use('/', homeRoutes);
 router.use('/game', gameRoutes);
@@ -12,5 +14,10 @@ router.post('/login', login);
 router.post('/signup', signup);
 
 router.post('/logout', logout);
+
+router.post('/game', newGame);
+
+router.use('/game', gameRoutes);
+
 
 module.exports = router;

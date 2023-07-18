@@ -1,4 +1,4 @@
-const { User } = require('../models');
+const { User, GameState } = require('../models');
 
 const login = async (req, res) => {
   try {
@@ -49,8 +49,22 @@ const logout = async (req, res) => {
   }
 };
 
+const newGame = async (req, res) => {
+  try {
+    console.log('User ID:', req.session.user_id);
+    const userId = req.session.user_id;
+    const newGameState = await GameState.create({ player: userId });
+    console.log('userController: ', newGameState);
+    res.status(201).json({ gameStateId: newGameState.id });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 module.exports = {
   login,
   signup,
   logout,
+  newGame,
 };

@@ -1,8 +1,10 @@
-<button>New Game</button>
+<button id="newGameBtn">New Game</button>
 <h2>Games Awaiting Players:</h2>
 {{#each game as |game|}}
-{{#if !game.player2}}
+{{!-- {{#if !game.player2}}
 {{game.player1.name}}
 <button>Join</button>
-{{/if}}
+{{/if}} --}}
 {{/each}}
+
+<script src="/js/newGame.js"></script>
