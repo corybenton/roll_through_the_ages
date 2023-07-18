@@ -1,5 +1,12 @@
 <p class="segment-header">Name Working Needed Points</p>
 {{#each monuments as |monument|}}
-{{monument.name}}{{monument.worked}}{{monument.needed}}{{monument.pointsFirst}}{{monument.pointsSecond}}
+<div id="monuments">
+    <div id={{monument.name}}>
+        <span>{{monument.name}}</span>
+        <span class=labor>{{monument.labor}}</span>
+        <span class=needed>{{monument.needed}}</span>
+        <span class=points>{{monument.pointsFirst}}/{{monument.pointsSecond}}</span>
+    </div>
+</div>
 {{/each}}
-<p>Global Monuments Completed: {{gamestate.monuments}}</p>
+{{!-- <p>Global Monuments Completed: {{gamestate.monuments}}</p> --}}

@@ -46,15 +46,4 @@ router.get('/copyright', async (req, res) => {
   }
 });
 
-router.get('/game', async (req, res) => {
-  try {
-    res.render('game', {
-      loggedIn: req.session.loggedIn,
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json('Internal Service Error');
-  }
-});
-
 module.exports = router;
