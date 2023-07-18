@@ -15,6 +15,10 @@ GameState.init(
       type: DataTypes.INTEGER,
       defaultValue: 3,
     },
+    citiesNeed: {
+      type: DataTypes.INTEGER,
+      defaultValue: 3,
+    },
     disasters: {
       type: DataTypes.INTEGER,
       defaultValue: 0,

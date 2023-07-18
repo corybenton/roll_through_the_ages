@@ -1,5 +1,9 @@
 <p class="segment-header">Name Amount Value</p>
 {{#each goods as |good|}}
-<p>{{good.name}}{{good.amount}}{{good.value}}</p>
+<div id={{good.name}}>
+    <span>{{good.name}}</span>
+    <span class=amount>{{good.amount}}</span>
+    <span class=value>{{good.value}}</span>
+</div>
 {{/each}}
-<p>Total Trade Good Value: {{gamestate.goods}}</p>
+{{!-- <p>Total Trade Good Value: {{gamestate.goods}}</p> --}}

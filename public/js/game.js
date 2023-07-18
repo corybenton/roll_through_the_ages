@@ -2,10 +2,8 @@ const Turn = require('./turn');
 
 class Game {
   checkGameEnd() {
-    //fetch totalMonument + developments/player
-    //const player1Monuments = fetch ()
-    if (totalMonuments = 5 || player1.numberDevelopments <= 5
-        || player2.numberDevelopments <= 5){
+    //fetch monuments and developments from each player
+    if (allMonumentsDone || developmentsDone){
       this.gameEnd();
     } else {
       this.round();
