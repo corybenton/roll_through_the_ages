@@ -9,31 +9,61 @@ class Turn {
     this.feedCities(gamestate, dice.food);
     this.resolveDisasters(gamestate, othergamestate, dice.skulls);
     this.useLabor(gamestate, othergamestate, dice.labor);
-    this.assignGoods(gamestate.developments.quarrying.learned, dice.goods);
+    this.assignGoods(dice.goods);
     this.buyDevelopment(dice.coins);
     this.cleanUp();
   }
 
   rollDice(gamestate) {
     let diceToRoll = document.querySelector(`.cities#${gamestate}`);
+    let recordDie = [];
+    for (let l = 1; l < 8; l++) {
+      if (l <= diceToRoll) {
+        element = document.querySelector(`#${l}`);
+        element.classList.remove('kept');
+        element.classList.remove('none');
+      } else {
+        element.classList.add('none');
+      }
+      recordDie[l] = 0;
+    }
+
     let dice = new Dice();
+
     for (let j = 0; j < 3; j++) {
       if (diceToRoll > 0) {
         //announce `Die Roll: ${j};
-        for (let i = 0; i < diceToRoll; i++) {
-          dieResult = Math.float(Math.random() * 6);
-          Dice.displayDice(dieResult, i);
+        for (let i = 1; i <= diceToRoll; i++) {
+          element = document.querySelector(`#${i}`);
+          if (!element.classList.contains('kept')) {
+            dieResult = Math.float(Math.random() * 6);
+            recordDie[i] = dieResult;
+            dice.displayDice(dieResult, i);
+            if (dieResult === 1) {
+              element.classList.add('kept');
+            }
+          }
         }
-        //select dice for keeping
-        diceToRoll = diceToRoll - dice.skulls - dice.kept;
+        let checkKept;
+        while (checkKept !== 'Done' || dieKept !== diceToRoll){
+          checkKept = addEventListener();
+          //validate
+          element = document.querySelector(`#${checkKept}`);
+          if (!element.classList.contains('kept')) {
+            element.classList.add('kept');
+          }
+        }
+
       }
     }
-    for (let k = 0; k < gamestate.cities; k++) {
-      //fetch die[k].dieResult
-      //choose goods or food for case 6
-      let dieState = dice.applyDieResult(dieResult, dice, choice, gamestate.developments);
-      return dieState;
+    let dieState;
+    for (let k = 1; k <= diceToRoll; k++) {
+      if (recordDie[k] === 6) {
+        choice = 1;//popup food or labor?
+      }
+      dieState = dice.applyDieResult(recordDie[k], dice, choice);
     }
+    return dieState;
   }
 
   feedCities(gamestate, diceFood) {
@@ -60,22 +90,32 @@ class Turn {
     const religion = document.querySelector('.learned#religion');
     let disasters = document.querySelector(`.disasters#${gamestate}`);
     let otherDisasters = document.querySelector(`.disasters#${othergamestate}`);
+    let revolt;
     if (skulls === 2 && !irrigation) {
       disasters = disasters + 2;
       document.querySelector('#disasters#gamestate').innerHTML = disasters;
-      //update disasters
     } else if (skulls === 3 && !medicine){
       otherDisasters = otherDisasters + 3;
       document.querySelector('#disasters#othergamestate').innerHTML = otherDisasters;
-      //update otherplayers disasters
     } else if (skulls === 4 && laborForGreatWall === 0){
       disasters = disasters + 4;
       document.querySelector('#disasters#gamestate').innerHTML = disasters;
-      //update disasters
-    } else if (skulls <= 5 && !religion){
-      //update goods.value, amount
-    } else if (skulls <= 5 && religion) {
-      //update otherPlayer good.value and amount
+    } else if (skulls <= 5 ){
+      if (!religion) {
+        revolt = gamestate;
+      } else {
+        revolt = othergamestate;
+      }
+      document.querySelector(`.amount#wood#${revolt}`).innerHTML = 0;
+      document.querySelector(`.value#wood#${revolt}`).innerHTML = 0;
+      document.querySelector(`.amount#stone#${revolt}`).innerHTML = 0;
+      document.querySelector(`.value#stone#${revolt}`).innerHTML = 0;
+      document.querySelector(`.amount#pottery#${revolt}`).innerHTML = 0;
+      document.querySelector(`.value#pottery#${revolt}`).innerHTML = 0;
+      document.querySelector(`.amount#cloth#${revolt}`).innerHTML = 0;
+      document.querySelector(`.value#cloth#${revolt}`).innerHTML = 0;
+      document.querySelector(`.amount#spearheads#${revolt}`).innerHTML = 0;
+      document.querySelector(`.value#spearheads#${revolt}`).innerHTML = 0;
     }
   }
 
@@ -225,6 +265,8 @@ class Turn {
       //update amount and value
     }
   }
+
 }
+
 
 module.exports = Turn;

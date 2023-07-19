@@ -12,7 +12,6 @@ class Dice {
     switch (dieResult) {
     case 1:
       display = '2 goods, 1 skull';
-      dieNumber.kept = true;
       break;
     case 2:
       display = '1 good';
@@ -30,10 +29,12 @@ class Dice {
       display = '2 food or 2 labor';
       break;
     }
-    dieNumber.value = display;
+    document.querySelector(`#${dieNumber}`).innerHTML = display;
   }
 
-  applyDieResult(dieResult, dice, choice, developments) {
+  applyDieResult(dieResult, dice, choice) {
+    const aggriculture = document.querySelector('.learned#aggriculture');
+    const masonry = document.querySelector('.learned#masonry');
     switch (dieResult) {
     case 1:
       dice.skulls += 1;
@@ -43,7 +44,8 @@ class Dice {
       dice.goods += 1;
       break;
     case 3:
-      if (developments.coinage.learned) {
+      const coinage = document.querySelector('.learned#coinage');
+      if (coinage) {
         dice.coins += 12;
       } else {
         dice.coins += 7;
@@ -51,25 +53,25 @@ class Dice {
       break;
     case 4:
       dice.food += 3;
-      if (developments.aggriculture.learned) {
+      if (aggriculture) {
         dice.food += 1;
       }
       break;
     case 5:
       dice.labor += 3;
-      if (developments.masonry.learned) {
+      if (masonry) {
         dice.labor += 1;
       }
       break;
     case 6:
       if (choice === 'labor') {
         dice.labor += 2;
-        if (developments.masonry.learned) {
+        if (masonry) {
           dice.labor += 1;
         }
       } else {
         dice.food += 2;
-        if (developments.aggriculture.learned) {
+        if (aggriculture) {
           dice.food += 1;
         }
       }
