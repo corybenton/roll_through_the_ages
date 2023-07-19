@@ -4,32 +4,32 @@ const monumentsData = [
   {
     name: 'Step Pyramid',
     needed: 3,
-    pointsFirst: 1,
-    pontsSecond: 0,
+    points_first: 1,
+    points_second: 0,
   },
   {
     name: 'Stone Circle',
     needed: 5,
-    pointsFirst: 2,
-    pontsSecond: 1,
+    points_first: 2,
+    points_second: 1,
   },
   {
     name: 'Hanging Gardens',
     needed: 11,
-    pointsFirst: 8,
-    pontsSecond: 4,
+    points_first: 8,
+    points_second: 4,
   },
   {
     name: 'Obelisk',
     needed: 9,
-    pointsFirst: 6,
-    pontsSecond: 3,
+    points_first: 6,
+    points_second: 3,
   },
   {
     name: 'Great Wall',
     needed: 13,
-    pointsFirst: 10,
-    pontsSecond: 5,
+    points_first: 10,
+    points_second: 5,
   },
 ];
 

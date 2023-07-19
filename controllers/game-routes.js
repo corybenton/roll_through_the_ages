@@ -7,8 +7,8 @@ router.post('/game', async (req, res) => {
   console.log('New game request received:', req.body);
   try {
     console.log('User ID:', req.session.user_id);
-    const userId = req.session.user_id;
-    const newGameState = await GameState.create({ player: userId });
+    const userId = req.body.player;
+    const newGameState = await GameState.create({ 'player': userId });
     console.log('gameroute post gamestate: ', newGameState);
     res.redirect(`/game/${newGameState.id}`);
     //res.redirect('/game');

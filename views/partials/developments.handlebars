@@ -1,5 +1,15 @@
 <p class="segment-header">Cost Learned Name Pts Effect</p>
 {{#each developments as |development|}}
-<p>{{development.cost}}{{development.learned}}{{development.name}}{{development.points}}{{development.effect}}</p>
+<div id={{development.name}}>
+    <span class="cost">{{development.cost}}</span>
+    {{#if development.learned}}
+    <span class="learned">&#9745;</span>
+    {{else}}
+    <span class="learned">&#9744;</span>
+    {{/if}}
+    <span>{{development.name}}</span>
+    <span class="points">{{development.points}}</span>
+    <span>{{development.effect}}</span>
+</div>
 {{/each}}
-<p>Developments Learned: {{gamestate.developments}}</p>
+{{!-- <p>Developments Learned: {{gamestate.developments}}</p> --}}

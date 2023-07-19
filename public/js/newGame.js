@@ -4,6 +4,7 @@ document.querySelector('#newGameBtn').addEventListener('click', async () => {
   try {
     const response = await fetch('/game', {
       method: 'POST',
+      body: JSON.stringify({ player: 1}),
       headers: { 'Content-Type': 'application/json' },
     });
 

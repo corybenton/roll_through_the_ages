@@ -5,7 +5,7 @@ const developmentsData = [
     name: 'Leadership',
     cost: 10,
     points: 2,
-    effect: 'Reroll 1 die (after last roll)',
+    effect: 'Reroll 1 die (after last roll)'
   },
   {
     name: 'Irrigation',
