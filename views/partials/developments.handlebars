@@ -1,6 +1,7 @@
 <p class="segment-header">Cost Learned Name Pts Effect</p>
+<div class="developments"></div>
 {{#each developments as |development|}}
-<div id={{development.name}}>
+<div class={{development.name}}{{development.id}}>
     <span class="cost">{{development.cost}}</span>
     {{#if development.learned}}
     <span class="learned">&#9745;</span>
@@ -12,4 +13,5 @@
     <span>{{development.effect}}</span>
 </div>
 {{/each}}
+</div>
 {{!-- <p>Developments Learned: {{gamestate.developments}}</p> --}}

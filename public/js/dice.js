@@ -32,9 +32,11 @@ class Dice {
     document.querySelector(`#${dieNumber}`).innerHTML = display;
   }
 
-  applyDieResult(dieResult, dice, choice) {
-    const aggriculture = document.querySelector('.learned#aggriculture');
-    const masonry = document.querySelector('.learned#masonry');
+  applyDieResult(dieResult, dice, choice, player) {
+    let aggriculture = document.querySelector(`.learned#aggriculture#${player}`);
+    aggriculture = aggriculture.classList.contains('true');
+    const masonry = document.querySelector(`.learned#masonry#${player}`);
+    masonry = masonry.classList.contains('true');
     switch (dieResult) {
     case 1:
       dice.skulls += 1;
@@ -44,7 +46,7 @@ class Dice {
       dice.goods += 1;
       break;
     case 3:
-      const coinage = document.querySelector('.learned#coinage');
+      let coinage = document.querySelector(`.learned#coinage#${player}`);
       if (coinage) {
         dice.coins += 12;
       } else {
