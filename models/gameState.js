@@ -34,7 +34,15 @@ GameState.init(
         model: 'user',
         key: 'id',
       }
-    }
+    },
+    // game_foreign: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: true,
+    //   references: {
+    //     model: 'game',
+    //     key: 'id',
+    //   }
+    // },
   },
   {
     sequelize,
