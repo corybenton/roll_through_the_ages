@@ -5,6 +5,10 @@ class Goods extends Model {}
 
 Goods.init(
   {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+    },
     name: {
       type: DataTypes.STRING,
       allowNull: false,

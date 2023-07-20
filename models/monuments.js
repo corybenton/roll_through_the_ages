@@ -6,10 +6,13 @@ class Monuments extends Model {}
 
 Monuments.init(
   {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true
+    },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
-      primaryKey: true
     },
     labor: {
       type: DataTypes.INTEGER,

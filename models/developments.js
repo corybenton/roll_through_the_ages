@@ -5,10 +5,13 @@ class Developments extends Model {}
 
 Developments.init(
   {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+    },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
-      primaryKey: true,
     },
     cost: {
       type: DataTypes.INTEGER,
