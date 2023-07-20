@@ -12,9 +12,11 @@ document.querySelector('#newGameBtn').addEventListener('click', async () => {
 
     if (response.ok) {
       const responseData = await response.json();
-      console.log('gamestate id newgame.js:', responseData.gameStateId);
+      //console.log('gamestate id newgame.js:', responseData.gameStateId);
       //window.location.href = `/game/${responseData.gameStateId}`;
-      window.location.href = '/game'; // Can't get either of these to direct to the game.handlebars... hmmmmm
+
+      //Sending get request to game/id
+      window.location.href = `/game/${responseData.newgame}`; // Can't get either of these to direct to the game.handlebars... hmmmmm
     } else {
       alert('Failed to create a new game.');
     }
