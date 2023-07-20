@@ -281,9 +281,25 @@ class Turn {
     }
     //update amount and value
   }
+
+  async updateItem(value, place, category) {
+    try {
+      const response = await fetch('/game', {
+        method: 'PUT',
+        headers: {
+          'Content-type': 'application.json; charset=UTF-8'
+        },
+        body: JSON.stringify({
+          place: place,
+          value: value,
+          category: category
+        })
+      });
+      console.log(response);
+    } catch(err) {
+      console.log(err);
+    }
+  }
 }
-
-
-
 
 module.exports = Turn;
