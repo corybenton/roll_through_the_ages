@@ -88,6 +88,7 @@ router.put('/game', async (req, res) => {
           gamestate_id: gameId,
         },
       });
+      document.querySelector(`.${req.body.place}.${req.body.category}#${gameId}`).classList.add = 'true';
     } else if (req.body.place === 'needed') {
       data = await Monuments.update({needed: req.body.value}, {
         where: {
@@ -95,6 +96,7 @@ router.put('/game', async (req, res) => {
           gamestate_id: gameId,
         },
       });
+      document.querySelector(`.${req.body.place}.${req.body.category}#${gameId}`).innerHTML = req.body.value;
     } else if (req.body.place === 'amount') {
       data = await Goods.update({amount: req.body.value}, {
         where: {
@@ -102,6 +104,11 @@ router.put('/game', async (req, res) => {
           gamestate_id: gameId,
         },
       });
+      if (req.body.player) {
+        document.querySelector(`.${req.body.place}.${req.body.category}#${req.body.player}`).innerHTML = req.body.value;
+      } else {
+        document.querySelector(`.${req.body.place}.${req.body.category}#${gameId}`).innerHTML = req.body.value;
+      }
     } else if (req.body.place === 'value') {
       data = await Goods.update({value: req.body.value}, {
         where: {
@@ -109,30 +116,43 @@ router.put('/game', async (req, res) => {
           gamestate_id: gameId,
         },
       });
+      if (req.body.player) {
+        document.querySelector(`.${req.body.place}.${req.body.category}#${req.body.player}`).innerHTML = req.body.value;
+      } else {
+        document.querySelector(`.${req.body.place}.${req.body.category}#${gameId}`).innerHTML = req.body.value;
+      }
     } else if (req.body.place === 'score') {
       data = await GameState.update({score: req.body.value}, {
         where: {
           gamestate_id: gameId,
         }
       });
+      document.querySelector(`.${req.body.place}#${gameId}`).innerHTML = req.body.value;
     } else if (req.body.place === 'disasters') {
       data = await GameState.update({disasters: req.body.value}, {
         where: {
           gamestate_id: gameId,
         }
       });
+      if (req.body.player) {
+        document.querySelector(`.${req.body.place}#${req.body.player}`).innerHTML = req.body.value;
+      } else {
+        document.querySelector(`.${req.body.place}.}#${gameId}`).innerHTML = req.body.value;
+      }
     } else if (req.body.place === 'cities') {
       data = await GameState.update({cities: req.body.value}, {
         where: {
           gamestate_id: gameId,
         }
       });
+      document.querySelector(`.${req.body.place}.}#${gameId}`).innerHTML = req.body.value;
     } else if (req.body.place === 'citiesNeed') {
       data = await GameState.update({citiesNeed: req.body.value}, {
         where: {
           gamestate_id: gameId,
         }
       });
+      document.querySelector(`.${req.body.place}.}#${gameId}`).innerHTML = req.body.value;
     }
     if (data === 200){
       console.log('Yay!');
