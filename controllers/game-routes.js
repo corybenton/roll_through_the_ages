@@ -3,7 +3,6 @@ const router = express.Router();
 const { GameState, Monuments, Developments, Goods, Game } = require('../models');
 
 
-
 // router.post('/game', async (req, res) => {
 //   console.log('New game request received:', req.body);
 //   try {
@@ -25,9 +24,6 @@ router.get('/game/:id', async (req, res) => {
   try {
     // const gameId = req.session.id;
     const gameId = req.params.id;
-    const gameData = await GameState.findByPk(gameId, {
-    // const gameId = req.params.id;
-    });
     console.log('gameId gameroutes: ', gameId);
     //instead of gamestate primary key, get all gamestates connected to this game.
     //if 2 gamestates connected to game, render handlebars, if its only 1, game waiting.
@@ -35,31 +31,32 @@ router.get('/game/:id', async (req, res) => {
       include: [
         {
           model: GameState,
-          as: 'player1board'
+          as: 'player1board',
+          include: [
+            Monuments,
+            Developments,
+            Goods,
+          ]
         },
         {
           model: GameState,
-          as: 'player2board'
+          as: 'player2board',
+          include: [
+            Monuments,
+            Developments,
+            Goods,
+          ]
         },
       ],
     });
 
-
-
-    console.log('game data gameroutes: ', GameData);
-
+    //console.log('game data gameroutes: ', GameData);
+    //console.log(JSON.stringify(GameData));
     if (!GameData) {
-
       return res.status(404).json({ error: 'Game state not found' });
     }
-    // Render the 'game' handlebars template and data
-
     //Avoids error in case of no player 2 data
     let player2data;
-
-
-    // Render the 'game' handlebars template and pass the fetched data
-    res.render('game', { game: gameData });
 
     if (!GameData.player2board) {
       player2data = null;
@@ -68,12 +65,70 @@ router.get('/game/:id', async (req, res) => {
     }
 
     res.render('game', { gamestates: [GameData.player1board.dataValues, player2data] });
-    //res.render('game');
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+async function createInitialResources(gamestate_id) {
+
+  const listOfInitialMonuments = require('../initialResources/monuments');
+  console.log('listofinitialmonuments', listOfInitialMonuments);
+
+  for (let i = 0; i < listOfInitialMonuments.length; i++) {
+    let monument = listOfInitialMonuments[i];
+    monument.gamestate_id = gamestate_id;
+    //const initMonument = await Monuments.create(monument);
+    await Monuments.create(monument);
+  }
+
+
+  const listOfInitialDevelopments = require('../initialResources/developments');
+  console.log('listofinitialDevlopments',listOfInitialDevelopments);
+
+  for (let i = 0; i < listOfInitialDevelopments.length; i++) {
+    let development = listOfInitialDevelopments[i];
+    development.gamestate_id = gamestate_id;
+    //const initDevelopment = await Developments.create(development);
+    await Developments.create(development);
+  }
+
+  const listOfInitialGoods = require('../initialResources/goods');
+  console.log('listofinitialgoods', listOfInitialGoods);
+
+  for (let i = 0; i < listOfInitialGoods.length; i++) {
+    let goods = listOfInitialGoods[i];
+    goods.gamestate_id = gamestate_id;
+    //const initGoods = await Goods.create(good);
+    await Goods.create(goods);
+    console.log('goods: ', goods);
+  }
+}
+
+
+const newGame = async (req, res) => {
+  try {
+    console.log('User ID:', req.session.user_id);
+    const userId = req.session.user_id;
+    const newGameState = await GameState.create({ player: userId });
+    console.log('NewGame-Routes: ', newGameState);
+    // res.status(201).json({ gameStateId: newGameState.id });
+    const board1 = newGameState.id;
+    const newGame = await Game.create({ board1: board1 });
+    await createInitialResources(newGameState.id);
+    res.status(201).json({ newgame: newGame.id });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+router.post('/game', newGame);
+
+//new route to list games in lobby. (games.findall()) ... /game/lobby?
+//no need for id. GET request to get all games, render lobby file, passing in all the games.
+//get/game route currently have is similar to above route, except new route will query for all games and pass to handlebars.
 
 
 router.put('/game', async (req, res) => {
@@ -162,24 +217,5 @@ router.put('/game', async (req, res) => {
     console.log(err);
   }
 });
-
-const newGame = async (req, res) => {
-  try {
-    console.log('User ID:', req.session.user_id);
-    const userId = req.session.user_id;
-    const newGameState = await GameState.create({ player: userId });
-    console.log('userController: ', newGameState);
-    // res.status(201).json({ gameStateId: newGameState.id });
-    console.log(newGameState);
-    const board1 = newGameState.id;
-    const newGame = await Game.create({ board1: board1 });
-    res.status(201).json({ newgame: newGame.id });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-};
-
-router.post('/game', newGame);
 
 module.exports = router;

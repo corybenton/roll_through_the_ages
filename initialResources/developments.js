@@ -1,0 +1,95 @@
+const developmentsData = [
+  {
+    number: 0,
+    name: 'Leadership',
+    cost: 10,
+    points: 2,
+    effect: 'Reroll 1 die (after last roll)'
+  },
+  {
+    number: 1,
+    name: 'Irrigation',
+    cost: 10,
+    points: 2,
+    effect: '2 skulls has no effect',
+  },
+  {
+    number: 2,
+    name: 'Agriculture',
+    cost: 15,
+    points: 3,
+    effect: '+1 food per food die',
+  },
+  {
+    number: 3,
+    name: 'Quarrying',
+    cost: 15,
+    points: 3,
+    effect: '+1 stone if collecting stone',
+  },
+  {
+    number: 4,
+    name: 'Medicine',
+    cost: 15,
+    points: 3,
+    effect: '3 skulls has no effect',
+  },
+  {
+    number: 5,
+    name: 'Coinage',
+    cost: 20,
+    points: 4,
+    effect: 'coin die worth 12',
+  },
+  {
+    number: 6,
+    name: 'Caravans',
+    cost: 20,
+    points: 4,
+    effect: 'do not need to discard goods',
+  },
+  {
+    number: 7,
+    name: 'Religion',
+    cost: 20,
+    points: 6,
+    effect: '5+ skulls affects opponents',
+  },
+  {
+    number: 8,
+    name: 'Granaries',
+    cost: 30,
+    points: 6,
+    effect: 'sell food for 4 coins each',
+  },
+  {
+    number: 9,
+    name: 'Masonry',
+    cost: 30,
+    points: 6,
+    effect: '+1 worker per worker die',
+  },
+  {
+    number: 10,
+    name: 'Engineering',
+    cost: 40,
+    points: 6,
+    effect: 'use stone for 3 workers each',
+  },
+  {
+    number: 11,
+    name: 'Architecture',
+    cost: 50,
+    points: 8,
+    effect: '+1 point per monument',
+  },
+  {
+    number: 12,
+    name: 'Empire',
+    cost: 60,
+    points: 8,
+    effect: '+1 point per city',
+  },
+];
+
+module.exports = developmentsData;
