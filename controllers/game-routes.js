@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { GameState, Monuments, Developments, Goods, User, Game } = require('../models');
+const { GameState, Monuments, Developments, Goods, Game } = require('../models');
 
 
 
@@ -23,10 +23,11 @@ const { GameState, Monuments, Developments, Goods, User, Game } = require('../mo
 router.get('/game/:id', async (req, res) => {
 //router.get('/game', async (req, res) => {
   try {
-    const gameId = req.session.id;
-    //const gameId = req.params.id;
-    const gameData = await GameState.findByPk(gameId, {
+    // const gameId = req.session.id;
     const gameId = req.params.id;
+    const gameData = await GameState.findByPk(gameId, {
+    // const gameId = req.params.id;
+    });
     console.log('gameId gameroutes: ', gameId);
     //instead of gamestate primary key, get all gamestates connected to this game.
     //if 2 gamestates connected to game, render handlebars, if its only 1, game waiting.
@@ -141,8 +142,8 @@ router.put('/game', async (req, res) => {
     console.log(err);
   }
 });
-  
-  const newGame = async (req, res) => {
+
+const newGame = async (req, res) => {
   try {
     console.log('User ID:', req.session.user_id);
     const userId = req.session.user_id;

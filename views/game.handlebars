@@ -1,7 +1,7 @@
 {{#each gamestates as |gamestate|}}
 <section id={{gamestate.user.name}} class="game-board">
     <h3>{{gamestate.user.name}}</h3>
-    <p id="cities">Cities: {{gamestate.cities}}</p>
+    <p class="cities build">Cities: {{gamestate.cities}}</p>
     <p>Developments: {{> developments}}</p>
     <p>Monuments: {{> monuments}}</p>
     <p>Goods: {{> goods}}</p>
@@ -10,13 +10,14 @@
 </section>
 {{/each}}
 <aside id="dice-tray">
-    <div class="container" id="1"></div>
-    <div class="container" id="2"></div>
-    <div class="container" id="3"></div>
-    <div class="container" class="none" id="4"></div>
-    <div class="container" class="none" id="5"></div>
-    <div class="container" class="none" id="6"></div>
-    <div class="container" class="none" id="7"></div>
+    <div class="container die" id="1"></div>
+    <div class="container die" id="2"></div>
+    <div class="container die" id="3"></div>
+    <div class="container die none" id="4"></div>
+    <div class="container die none" id="5"></div>
+    <div class="container die none" id="6"></div>
+    <div class="container die none" id="7"></div>
+    <button class="done die none" id="8">'Done'</button>
 </aside>
 <aside class="quick-reference">
     <div>
