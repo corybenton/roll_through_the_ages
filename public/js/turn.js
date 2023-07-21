@@ -18,7 +18,7 @@ class Turn {
     let recordDie = [];
 
     //reset dice information
-    for (let l = 1; l < 8; l++) {
+    for (let l = 1; l < 9; l++) {
       if (l <= diceToRoll) {
         const dieClass = document.querySelector(`#${l}`);
         dieClass.classList.remove('kept');
@@ -34,6 +34,7 @@ class Turn {
     for (let j = 1; j <= 3; j++) {
       if (diceToRoll > 0) {
         //announce `Die Roll: ${j};
+        let diceKept = 0;
         for (let i = 1; i <= diceToRoll; i++) {
           const kept = document.querySelector(`#${i}`);
           if (!kept.classList.contains('kept')) {
@@ -42,17 +43,26 @@ class Turn {
             dice.displayDice(dieResult, i);
             if (dieResult === 1) {
               kept.classList.add('kept');
+              diceKept += 1;
             }
           }
         }
-        while (checkKept !== 'Done' || dieKept !== diceToRoll){
-          let checkKept = addEventListener();
-          //validate
-          checkKept = document.querySelector(`#${checkKept}`);
-          if (!checkKept.classList.contains('kept')) {
-            checkKept.classList.add('kept');
-          }
+        let checkKept;
+        while (checkKept !== 'Done' || diceKept !== diceToRoll){
+          const doneAvailable = document.querySelector('#8');
+          doneAvailable.classList.remove('none');
+          document.querySelectorAll('.die').addEventListener('click', async (event) => {
+            event.stopPropagation();
+            checkKept = event.target;
+            if (checkKept.classList.contains('die') && !checkKept.classList.contains('kept')) {
+              checkKept.classList.add('kept');
+              diceKept += 1;
+            } else if (checkKept.classList.contains('done')){
+              checkKept = 'Done';
+            }
+          });
         }
+        diceToRoll = diceToRoll - diceKept;
       }
     }
 
@@ -90,7 +100,9 @@ class Turn {
         disasters = disasters + 1;
       }
     }
-    //update gamestate
+    updateItem(food, 'amount', 'food');
+    updateItem(food, 'value', 'food');
+    updateItem(disasters, 'disasters');
   }
 
   resolveDisasters(gamestate, othergamestate, skulls) {
@@ -109,6 +121,7 @@ class Turn {
       disasters = disasters + 2;
     } else if (skulls === 3 && !medicine){
       otherDisasters = otherDisasters + 3;
+      updateItem(otherDisasters, 'disasters', '', othergamestate);
     } else if (skulls === 4 && laborForGreatWall === 0){
       disasters = disasters + 4;
     } else if (skulls <= 5 ){
@@ -117,13 +130,13 @@ class Turn {
       } else {
         revolt = othergamestate;
       }
+
+      for (let i = 1; i < 6; i++) {
+        updateItem(0, 'amount', i, revolt);
+        updateItem(0, 'value', i, revolt);
+      }
     }
-    for (let i = 1; i < 6; i++) {
-      document.querySelector(`.amount.${i}#${revolt}`).innerHTML = 0;
-      document.querySelector(`.value.${i}#${revolt}`).innerHTML = 0;
-    }
-    document.querySelector(`.disasters#${othergamestate}`).innerHTML = otherDisasters;
-    document.querySelector(`.disasters#${gamestate}`).innerHTML = disasters;
+    updateItem(disasters, 'disasters');
   }
 
   useLabor(gamestate, player2, labor) {
@@ -137,14 +150,23 @@ class Turn {
     }
     while (labor > 0) {
       //announce you have labor to spend
-      const which = addEventListener();//wait for click on building place (city or monument)
-      //verify that the thing on is something that can be built
-      const whichName = document.querySelector(`.${which}#${gamestate}`.textContent);
+      let whichName;
+      document.querySelectorAll('.build').addEventListener('click', (event) => {
+        event.stopPropagation();
+        which = event.target;
+        if (which.classList.contains('build')) {
+          whichName = document.querySelector(which).textContent;
+          if (whichName.slice(0, 6) === 'Cities') {
+            whichName = 'cities';
+          }
+        }
+      });
+
       //box with incrementer max of needed or labor which ever is lower
       const howMany = prompt(`How many to use on the ${whichName}?`);
-      let needed = parseInt(document.querySelector(`.needed#${whichName}#${gamestate}`).textContent);
       if (whichName === 'cities') {
         let cities = parseInt(document.querySelector(`.cities#${gamestate}`).textContent);
+        let needed = parseInt(document.querySelector(`.citiesNeed#${whichName}#${gamestate}`).textContent);
         if (howMany === needed){
           cities = cities + 1;
           needed = cities;
@@ -152,45 +174,48 @@ class Turn {
           needed = needed - howMany;
         }
         labor = labor - howMany;
-        //update citiesNeed and cities if changed
+
+        updateItem(cities, 'cities');
+        updateItem(needed, 'citiesNeed');
       } else {
-        if (howMany === needed){
+        let needed = parseInt(document.querySelector(`.needed.${whichName}#${gamestate}`).textContent);
+        if (howMany === needed) {
           let score = parseInt(document.querySelector(`.score#${gamestate}`).textContent);
           let alreadyBuilt = document.querySelector(`.needed.${whichName}#${player2}`).textContent;
-          let points = document.querySelector(`.points#${which}`).textContent;
+          let points = document.querySelector(`.points#${gamestate}`).textContent;
           if (alreadyBuilt === '0') {
             points = parseInt(points.slice(-1));
           } else {
-            points = parseInt(points.slice(1, points.length - 2));
+            points = parseInt(points.slice(0, points.length - 2));
           }
           score = score + points;
-        } else {
-          needed = needed - howMany;
         }
+        needed = needed - howMany;
+
         labor = labor - howMany;
-        //update monuments built and score if changed
+
+        updateItem(score, 'score');
+        updateItem(needed, 'needed', whichName);
       }
     }
   }
 
   assignGoods(gamestate, goods) {
     let goodType = 1;
-    let modifier = 0;
     let quarrying = document.querySelector(`.learned.quarrying#${gamestate}`);
     quarrying = quarrying.classList.contains('true');
     for (let i = 0; i < goods; i++) {
       let goodTypeAmt = parseInt(document.querySelector(`.amount.${goodType}#${gamestate}`).textContent);
       goodTypeAmt += 1;
-      if (goodTypeAmt = 2 && quarrying) {
+      if (goodType = 2 && quarrying) {
         goodTypeAmt += 1;
       }
 
       let goodTypeVal = parseInt(document.querySelector(`.value.${goodType}#${gamestate}`).textContent);
-      modifier = (i + 1) % 5;
-      goodTypeVal = goodTypeVal + (modifier * goodTypeAmt);
+      goodTypeVal = goodTypeVal + (goodType * goodTypeAmt);
 
-      document.querySelector(`.amount.${goodType}#${gamestate}`).innerHTML = goodTypeAmt;
-      document.querySelector(`.value.${goodType}#${gamestate}`).innerHTML = goodTypeVal;
+      updateItem(goodTypeAmt, goodType, 'amount');
+      updateItem(goodTypeVal, goodType, 'value');
 
       if (goodType === 5) {
         goodType = 1;
@@ -215,19 +240,28 @@ class Turn {
       //prompt would you like to sell food for granaries
       if (sell) {
         //prompt how much to sell
+        food = food - sold;
+        coins += sold * 4;
+        updateItem(food, 'food', 'amount');
+        updateItem(food, 'food', 'value');
       }
-      coins += sold * 4;
       //prompt you now have newvalue to spend
     }
 
-    let which = addEventListener();
-    //validate which
+    let whichName;
+    document.querySelector('devButt').classList.remove('none');
+    document.querySelectorAll('.development').addEventListener('click', (event) => {
+      event.stopPropagation();
+      which = event.target;
+      if (which.classList.contains('development')) {
+        whichName = document.querySelector(which).textContent;
+      }
+    });
 
-    which = document.querySelector(`.${which}#${gamestate}`);
     let goods = 0;
     let goodType, cost, goodValue;
-    if (which !== 'No development') {
-      cost = parseInt(document.querySelector(`.cost.${which}#${gamestate}`).textContent);
+    if (whichName !== 'No development') {
+      cost = parseInt(document.querySelector(`.cost.${whichName}#${gamestate}`).textContent);
       if (cost > totalValue + coins) {
         //announce you don't have enough money
       } else {
@@ -235,21 +269,29 @@ class Turn {
         while (goods < cost) {
           //prompt amount needed
           //prompt which goods to use
-          goodType = addEventListener();
-          //validate goodType
+          document.querySelectorAll('.good').addEventListener('click', (event) => {
+            event.stopPropagation();
+            goodType = event.target;
+            if (goodType.classList.contains('good')) {
+              goodType = document.querySelector(goodType).textContent;
+            }
+          });
+
           goodValue = parseInt(document.querySelector(`.value.${goodType}#${gamestate}`).textContent);
           goods += goodValue;
 
-          document.querySelector(`.amount.${goodType}#${gamestate}`).innerHTML = 0;
-          document.querySelector(`.value.${goodType}#${gamestate}`).innerHTML = 0;
+          updateItem(0, goodType, 'amount');
+          updateItem(0, goodType, 'value');
         }
-        document.querySelector(`.learned.${which}#${player}`).className = 'true';
         let score = parseInt(document.querySelector(`.score#${player}`).textContent);
-        let points = parseInt(document.querySelector(`.points.${which}#${gamestate}`));
+        let points = parseInt(document.querySelector(`.points.${goodType}#${gamestate}`));
         score += points;
-        document.querySelector(`.score#${player}`).innerHTML = score;
+
+        updateItem(score, 'score');
+        updateItem(true, which, 'learned');
       }
     }
+    document.querySelector('devButt').classList.add('none');
   }
 
   cleanup(player) {
@@ -259,30 +301,34 @@ class Turn {
 
     if (!caravans) {
       for (let i = 1; i < 6; i++){
-        for (let i = 1; i < 6; i++) {
-          goodAmount = parseInt(document.querySelector(`.value.${i}#${player}`));
-          totalAmount += goodAmount;
-        }
+        goodAmount = parseInt(document.querySelector(`.value.${i}#${player}`));
+        totalAmount += goodAmount;
       }
 
       while (totalAmount > 6) {
-        goodType = addEventListener();
-        //validate goodType
+        document.querySelectorAll('.good').addEventListener('click', (event) => {
+          event.stopPropagation();
+          let goodType = event.target;
+          if (goodType.classList.contains('good')) {
+            goodType = document.querySelector(goodType).classList;
+            goodType = parseInt(goodType[1]);
+          }
+        });
 
         goodAmount = parseInt(document.querySelector(`.amount.${goodType}#${player}`).textContent);
         goodAmount = goodAmount - 1;
+        totalAmount = totalAmount - 1;
 
         let goodValue = parseInt(document.querySelector(`.value.${goodType}#${player}`).textContent);
         goodValue = goodValue - (goodType * goodAmount);
 
-        document.querySelector(`.value.${goodType}#${player}`).innerHTML = goodValue;
-        document.querySelector(`.amount.${goodType}#${player}`).innerHTML = goodAmount;
+        updateItem(goodValue, 'value', goodType);
+        updateItem(goodAmount, 'amount', goodType);
       }
     }
-    //update amount and value
   }
 
-  async updateItem(value, place, category) {
+  async updateItem(value, place, category, player) {
     try {
       const response = await fetch('/game', {
         method: 'PUT',
@@ -292,7 +338,8 @@ class Turn {
         body: JSON.stringify({
           place: place,
           value: value,
-          category: category
+          category: category,
+          player: player
         })
       });
       console.log(response);
