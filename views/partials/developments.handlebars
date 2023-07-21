@@ -1,18 +1,24 @@
-<p class="segment-header">Cost Learned Name Pts Effect</p>
-<div class="developments"></div>
-{{#each developments as |development|}}
-<div class={{development.name}}{{development.id}}>
-    <span class="cost">{{development.cost}}</span>
-    {{#if development.learned}}
-    <span class="learned">&#9745;</span>
-    {{else}}
-    <span class="learned">&#9744;</span>
-    {{/if}}
-    <span class="development">{{development.name}}</span>
-    <span class="points">{{development.points}}</span>
-    <span>{{development.effect}}</span>
+<div class="segment-header row">
+    <span class="col-1">Cost</span>
+    <span class="col-1"></span>
+    <span class="col-3">Name</span>
+    <span class="col-1">Pts</span>
+    <span class="col-5">Effect</span>
 </div>
-{{/each}}
+<div class="developments">
+    {{#each developments as |development|}}
+    <div class={{development.name}}{{development.id}} "row">
+        <span class="col-1 cost">10{{development.cost}}</span>
+        {{#if development.learned}}
+        <span class="learned">&#9745;</span>
+        {{else}}
+        <span class="learned col-1">&#9744;</span>
+        {{/if}}
+        <span class="col-3 development">Leadership{{development.name}}</span>
+        <span class="col-1 points">2{{development.points}}</span>
+        <span class="col-5 effect">Reroll die (after roll){{development.effect}}</span>
+    </div>
+    {{/each}}
     <button class="development none devbutt">No development</button>
 </div>
 {{!-- <p>Developments Learned: {{gamestate.developments}}</p> --}}
