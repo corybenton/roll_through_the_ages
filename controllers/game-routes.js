@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { GameState, Monuments, Developments, Goods, User, Game } = require('../models');
+const { GameState, Monuments, Developments, Goods, Game } = require('../models');
 
 
 // router.post('/game', async (req, res) => {
@@ -22,6 +22,7 @@ const { GameState, Monuments, Developments, Goods, User, Game } = require('../mo
 router.get('/game/:id', async (req, res) => {
 //router.get('/game', async (req, res) => {
   try {
+    // const gameId = req.session.id;
     const gameId = req.params.id;
     console.log('gameId gameroutes: ', gameId);
     //instead of gamestate primary key, get all gamestates connected to this game.
@@ -54,8 +55,6 @@ router.get('/game/:id', async (req, res) => {
     if (!GameData) {
       return res.status(404).json({ error: 'Game state not found' });
     }
-    // Render the 'game' handlebars template and data
-
     //Avoids error in case of no player 2 data
     let player2data;
 
@@ -66,7 +65,6 @@ router.get('/game/:id', async (req, res) => {
     }
 
     res.render('game', { gamestates: [GameData.player1board.dataValues, player2data] });
-    //res.render('game');
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal server error' });
@@ -109,7 +107,6 @@ async function createInitialResources(gamestate_id) {
 }
 
 
-
 const newGame = async (req, res) => {
   try {
     console.log('User ID:', req.session.user_id);
@@ -134,5 +131,91 @@ router.post('/game', newGame);
 //get/game route currently have is similar to above route, except new route will query for all games and pass to handlebars.
 
 
+router.put('/game', async (req, res) => {
+  try{
+    const gameId = req.session.userId;
+
+    let data;
+    if (req.body.place === 'learned') {
+      data = await Developments.update({learned: req.body.value}, {
+        where: {
+          name: req.body.category,
+          gamestate_id: gameId,
+        },
+      });
+      document.querySelector(`.${req.body.place}.${req.body.category}#${gameId}`).classList.add = 'true';
+    } else if (req.body.place === 'needed') {
+      data = await Monuments.update({needed: req.body.value}, {
+        where: {
+          name: req.body.category,
+          gamestate_id: gameId,
+        },
+      });
+      document.querySelector(`.${req.body.place}.${req.body.category}#${gameId}`).innerHTML = req.body.value;
+    } else if (req.body.place === 'amount') {
+      data = await Goods.update({amount: req.body.value}, {
+        where: {
+          name: req.body.category,
+          gamestate_id: gameId,
+        },
+      });
+      if (req.body.player) {
+        document.querySelector(`.${req.body.place}.${req.body.category}#${req.body.player}`).innerHTML = req.body.value;
+      } else {
+        document.querySelector(`.${req.body.place}.${req.body.category}#${gameId}`).innerHTML = req.body.value;
+      }
+    } else if (req.body.place === 'value') {
+      data = await Goods.update({value: req.body.value}, {
+        where: {
+          name: req.body.category,
+          gamestate_id: gameId,
+        },
+      });
+      if (req.body.player) {
+        document.querySelector(`.${req.body.place}.${req.body.category}#${req.body.player}`).innerHTML = req.body.value;
+      } else {
+        document.querySelector(`.${req.body.place}.${req.body.category}#${gameId}`).innerHTML = req.body.value;
+      }
+    } else if (req.body.place === 'score') {
+      data = await GameState.update({score: req.body.value}, {
+        where: {
+          gamestate_id: gameId,
+        }
+      });
+      document.querySelector(`.${req.body.place}#${gameId}`).innerHTML = req.body.value;
+    } else if (req.body.place === 'disasters') {
+      data = await GameState.update({disasters: req.body.value}, {
+        where: {
+          gamestate_id: gameId,
+        }
+      });
+      if (req.body.player) {
+        document.querySelector(`.${req.body.place}#${req.body.player}`).innerHTML = req.body.value;
+      } else {
+        document.querySelector(`.${req.body.place}.}#${gameId}`).innerHTML = req.body.value;
+      }
+    } else if (req.body.place === 'cities') {
+      data = await GameState.update({cities: req.body.value}, {
+        where: {
+          gamestate_id: gameId,
+        }
+      });
+      document.querySelector(`.${req.body.place}.}#${gameId}`).innerHTML = req.body.value;
+    } else if (req.body.place === 'citiesNeed') {
+      data = await GameState.update({citiesNeed: req.body.value}, {
+        where: {
+          gamestate_id: gameId,
+        }
+      });
+      document.querySelector(`.${req.body.place}.}#${gameId}`).innerHTML = req.body.value;
+    }
+    if (data === 200){
+      console.log('Yay!');
+    }
+    res.render('game');
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 module.exports = router;

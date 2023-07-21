@@ -33,8 +33,8 @@ class Dice {
   }
 
   applyDieResult(dieResult, dice, choice, player) {
-    let aggriculture = document.querySelector(`.learned#aggriculture#${player}`);
-    aggriculture = aggriculture.classList.contains('true');
+    let agriculture = document.querySelector(`.learned#agriculture#${player}`);
+    agriculture = agriculture.classList.contains('true');
     const masonry = document.querySelector(`.learned#masonry#${player}`);
     masonry = masonry.classList.contains('true');
     switch (dieResult) {
@@ -55,7 +55,7 @@ class Dice {
       break;
     case 4:
       dice.food += 3;
-      if (aggriculture) {
+      if (agriculture) {
         dice.food += 1;
       }
       break;
@@ -73,7 +73,7 @@ class Dice {
         }
       } else {
         dice.food += 2;
-        if (aggriculture) {
+        if (agriculture) {
           dice.food += 1;
         }
       }

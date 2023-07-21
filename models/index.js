@@ -37,30 +37,6 @@ User.hasOne(GameState, {
   foreignKey: 'player',
 });
 
-// Game.hasMany(GameState, {
-//   foreignKey: 'game_foreign',
-// });
-
-// Game.hasOne(GameState, {
-//   foreignKey: 'board1',
-//   as: 'player1board'
-// });
-
-// Game.hasOne(GameState, {
-//   foreignKey: 'board2',
-//   as: 'player2board'
-// });
-
-// GameState.belongsTo(Game, {
-//   foreignKey: 'board1',
-//   as: 'player1board',
-// });
-
-// GameState.belongsTo(Game, {
-//   foreignKey: 'board1',
-//   as: 'player2board',
-// });
-
 Game.belongsTo(GameState, {
   foreignKey: 'board1',
   as: 'player1board',

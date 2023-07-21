@@ -15,10 +15,6 @@ Monuments.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    labor: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0,
-    },
     needed: {
       type: DataTypes.INTEGER,
     },
