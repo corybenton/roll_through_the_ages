@@ -14,6 +14,10 @@ const login = async (req, res) => {
 
     req.session.loggedIn = true;
 
+    req.session.user_name = user.name;
+
+    //console.log('userName-usercontrollerlogin: ', req.session.user_name);
+
     res.json({ message: 'Login successful' });
   } catch (err) {
     console.error(err);
@@ -30,6 +34,10 @@ const signup = async (req, res) => {
     req.session.user_id = newUser.id;
 
     req.session.loggedIn = true;
+
+    req.session.user_name = newUser.name;
+
+    //console.log('userNameusercontrollersignup: ', req.session.user_name);
 
     res.json({ message: 'Signup successful' });
   } catch (err) {

@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const { Game, GameState, User } = require('../models');
 
 router.get('/', async (req, res) => {
   try {
@@ -26,12 +27,37 @@ router.get('/login', (req, res) => {
 
 router.get('/lobby', async (req, res) => {
   try {
+
+    const allGames = await Game.findAll({
+      include: [
+        {
+          model: GameState,
+          as: 'player1board',
+          include: [
+            User
+          ],
+        },
+        {
+          model: GameState,
+          as: 'player2board',
+          include: [
+            User
+          ],
+        },
+      ],
+    });
+
+    const userName = req.session.user_name;
+    //console.log('userHome-route:', userName);
+
     res.render('lobby', {
       loggedIn: req.session.loggedIn,
+      games: allGames,
+      user: userName
     });
   } catch (err) {
-    console.log(err);
-    res.status(500).json('Internal Service Error');
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 
