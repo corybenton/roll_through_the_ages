@@ -30,17 +30,27 @@ router.get('/game/:id', async (req, res) => {
       include: [
         {
           model: GameState,
-          as: 'player1board'
+          as: 'player1board',
+          include: [
+            Monuments,
+            Developments,
+            Goods,
+          ]
         },
         {
           model: GameState,
-          as: 'player2board'
+          as: 'player2board',
+          include: [
+            Monuments,
+            Developments,
+            Goods,
+          ]
         },
       ],
     });
 
-    console.log('game data gameroutes: ', GameData);
-
+    //console.log('game data gameroutes: ', GameData);
+    //console.log(JSON.stringify(GameData));
     if (!GameData) {
       return res.status(404).json({ error: 'Game state not found' });
     }
@@ -63,16 +73,53 @@ router.get('/game/:id', async (req, res) => {
   }
 });
 
+async function createInitialResources(gamestate_id) {
+
+  const listOfInitialMonuments = require('../initialResources/monuments');
+  console.log('listofinitialmonuments', listOfInitialMonuments);
+
+  for (let i = 0; i < listOfInitialMonuments.length; i++) {
+    let monument = listOfInitialMonuments[i];
+    monument.gamestate_id = gamestate_id;
+    //const initMonument = await Monuments.create(monument);
+    await Monuments.create(monument);
+  }
+
+
+  const listOfInitialDevelopments = require('../initialResources/developments');
+  console.log('listofinitialDevlopments',listOfInitialDevelopments);
+
+  for (let i = 0; i < listOfInitialDevelopments.length; i++) {
+    let development = listOfInitialDevelopments[i];
+    development.gamestate_id = gamestate_id;
+    //const initDevelopment = await Developments.create(development);
+    await Developments.create(development);
+  }
+
+  const listOfInitialGoods = require('../initialResources/goods');
+  console.log('listofinitialgoods', listOfInitialGoods);
+
+  for (let i = 0; i < listOfInitialGoods.length; i++) {
+    let goods = listOfInitialGoods[i];
+    goods.gamestate_id = gamestate_id;
+    //const initGoods = await Goods.create(good);
+    await Goods.create(goods);
+    console.log('goods: ', goods);
+  }
+}
+
+
+
 const newGame = async (req, res) => {
   try {
     console.log('User ID:', req.session.user_id);
     const userId = req.session.user_id;
     const newGameState = await GameState.create({ player: userId });
-    console.log('userController: ', newGameState);
+    console.log('NewGame-Routes: ', newGameState);
     // res.status(201).json({ gameStateId: newGameState.id });
-    console.log(newGameState);
     const board1 = newGameState.id;
     const newGame = await Game.create({ board1: board1 });
+    await createInitialResources(newGameState.id);
     res.status(201).json({ newgame: newGame.id });
   } catch (err) {
     console.error(err);
@@ -81,6 +128,10 @@ const newGame = async (req, res) => {
 };
 
 router.post('/game', newGame);
+
+//new route to list games in lobby. (games.findall()) ... /game/lobby?
+//no need for id. GET request to get all games, render lobby file, passing in all the games.
+//get/game route currently have is similar to above route, except new route will query for all games and pass to handlebars.
 
 
 

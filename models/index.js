@@ -43,17 +43,22 @@ User.hasOne(GameState, {
 
 // Game.hasOne(GameState, {
 //   foreignKey: 'board1',
-//   // as: 'board1'
+//   as: 'player1board'
 // });
 
 // Game.hasOne(GameState, {
 //   foreignKey: 'board2',
-//   //as: 'board2'
+//   as: 'player2board'
 // });
 
 // GameState.belongsTo(Game, {
 //   foreignKey: 'board1',
-//   //as: 'boardone'
+//   as: 'player1board',
+// });
+
+// GameState.belongsTo(Game, {
+//   foreignKey: 'board1',
+//   as: 'player2board',
 // });
 
 Game.belongsTo(GameState, {
@@ -65,12 +70,6 @@ Game.belongsTo(GameState, {
   foreignKey: 'board2',
   as: 'player2board',
 });
-
-// GameState.belongsTo(Game, {
-//   foreignKey: 'board2',
-//   //as: 'boardtwo'
-// });
-
 
 
 module.exports = {
