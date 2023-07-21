@@ -249,6 +249,7 @@ class Turn {
     }
 
     let whichName;
+    document.querySelector('devButt').classList.remove('none');
     document.querySelectorAll('.development').addEventListener('click', (event) => {
       event.stopPropagation();
       which = event.target;
@@ -290,6 +291,7 @@ class Turn {
         updateItem(true, which, 'learned');
       }
     }
+    document.querySelector('devButt').classList.add('none');
   }
 
   cleanup(player) {
