@@ -1,12 +1,23 @@
+<h1>Welcome to the Game Lobby!</h1>
 <button id="newGameBtn">New Game</button>
-<h2>Games Awaiting Players:</h2>
-{{#each game as |game|}}
-{{!-- {{#if !game.player2}}
-{{game.player1.name}}
-<button>Join</button>
-{{/if}} --}}
 
-{{!-- add test msessage for when creating new game. should appear. --}} <p>test message</p>
+<h2>Games Awaiting Players:</h2>
+
+{{#each games as |game|}}
+{{#if game.player2board}}
+<div>
+    <p>Game ID: {{game.dataValues.id}}</p>
+    <p>Player 1: {{game.player1board.user.dataValues.name}}</p>
+    <p>Player 2: {{game.player2board.user.dataValues.name}}</p>
+</div>
+{{else}}
+<div>
+    <p>Game ID: {{game.dataValues.id}}</p>
+    <p>Player 1: {{game.player1board.user.dataValues.name}}</p>
+    <button class="joinBtn" data-game-id="{{game.dataValues.id}}">Join</button>
+</div>
+{{/if}}
+{{!-- {{log game.player1board.user}} --}}
 {{/each}}
 
 <script src="/js/newGame.js"></script>
