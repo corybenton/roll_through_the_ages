@@ -85,11 +85,7 @@ class Turn {
         while (reroll !== 1) {
           document.querySelectorAll('.die').addEventListener('click', (event) => {
             reroll = event.target;
-            for(m = 1; m <= cities; m++) {
-              if (document.querySelector(`${m}`) === reroll && recordDie[m] !== 1) {
-                dieValue = m;
-              }
-            }
+            reroll = reroll.getAttribute('id');
           });
           let rerollResult = Math.floor(Math.random() * 6);
           recordDie[dieValue] = rerollResult;
@@ -124,6 +120,9 @@ class Turn {
     this.popup('Feeding cities...', 200, 'announcement');
     let food = parseInt(document.querySelector(`.amount.food#${gamestate}`).textContent);
     food = food + diceFood;
+    if (food > 15) {
+      food = 15;
+    }
     const cities = document.querySelector(`.cities#${gamestate}`).textContent;
     let disasters = parseInt(document.querySelector(`.disasters#${gamestate}`).textContent);
     for (let i = 0; i < cities; i++) {
@@ -147,6 +146,8 @@ class Turn {
     let laborForGreatWall = parseInt(document.querySelector(`.needed.great_wall#${gamestate}`).textContent);
     let religion = document.querySelector(`.learned.religion${gamestate}`);
     religion = religion.classList.contains('true');
+    let otherreligion = document.querySelector(`.learned.religion${othergamestate}`);
+    otherreligion = religion.classList.contains('true');
     let disasters = parseInt(document.querySelector(`.disasters#${gamestate}`).textContent);
     let otherDisasters = parseInt(document.querySelector(`.disasters#${othergamestate}`).textContent);
     let revolt;
@@ -160,13 +161,14 @@ class Turn {
     } else if (skulls <= 5 ){
       if (!religion) {
         revolt = gamestate;
-      } else {
+      } else if (!otherreligion){
         revolt = othergamestate;
       }
-
-      for (let i = 1; i < 6; i++) {
-        updateItem(0, 'amount', i, revolt);
-        updateItem(0, 'value', i, revolt);
+      if (revolt) {
+        for (let i = 1; i < 6; i++) {
+          updateItem(0, 'amount', i, revolt);
+          updateItem(0, 'value', i, revolt);
+        }
       }
     }
     updateItem(disasters, 'disasters');
@@ -241,8 +243,12 @@ class Turn {
       if (whichName === 'cities') {
         let cities = parseInt(document.querySelector(`.cities#${gamestate}`).textContent);
         if (howMany === needed){
-          cities = cities + 1;
-          needed = cities;
+          if (cities < 7) {
+            cities = cities + 1;
+            needed = cities;
+          } else {
+            needed = 0;
+          }
         } else {
           needed = needed - howMany;
         }
@@ -280,8 +286,10 @@ class Turn {
     quarrying = quarrying.classList.contains('true');
     for (let i = 0; i < goods; i++) {
       let goodTypeAmt = parseInt(document.querySelector(`.amount.${goodType}#${gamestate}`).textContent);
-      goodTypeAmt += 1;
-      if (goodType = 2 && quarrying) {
+      if (goodTypeAmt < 9 - goodType) {
+        goodTypeAmt += 1;
+      }
+      if (goodType = 2 && quarrying && goodTypeAmt < 9 - goodType) {
         goodTypeAmt += 1;
       }
 
