@@ -1,7 +1,133 @@
 <a href="/lobby">Game Select</button>
 <a href="/highscores">High Scores</a>
-<div>
-    <p>
-        Rules:
+<div class="rules">
+    <h3>Rules</h3>
+    <h5>Object</h5>
+    <p>Score the most points by becoming the most advanced and prestigious civilization
+        by accumulating cities, monuments, and developments while avoiding disasters.</p>
+    <h5>Order of Play</h5>        
+    <ol type="1">
+        <li>Roll dice.</li>
+        <li>Collect food and feed cities.</li>
+        <li>Resolve disasters.</li>
+        <li>Build cities and/or monuments.</li>
+        <li>Collect goods and may buy one development.</li>
+        <li>Discard goods in excess of six.</li>
+    </ol>
+    <h5>1. Roll dice</h5>
+    <p>Roll 1 die for each city you own.  You start with 3 and may build more.
+        The icons on the dice are:</p>
+    <ul>
+        <li>&#9760; - Disaster </li>
+        <li>&#127994; - Good</li>
+        <li>&#128176; - Coin </li>
+        <li>&#127806; - Food</li>
+        <li>&#9792; - Labor</li>
+    </ul>
+    <p>The disaster will always be kept.  You may keep any other dice you like by clicking on them.
+        You will then reroll any dice not kept with another chance to keep dice. 
+        If any dice still not kept, you will have a third and final reroll.
+        At the end, the items will be added to your pool.
+    </p>
+    <h5>2. Collect food and feed cities.</h5>
+    <p>You will get food from your dice and it will be added to your food stored.  You may not have more than 15 food.
+        Each city requires 1 food each turn.  If you do not have food to feed your 
+        cities, you will lose 1 point per unfed city. This will be done automatically for you.</p>
+    <h5>3. Resolve disasters</h5>
+    <p>What happens depends on how many disasters you accumulated during the dice phase.</p>
+    <ol>
+        <li>&#9760; - Nothing happens</li>
+        <li>&#9760; - You will lose 2 points unless you have developed irrigaion.</li>
+        <li>&#9760; - Your opponent will lose 3 points unless they have medicine.</li>
+        <li>&#9760; - You will lose 4 points unless you have the Great Wall built.</li>
+        <li>or more &#9760; You will lose all your goods unless you have developed Religion.
+            In that case they will lose all their goods unless they also have developed Religion.
+    </ol>
+    <h5>4. Build cities and/or monuments</h5>
+    <p>You will have labor available from what you have accumulated during the dice phase.
+        That labor must be spent on building either new cities and/or monuments.  A new city
+        will allow you to roll one more die during the next roll phase.  You may not have more than 7 cities. A monument will generally
+        earn you points.  If you build a monument first you get the larger number worth of points
+        for that monument.  If you build it second, you get the smaller number of points.
+        The amount of labor required to complete the building is listed on the gameboard.
+    </p>
+    <p>While you have labor available, you will need to click on something to build.  You will then
+        be prompted as to how much of your labor you would like to spend. You may build more than one 
+        thing on your turn provided you have the labor.
+    </p>
+    <h5>5. Collect goods and may buy a development.</h5>
+    <p>You will gain a number of goods depending on the number of goods collected during the dice phasse.
+        You will gain the goods in a rotating manner starting with wood and moving down the goods column.
+    </p>
+    <i>Example:</i>
+    <p>If you gain 6 goods on your turn.  You will gain 1 wood, then 1 stone. Followed by 1 
+        pottery, 1 cloth, and 1 spearhead.  You will then gain a second wood.
+    </p>
+    <p>You may only carry 6 total amount of goods to the next round.</p>
+    <p>The goods have differing values for the type of good and the number of each type.</p>
+    <div class="row">
+        <div class="col-2">
+            <ul>
+                <li>1 wood = 1 value</li>
+                <li>2 wood = 3 value</li>
+                <li>3 wood = 6 value</li>
+                <p>...</p>
+                <li>8 wood = 36 value</li>
+            </ul>
+        </div>
+        <div class="col-2">
+            <ul>
+                <li>1 stone = 2 value</li>
+                <li>2 stone = 6 value</li>
+                <li>3 stone = 12 value</li>
+                <p>...</p>
+                <li>7 stone = 56 value</li>
+            </ul>
+        </div>
+        <div class="col-2">
+            <ul>
+                <li>1 pottery = 3 value</li>
+                <li>2 pottery = 9 value</li>
+                <li>3 pottery = 18 value</li>
+                <p>...</p>
+                <li>6 pottery = 63 value</li>
+            </ul>
+        </div>
+        <div class="col-2">
+            <ul>
+                <li>1 cloth = 4 value</li>
+                <li>2 cloth = 12 value</li>
+                <li>3 cloth = 24 value</li>
+                <p>...</p>
+                <li>5 cloth = 60 value</li>
+            </ul>
+        </div>
+        <div class="col-2">
+            <ul>
+                <li>1 spearhead = 5 value</li>
+                <li>2 spearhead = 15 value</li>
+                <li>3 spearhead = 30 value</li>
+                <li>4 spearhead = 50 value</li>
+            </ul>
+        </div>
+    </div>
+    <p>You may then use your coins that you accumulated during the dice phase and 
+        sell goods for their value to buy developments.  Coins will automatically
+        be applied to the development you choose to learn.  Click on the development you 
+        would like to learn. Then, click on goods to sell 
+        them until you have completed the cost of the development.  Food 
+        may not be used to learn a development. Each development
+        gives you points and a special effect listed on the gameboard.
+    </p>
+    <h5>6. Discard goods in excess of 6.</h5>
+    <p>You may only carry over to the next turn 6 total goods.  If you have more than
+        that, you will be prompted to discard goods. Click on the good to discard until you 
+        are down to 6 total amount of goods.  This is the end of your turn.  
+    </p>
+    <h5>Game end</h5>
+    <p>If all 5 monuments have been built between the two player or any player happens
+        learned 5 developments.  The game will end and the scores will be calculated.
+        The player with the most points wins.  In the case of a tie, the player with the most
+        amount of goods wins.
     </p>
 </div>

@@ -1,8 +1,9 @@
 const Game = require('./game');
 
+const allPlayers = document.querySelectorAll('.player');
 const player = [];
 
-player[1] = document.querySelector('.name#player1').textContent;
-player[2] = document.querySelector('.name#player2').textContent;
+player[1] = allPlayers[0].getAttribute('id');
+player[2] = allPlayers[1].getAttribute('id');
 
 Game.round(player);
