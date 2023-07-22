@@ -1,11 +1,15 @@
-<p class="segment-header">Name Amount Value</p>
-<div class="goods">
-{{#each goods as |good|}}
-<div class={{good.name}}{{good.id}}>
-    <span class="good">{{good.name}}</span>
-    <span class="amount">{{good.amount}}</span>
-    <span class="value">{{good.value}}</span>
+<div class="segment-header row">
+    <span class="col-7">Name</span>
+    <span class="col-2">Amt</span>
+    <span class="col-2">Val</span>
 </div>
-{{/each}}
+<div class="goods">
+    {{#each goods as |good|}}
+    <div class={{good.name}}{{good.id}}"row">
+        <span class="good col-7">{{good.name}}</span>
+        <span class="amount col-2">{{good.amount}}</span>
+        <span class="value col-2">{{good.value}}</span>
+    </div>
+    {{/each}}
 </div>
 {{!-- <p>Total Trade Good Value: {{gamestate.goods}}</p> --}}

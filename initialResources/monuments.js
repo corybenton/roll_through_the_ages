@@ -2,7 +2,7 @@
 const monumentsData = [
   {
     number: 0,
-    name: 'Step Pyramnumber',
+    name: 'Step Pyramid',
     needed: 3,
     points_first: 1,
     points_second: 0,

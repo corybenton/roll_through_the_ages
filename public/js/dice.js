@@ -11,22 +11,22 @@ class Dice {
   displayDice(dieResult, dieNumber) {
     switch (dieResult) {
     case 1:
-      display = '2 goods, 1 skull';
+      display = '2&#127994;&#9760;';
       break;
     case 2:
-      display = '1 good';
+      display = '&#127994;';
       break;
     case 3:
-      display = '1 coin';
+      display = '&#128176;';
       break;
     case 4:
-      display = '3 food';
+      display = '3&#127806;';
       break;
     case 5:
-      display = '3 labor';
+      display = '3&#9792';
       break;
     case 6:
-      display = '2 food or 2 labor';
+      display = '2&#9792;/2&#127806;';
       break;
     }
     document.querySelector(`#${dieNumber}`).innerHTML = display;

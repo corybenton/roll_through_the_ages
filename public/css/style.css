@@ -1,24 +1,44 @@
-header, .project:not(:last-child) {
-  border-bottom: 1px solid #ccc;
+.container{
+  border: 3px black solid;
+  padding-top: 15px;
 }
 
-.no-button {
-  background: none;
-  border: none;
+.die{
   padding: 0;
-  cursor: pointer;
-  color: #1b89bc;
-  text-decoration: none;
-  font-size: 100%;
+  width: 100%;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
 }
 
-.no-button:hover {
-  color: #065b83;
-  text-decoration: underline;
+.none{
+  display: none;
 }
 
-.dollar-amount {
-  color: #056605;
-  font-weight: bold;
-  margin-left: -5px;
+.kept{
+  background-color: aquamarine;
+}
+
+.segment-header{
+  font-size: 14px;
+}
+
+.effect,
+.note{
+  font-size: 10px;
+}
+
+.developments,
+.monuments,
+.goods{
+  font-size: 12px;
+}
+
+p{
+  font-size: 13px;
+  padding: 0;
 }

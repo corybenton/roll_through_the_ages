@@ -87,6 +87,7 @@ class Game {
     }
     return totalVal;
   }
+
 }
 
 module.exports = Game;
