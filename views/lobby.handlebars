@@ -14,10 +14,11 @@
 <div>
     <p>Game ID: {{game.dataValues.id}}</p>
     <p>Player 1: {{game.player1board.user.dataValues.name}}</p>
-    <button class="joinBtn" data-game-id="{{game.dataValues.id}}">Join</button>
+    <button id="joinBtn" data-game-id="{{game.dataValues.id}}">Join</button>
 </div>
 {{/if}}
 {{!-- {{log game.player1board.user}} --}}
+{{log game.dataValues.id}}
 {{/each}}
 
 <script src="/js/newGame.js"></script>
