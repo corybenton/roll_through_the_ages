@@ -1,29 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { GameState, Monuments, Developments, Goods, Game } = require('../models');
-
-
-// router.post('/game', async (req, res) => {
-//   console.log('New game request received:', req.body);
-//   try {
-//     console.log('User ID:', req.session.user_id);
-//     const userId = req.body.player;
-//     const newGameState = await GameState.create({ 'player': userId });
-//     console.log('gameroute post gamestate: ', newGameState);
-
-//     res.redirect(`/game/${newGameState.id}`);
-//     //res.redirect('/game');
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ error: 'Internal server error' });
-//   }
-// });
+const { GameState, Monuments, Developments, Goods, Game, } = require('../models');
 
 router.get('/game/:id', async (req, res) => {
   try {
     // const gameId = req.session.id;
     const gameId = req.params.id;
-    //console.log('gameId gameroutes: ', gameId);
+    console.log('gameId gameroutes: ', gameId);
     //instead of gamestate primary key, get all gamestates connected to this game.
     //if 2 gamestates connected to game, render handlebars, if its only 1, game waiting.
     const GameData = await Game.findByPk(gameId, {
@@ -49,6 +32,8 @@ router.get('/game/:id', async (req, res) => {
       ],
     });
 
+    console.log('gameData gameroutes: ', GameData);
+
     if (!GameData) {
       return res.status(404).json({ error: 'Game state not found' });
     }
@@ -60,7 +45,7 @@ router.get('/game/:id', async (req, res) => {
     } else {
       player2data = GameData.player2board.dataValues;
     }
-
+    console.log('p2Data gameroutes: ', player2data);
     res.render('game', { gamestates: [GameData.player1board.dataValues, player2data] });
   } catch (err) {
     console.error(err);
@@ -109,8 +94,7 @@ const newGame = async (req, res) => {
     //console.log('User ID:', req.session.user_id);
     const userId = req.session.user_id;
     const newGameState = await GameState.create({ player: userId });
-    //console.log('NewGame-Routes: ', newGameState);
-    // res.status(201).json({ gameStateId: newGameState.id });
+
     const board1 = newGameState.id;
     const newGame = await Game.create({ board1: board1 });
     await createInitialResources(newGameState.id);
@@ -122,6 +106,26 @@ const newGame = async (req, res) => {
 };
 
 router.post('/game', newGame);
+
+//Add second player
+const joinGame = async (req, res) => {
+  try {
+    console.log('User ID Join Game:', req.session.user_id);
+    const userId = req.session.user_id;
+    const newGameState = await GameState.create({ player: userId });
+    const existingGame = await Game.findOne({ where: { board2: null } });
+    if (existingGame) {
+      await existingGame.update({ board2: newGameState.id });
+      await createInitialResources(newGameState.id);
+      res.status(201).json({ newgame: existingGame.id });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+router.post('/join', joinGame);
+
 
 router.put('/game', async (req, res) => {
   try{
