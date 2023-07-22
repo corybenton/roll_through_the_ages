@@ -42,3 +42,56 @@ p{
   font-size: 13px;
   padding: 0;
 }
+
+.announcement{
+  position: fixed;
+  background-color: lightgoldenrodyellow;
+  top: 300px;
+  width: 60%;
+  left: 20%; 
+  text-align: center;
+  padding-bottom: 15px;
+}
+
+.message{
+  font-size: 20px;
+}
+
+.resource{
+  position:fixed;
+  background-color: lightgreen;
+  top: 200px;
+  width: 25%;
+  left: 70%;
+  text-align: center;
+  padding-bottom: 15px;
+}
+
+.range{
+  position:fixed;
+  background-color: lightsteelblue;
+  top: 300px;
+  width: 25%;
+  left: 70%;
+  text-align: center;
+  padding-bottom: 15px;
+}
+
+.bar{
+  text-align: end;
+}
+
+.choice{
+  position:fixed;
+  background-color: lightcoral;
+  top: 300px;
+  width: 30%;
+  left: 30%;
+  text-align: center;
+  padding-bottom: 15px;
+}
+
+.btn-warning{
+  width:25%;
+  margin-left: 16%;
+}

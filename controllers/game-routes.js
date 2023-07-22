@@ -131,9 +131,8 @@ router.put('/game', async (req, res) => {
   try{
     const gameId = req.session.userId;
 
-    let data;
     if (req.body.place === 'learned') {
-      data = await Developments.update({learned: req.body.value}, {
+      await Developments.update({learned: req.body.value}, {
         where: {
           name: req.body.category,
           gamestate_id: gameId,
@@ -141,7 +140,7 @@ router.put('/game', async (req, res) => {
       });
       document.querySelector(`.${req.body.place}.${req.body.category}#${gameId}`).classList.add = 'true';
     } else if (req.body.place === 'needed') {
-      data = await Monuments.update({needed: req.body.value}, {
+      await Monuments.update({needed: req.body.value}, {
         where: {
           name: req.body.category,
           gamestate_id: gameId,
@@ -149,7 +148,7 @@ router.put('/game', async (req, res) => {
       });
       document.querySelector(`.${req.body.place}.${req.body.category}#${gameId}`).innerHTML = req.body.value;
     } else if (req.body.place === 'amount') {
-      data = await Goods.update({amount: req.body.value}, {
+      await Goods.update({amount: req.body.value}, {
         where: {
           name: req.body.category,
           gamestate_id: gameId,
@@ -161,7 +160,7 @@ router.put('/game', async (req, res) => {
         document.querySelector(`.${req.body.place}.${req.body.category}#${gameId}`).innerHTML = req.body.value;
       }
     } else if (req.body.place === 'value') {
-      data = await Goods.update({value: req.body.value}, {
+      await Goods.update({value: req.body.value}, {
         where: {
           name: req.body.category,
           gamestate_id: gameId,
@@ -173,14 +172,14 @@ router.put('/game', async (req, res) => {
         document.querySelector(`.${req.body.place}.${req.body.category}#${gameId}`).innerHTML = req.body.value;
       }
     } else if (req.body.place === 'score') {
-      data = await GameState.update({score: req.body.value}, {
+      await GameState.update({score: req.body.value}, {
         where: {
           gamestate_id: gameId,
         }
       });
       document.querySelector(`.${req.body.place}#${gameId}`).innerHTML = req.body.value;
     } else if (req.body.place === 'disasters') {
-      data = await GameState.update({disasters: req.body.value}, {
+      await GameState.update({disasters: req.body.value}, {
         where: {
           gamestate_id: gameId,
         }
@@ -191,24 +190,22 @@ router.put('/game', async (req, res) => {
         document.querySelector(`.${req.body.place}.}#${gameId}`).innerHTML = req.body.value;
       }
     } else if (req.body.place === 'cities') {
-      data = await GameState.update({cities: req.body.value}, {
+      await GameState.update({cities: req.body.value}, {
         where: {
           gamestate_id: gameId,
         }
       });
       document.querySelector(`.${req.body.place}.}#${gameId}`).innerHTML = req.body.value;
     } else if (req.body.place === 'citiesNeed') {
-      data = await GameState.update({citiesNeed: req.body.value}, {
+      await GameState.update({citiesNeed: req.body.value}, {
         where: {
           gamestate_id: gameId,
         }
       });
       document.querySelector(`.${req.body.place}.}#${gameId}`).innerHTML = req.body.value;
     }
-    if (data === 200){
-      console.log('Yay!');
-    }
-    res.render('game');
+
+    res.status(200).render('game');
   } catch (err) {
     console.log(err);
   }

@@ -35,7 +35,8 @@ class Game {
   }
 
   gameEnd(player) {
-    //announce game end
+    Turn.popup('Game is over.', 300, 'announcement');
+    let winner;
     const playerScore = [];
     const playerGoods = [];
     for (let i = 1; i <= 2; i++) {
@@ -60,17 +61,21 @@ class Game {
         playerScore[i] += cities;
       }
     }
-    if (playerScore[1] > playerScore2 ||
+    if (playerScore[1] > playerScore[2] ||
         (playerScore[1] === playerScore[2] &&
             playerGoods[1] > playerGoods[2])) {
-      //announce (`${player[1].name} wins!`);
-    } else if (playerScore1 < playerScore2 ||
-        (playerScore1 === playerScore2 &&
-            playerGoods1 < playerGoods2)) {
-      //announce (`${player[1].name} wins!`);
+      winner = `${player[1].name} wins!`;
+
+    } else if (playerScore[1] < playerScore[2] ||
+        (playerScore[1] === playerScore[2] &&
+            playerGoods[1] < playerGoods[2])) {
+      winner = `${player[2].name} wins!`;
     } else{
-      //announce ('Its a tie!');
+      winner = ('Its a tie!');
     }
+    popup(winner, 500, 'announcement');
+    const score = `${player[1].name}: ${player[1].score} ${player[2].name}: ${player[2].score}`;
+    popup(score, 700, 'announcement');
   }
 
   round(player) {

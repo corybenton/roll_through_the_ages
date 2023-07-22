@@ -5,7 +5,7 @@
             <div id={{gamestate.user.name}}>
                 <div class="container">
                     <div class="row">
-                        <h3 class="col-8">Cory{{gamestate.user.name}}</h3>
+                        <h3 class="col-8">{{gamestate.user.name}}</h3>
                         <div class="cities build col-2">Cities: {{gamestate.cities}}</div>
                         <div class="citiesNeed col-2">Needed: {{gamestate.citiesNeed}}</div>
                     </div>
@@ -71,5 +71,30 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+<div class="announcement container none">
+    <div class="message"></div>
+</div>
+<div class="resource container none">
+    <div class="message"></div>
+</div>
+<form class="range container none">
+    <div>
+        <label for="rangeFinder" class="form-label message">How many food to sell?</label>
+        <input type="range" class="form-range rangeFinder" min="0" max="2">
+        <div class="row">
+            <span class="col-1">0</span>
+            <span class="col-9"></span>
+            <span class="col-2 bar">2</span>
+        </div>
+        <button type="submit" class="btn btn-danger">Submit</button>
+    </div>
+</form>
+<div class="choice container none">
+    <div class="message">Which would you like from your die?</div>
+    <div class="row">
+        <button type="submit" class="yes btn col-4 btn-warning">Food</button>
+        <button type="submit" class="no btn col-4 btn-warning">Labor</button>
     </div>
 </div>
