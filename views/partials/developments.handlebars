@@ -8,7 +8,7 @@
 <div class="developments">
     {{#each developments as |development|}}
     <div class={{development.name}}{{development.id}} "row">
-        <span class="col-1 cost">10{{development.cost}}</span>
+        <span class="col-1 cost">{{development.cost}}</span>
         {{#if development.learned}}
         <span class="learned">&#9745;</span>
         {{else}}

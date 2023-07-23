@@ -4,6 +4,7 @@ const Game = require('./game');
 
 class Turn {
   turn(player1, player2){
+    this.popup(`${player1}'s turn`, 150, 'announcement');
     const dice = this.rollDice(player1);
     this.feedCities(player1, dice.food);
     this.resolveDisasters(player1, player2, dice.skulls);
@@ -14,10 +15,10 @@ class Turn {
   }
 
   rollDice(gamestate) {
-    let diceToRoll = parseInt(document.querySelector(`.cities#${gamestate}`).textContent);
+    let cities = parseInt(document.querySelector(`.cities#${gamestate}`).textContent);
+    let diceToRoll = cities;
     let recordDie = [];
 
-    //reset dice information
     for (let l = 1; l < 9; l++) {
       if (l <= diceToRoll) {
         const dieClass = document.querySelector(`#${l}`);
@@ -33,7 +34,8 @@ class Turn {
 
     for (let j = 1; j <= 3; j++) {
       if (diceToRoll > 0) {
-        //announce `Die Roll: ${j};
+        const announcement = `Die Roll: ${j}`;
+        this.popup(announcement, 150, 'announcement');
         let diceKept = 0;
         for (let i = 1; i <= diceToRoll; i++) {
           const kept = document.querySelector(`#${i}`);
@@ -68,29 +70,59 @@ class Turn {
 
     let leadership = document.querySelector(`.learned.leadership#${gamestate}`);
     leadership = leadership.classList.contains('true');
+    let decision;
     if (leadership) {
-      //prompt would you like to reroll a die
-      let reroll = addEventListener();
-      let rerollResult = Math.floor(Math.random() * 6);
-      recordDie[reroll] = rerollResult;
-      dice.displayDice(rerollResult, reroll);
+      document.querySelector('.yes').innerHTML = 'Yes';
+      document.querySelector('.no').innerHTML = 'No';
+      this.popup('Would you like to reroll a die?', 1000, 'choice');
+      document.querySelector('.choice').addEventListener('submit', (event) => {
+        event.stopPropagation();
+        decision = event.target.textContent;
+      });
+      if (decision === 'Yes'){
+        this.popup('Choose which die to reroll?', 200, 'announcement');
+        let reroll, dieValue;
+        while (reroll !== 1) {
+          document.querySelectorAll('.die').addEventListener('click', (event) => {
+            reroll = event.target;
+            reroll = reroll.getAttribute('id');
+          });
+          let rerollResult = Math.floor(Math.random() * 6);
+          recordDie[dieValue] = rerollResult;
+          dice.displayDice(rerollResult, dieValue);
+        }
+      }
     }
 
     let dieState, choice;
-    for (let k = 1; k <= diceToRoll; k++) {
+    for (let k = 1; k <= cities; k++) {
       if (recordDie[k] === 6) {
-        //popup food or labor?
-        choice = 1;//placeholder
+        document.querySelector('.yes').innerHTML = 'Food';
+        document.querySelector('.no').innerHTML = 'Labor';
+        this.popup('Would you like food or labor from your die?', 1000, 'announcement');
+        document.querySelector('.choice').addEventListener('submit', (event) => {
+          event.stopPropagation();
+          choice = event.target.textContent;
+          if (choice === 'Food') {
+            document.querySelector(`#${k}`).innerHTML = '2&#127806;';
+          } else {
+            document.querySelector(`#${k}`).innerHTML = '2&#9792;';
+          }
+        });
       }
+      this.popup('Would you like food or labor from your die?', 1, 'announcement');
       dieState = dice.applyDieResult(recordDie[k], dice, choice);
     }
     return dieState;
   }
 
   feedCities(gamestate, diceFood) {
-    //announce feeding cities;
+    this.popup('Feeding cities...', 200, 'announcement');
     let food = parseInt(document.querySelector(`.amount.food#${gamestate}`).textContent);
     food = food + diceFood;
+    if (food > 15) {
+      food = 15;
+    }
     const cities = document.querySelector(`.cities#${gamestate}`).textContent;
     let disasters = parseInt(document.querySelector(`.disasters#${gamestate}`).textContent);
     for (let i = 0; i < cities; i++) {
@@ -106,7 +138,7 @@ class Turn {
   }
 
   resolveDisasters(gamestate, othergamestate, skulls) {
-    //annouce resolving disasters;
+    this.popup('Resolving disasters...', 200, 'announcement');
     let irrigation = document.querySelector(`.learned.irrigation#${gamestate}`);
     irrigation = irrigation.classList.contains('true');
     let medicine = document.querySelector(`.learned.medicine#${othergamestate}`);
@@ -114,6 +146,8 @@ class Turn {
     let laborForGreatWall = parseInt(document.querySelector(`.needed.great_wall#${gamestate}`).textContent);
     let religion = document.querySelector(`.learned.religion${gamestate}`);
     religion = religion.classList.contains('true');
+    let otherreligion = document.querySelector(`.learned.religion${othergamestate}`);
+    otherreligion = religion.classList.contains('true');
     let disasters = parseInt(document.querySelector(`.disasters#${gamestate}`).textContent);
     let otherDisasters = parseInt(document.querySelector(`.disasters#${othergamestate}`).textContent);
     let revolt;
@@ -127,29 +161,50 @@ class Turn {
     } else if (skulls <= 5 ){
       if (!religion) {
         revolt = gamestate;
-      } else {
+      } else if (!otherreligion){
         revolt = othergamestate;
       }
-
-      for (let i = 1; i < 6; i++) {
-        updateItem(0, 'amount', i, revolt);
-        updateItem(0, 'value', i, revolt);
+      if (revolt) {
+        for (let i = 1; i < 6; i++) {
+          updateItem(0, 'amount', i, revolt);
+          updateItem(0, 'value', i, revolt);
+        }
       }
     }
     updateItem(disasters, 'disasters');
   }
 
   useLabor(gamestate, player2, labor) {
-    //announce using labor;
+    this.popup('Using labor...', 200, 'announcement');
+    this.popup(`Labor available: ${labor}`, 1000, 'resource');
     let engineering = document.querySelector(`.learned.engineering#${gamestate}`);
     engineering = engineering.classList.contains('true');
     let stone = parseInt(document.querySelector(`.amount.stone#${gamestate}`).textContent);
+    let decision;
     if (engineering && stone > 0) {
-      //prompt would you like to spend stone for more labor
-      labor += spent * 3;
+
+      document.querySelector('.yes').innerHTML = 'Yes';
+      document.querySelector('.no').innerHTML = 'No';
+      this.popup('Would you like spend stone for labor?', 1000, 'choice');
+      document.querySelector('.choice').addEventListener('submit', (event) => {
+        event.stopPropagation();
+        decision = event.target.textContent;
+      });
+      if (decision === 'Yes') {
+        document.querySelector('.rangeFinder').setAttribute('max', stone);
+        document.querySelector('.bar').innerHTML = stone;
+        this.popup('How much stone to spend?', 1000, 'range');
+        document.querySelector('.range').addEventListener('submit', (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          let spent = parseInt(document.querySelector('.rangeFinder').value);
+          this.popup(`How many laborers to use on the ${whichName}?`, 1, 'range');
+          labor += spent * 3;
+        });
+      }
     }
     while (labor > 0) {
-      //announce you have labor to spend
+      this.popup(`Labor available: ${labor}`, 1000, 'resource');
       let whichName;
       document.querySelectorAll('.build').addEventListener('click', (event) => {
         event.stopPropagation();
@@ -162,14 +217,38 @@ class Turn {
         }
       });
 
-      //box with incrementer max of needed or labor which ever is lower
-      const howMany = prompt(`How many to use on the ${whichName}?`);
+      let needed;
+      if (whichName === 'cities') {
+        needed = parseInt(document.querySelector(`.citiesNeed.${whichName}#${gamestate}`).textContent);
+      } else {
+        needed = parseInt(document.querySelector(`.needed.${whichName}#${gamestate}`).textContent);
+      }
+      let max;
+      if (needed > labor) {
+        max = labor;
+      } else {
+        max = needed;
+      }
+      document.querySelector('.rangeFinder').setAttribute('max', max);
+      document.querySelector('.bar').innerHTML = max;
+      this.popup(`How many laborers to use on the ${whichName}?`, 1000, 'range');
+      let howMany;
+      document.querySelector('.range').addEventListener('submit', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        howMany = document.querySelector('.rangeFinder').value;
+        this.popup(`How many laborers to use on the ${whichName}?`, 1, 'range');
+      });
+
       if (whichName === 'cities') {
         let cities = parseInt(document.querySelector(`.cities#${gamestate}`).textContent);
-        let needed = parseInt(document.querySelector(`.citiesNeed#${whichName}#${gamestate}`).textContent);
         if (howMany === needed){
-          cities = cities + 1;
-          needed = cities;
+          if (cities < 7) {
+            cities = cities + 1;
+            needed = cities;
+          } else {
+            needed = 0;
+          }
         } else {
           needed = needed - howMany;
         }
@@ -178,7 +257,6 @@ class Turn {
         updateItem(cities, 'cities');
         updateItem(needed, 'citiesNeed');
       } else {
-        let needed = parseInt(document.querySelector(`.needed.${whichName}#${gamestate}`).textContent);
         if (howMany === needed) {
           let score = parseInt(document.querySelector(`.score#${gamestate}`).textContent);
           let alreadyBuilt = document.querySelector(`.needed.${whichName}#${player2}`).textContent;
@@ -198,16 +276,20 @@ class Turn {
         updateItem(needed, 'needed', whichName);
       }
     }
+    this.popup(`Labor available: ${labor}`, 1, 'resource');
   }
 
   assignGoods(gamestate, goods) {
+    this.popup('Assigning goods...', 200, 'announcement');
     let goodType = 1;
     let quarrying = document.querySelector(`.learned.quarrying#${gamestate}`);
     quarrying = quarrying.classList.contains('true');
     for (let i = 0; i < goods; i++) {
       let goodTypeAmt = parseInt(document.querySelector(`.amount.${goodType}#${gamestate}`).textContent);
-      goodTypeAmt += 1;
-      if (goodType = 2 && quarrying) {
+      if (goodTypeAmt < 9 - goodType) {
+        goodTypeAmt += 1;
+      }
+      if (goodType = 2 && quarrying && goodTypeAmt < 9 - goodType) {
         goodTypeAmt += 1;
       }
 
@@ -227,27 +309,42 @@ class Turn {
 
 
   buyDevelopment(gamestate, coins) {
-    //announce buying developments
+    this.popup('Buying developments...', 200, 'announcement');
     totalValue = Game.getGoodsValue(gamestate);
-
-    //warn of potential losing goods
-    prompt(`Buy a development? You have ${coins + totalValue} to spend?`);
+    this.popup(`Money available: ${coins + totalValue}`, 1000, 'resource');
 
     let granaries = document.querySelector(`.learned.granaries#${gamestate}`);
     granaries = granaries.classList.contains('true');
     let food = parseInt(document.querySelector(`.value.food#${gamestate}`).textContent);
     if (granaries && food > 0) {
-      //prompt would you like to sell food for granaries
-      if (sell) {
-        //prompt how much to sell
+      let sell;
+      document.querySelector('.yes').innerHTML = 'Yes';
+      document.querySelector('.no').innerHTML = 'No';
+      this.popup('Would you like sell food for coins?', 1000, 'choice');
+      document.querySelector('.choice').addEventListener('submit', (event) => {
+        event.stopPropagation();
+        sell = event.target.textContent;
+        this.popup('Would you like sell food for coins?', 1, 'choice');
+      });
+      let sold;
+      if (sell === 'Yes') {
+        document.querySelector('.rangeFinder').setAttribute('max', food);
+        document.querySelector('.bar').innerHTML = food;
+        this.popup('How much food to sell?', 1000, 'range');
+        document.querySelector('.range').addEventListener('submit', (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          sold = document.querySelector('.rangeFinder').value;
+          this.popup('How much food to sell?', 1, 'range');
+        });
         food = food - sold;
         coins += sold * 4;
         updateItem(food, 'food', 'amount');
         updateItem(food, 'food', 'value');
       }
-      //prompt you now have newvalue to spend
     }
 
+    this.popup(`Money available: ${coins + totalValue}`, 1000, 'resource');
     let whichName;
     document.querySelector('devButt').classList.remove('none');
     document.querySelectorAll('.development').addEventListener('click', (event) => {
@@ -263,12 +360,12 @@ class Turn {
     if (whichName !== 'No development') {
       cost = parseInt(document.querySelector(`.cost.${whichName}#${gamestate}`).textContent);
       if (cost > totalValue + coins) {
-        //announce you don't have enough money
+        this.popup('Not enough for that', 150, 'announcement');
       } else {
         cost = cost - coins;
         while (goods < cost) {
-          //prompt amount needed
-          //prompt which goods to use
+          this.popup(`${cost} still needed. Choose resource to sell.`, 1000, 'resource');
+
           document.querySelectorAll('.good').addEventListener('click', (event) => {
             event.stopPropagation();
             goodType = event.target;
@@ -306,6 +403,8 @@ class Turn {
       }
 
       while (totalAmount > 6) {
+        const message = `You have ${totalAmount} resources.  You can only keep 6`;
+        this.popup(message, 1000, 'resource');
         document.querySelectorAll('.good').addEventListener('click', (event) => {
           event.stopPropagation();
           let goodType = event.target;
@@ -346,6 +445,21 @@ class Turn {
     } catch(err) {
       console.log(err);
     }
+  }
+
+  popup(message, time, type) {
+    const classGet = document.querySelector(`.${type}`);
+    classGet.classList.remove('none');
+    const popupGet = document.querySelector(`.message.${type}`);
+    popupGet.innerHTML(message);
+    let timeLeft = time;
+    const timeInterval = setInterval( () => {
+      timeLeft--;
+      if (timeLeft === 0) {
+        clearInterval(timeInterval);
+        classGet.classList.add('none');
+      }
+    }, time);
   }
 }
 

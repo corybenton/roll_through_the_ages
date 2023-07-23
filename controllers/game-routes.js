@@ -6,7 +6,7 @@ router.get('/game/:id', async (req, res) => {
   try {
     // const gameId = req.session.id;
     const gameId = req.params.id;
-    //console.log('gameId gameroutes: ', gameId);
+    console.log('gameId gameroutes: ', gameId);
     //instead of gamestate primary key, get all gamestates connected to this game.
     //if 2 gamestates connected to game, render handlebars, if its only 1, game waiting.
     const GameData = await Game.findByPk(gameId, {
@@ -45,6 +45,7 @@ router.get('/game/:id', async (req, res) => {
     } else {
       player2data = GameData.player2board.dataValues;
     }
+
     //console.log('p2Data gameroutes game:id : ', player2data);
     //console.log('GameData gameroutes game:id :', GameData);
 
@@ -166,6 +167,7 @@ router.post('/game', newGame);
 const joinGame = async (req, res) => {
   try {
     //console.log('User ID Join Game:', req.session.user_id);
+
     const userId = req.session.user_id;
     const newGameState = await GameState.create({ player: userId });
     const existingGame = await Game.findOne({ where: { board2: null } });
@@ -186,9 +188,8 @@ router.put('/game', async (req, res) => {
   try{
     const gameId = req.session.userId;
 
-    let data;
     if (req.body.place === 'learned') {
-      data = await Developments.update({learned: req.body.value}, {
+      await Developments.update({learned: req.body.value}, {
         where: {
           name: req.body.category,
           gamestate_id: gameId,
@@ -196,7 +197,7 @@ router.put('/game', async (req, res) => {
       });
       document.querySelector(`.${req.body.place}.${req.body.category}#${gameId}`).classList.add = 'true';
     } else if (req.body.place === 'needed') {
-      data = await Monuments.update({needed: req.body.value}, {
+      await Monuments.update({needed: req.body.value}, {
         where: {
           name: req.body.category,
           gamestate_id: gameId,
@@ -204,7 +205,7 @@ router.put('/game', async (req, res) => {
       });
       document.querySelector(`.${req.body.place}.${req.body.category}#${gameId}`).innerHTML = req.body.value;
     } else if (req.body.place === 'amount') {
-      data = await Goods.update({amount: req.body.value}, {
+      await Goods.update({amount: req.body.value}, {
         where: {
           name: req.body.category,
           gamestate_id: gameId,
@@ -216,7 +217,7 @@ router.put('/game', async (req, res) => {
         document.querySelector(`.${req.body.place}.${req.body.category}#${gameId}`).innerHTML = req.body.value;
       }
     } else if (req.body.place === 'value') {
-      data = await Goods.update({value: req.body.value}, {
+      await Goods.update({value: req.body.value}, {
         where: {
           name: req.body.category,
           gamestate_id: gameId,
@@ -228,14 +229,14 @@ router.put('/game', async (req, res) => {
         document.querySelector(`.${req.body.place}.${req.body.category}#${gameId}`).innerHTML = req.body.value;
       }
     } else if (req.body.place === 'score') {
-      data = await GameState.update({score: req.body.value}, {
+      await GameState.update({score: req.body.value}, {
         where: {
           gamestate_id: gameId,
         }
       });
       document.querySelector(`.${req.body.place}#${gameId}`).innerHTML = req.body.value;
     } else if (req.body.place === 'disasters') {
-      data = await GameState.update({disasters: req.body.value}, {
+      await GameState.update({disasters: req.body.value}, {
         where: {
           gamestate_id: gameId,
         }
@@ -246,24 +247,22 @@ router.put('/game', async (req, res) => {
         document.querySelector(`.${req.body.place}.}#${gameId}`).innerHTML = req.body.value;
       }
     } else if (req.body.place === 'cities') {
-      data = await GameState.update({cities: req.body.value}, {
+      await GameState.update({cities: req.body.value}, {
         where: {
           gamestate_id: gameId,
         }
       });
       document.querySelector(`.${req.body.place}.}#${gameId}`).innerHTML = req.body.value;
     } else if (req.body.place === 'citiesNeed') {
-      data = await GameState.update({citiesNeed: req.body.value}, {
+      await GameState.update({citiesNeed: req.body.value}, {
         where: {
           gamestate_id: gameId,
         }
       });
       document.querySelector(`.${req.body.place}.}#${gameId}`).innerHTML = req.body.value;
     }
-    if (data === 200){
-      console.log('Yay!');
-    }
-    res.render('game');
+
+    res.status(200).render('game');
   } catch (err) {
     console.log(err);
   }
