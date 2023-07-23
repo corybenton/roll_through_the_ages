@@ -9,6 +9,7 @@
     <p>Game ID: {{game.dataValues.id}}</p>
     <p>Player 1: {{game.player1board.user.dataValues.name}}</p>
     <p>Player 2: {{game.player2board.user.dataValues.name}}</p>
+    <button id="playBtn" data-game-id="{{game.dataValues.id}}">Play Game</button>
 </div>
 {{else}}
 <div>
@@ -18,7 +19,7 @@
 </div>
 {{/if}}
 {{!-- {{log game.player1board.user}} --}}
-{{log game.dataValues.id}}
+{{!-- {{log game}} --}}
 {{/each}}
 
 <script src="/js/newGame.js"></script>
