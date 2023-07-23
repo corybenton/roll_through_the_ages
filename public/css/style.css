@@ -42,7 +42,7 @@ p{
 .announcement{
   position: fixed;
   background-color: lightgoldenrodyellow;
-  top: 300px;
+  top: 100px;
   width: 60%;
   left: 20%; 
   text-align: center;
@@ -87,6 +87,16 @@ p{
   padding-bottom: 15px;
 }
 
+.dropdown{
+  position:fixed;
+  background-color: beige;
+  top: 50px;
+  width:30%;
+  left: 10%;
+  text-align: center;
+  padding-bottom: 15px;
+}
+
 .btn-warning{
   width:25%;
   margin-left: 16%;
@@ -101,6 +111,11 @@ p{
   font-size: 15px;
 }
 
-.none{
-  display: none;
+#developmentsDropdown,
+#done {
+  margin: 10px;
 }
+
+.none{
+  display: none
+};
