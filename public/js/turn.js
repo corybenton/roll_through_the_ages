@@ -1,6 +1,6 @@
 /* eslint-disable default-case */
+const LearnDev = require('./development');
 const Dice = require('./dice');
-const Game = require('./game');
 
 class Turn {
   turn(player1, player2){
@@ -12,6 +12,8 @@ class Turn {
     this.resolveDisasters(player1, player2, dice.skulls);
     this.useLabor(player1, player2, dice.labor);
     this.assignGoods(dice.goods);
+    let learn = new LearnDev;
+    learn.devStarter(dice.coins);
     this.buyDevelopment(player1, dice.coins);
     this.cleanUp(player1);
   }
@@ -206,89 +208,6 @@ class Turn {
         goodType += 1;
       }
     }
-  }
-
-  buyDevelopment(gamestate, coins) {
-    this.popup('Buying developments...', 200, 'announcement');
-    totalValue = Game.getGoodsValue(gamestate);
-    this.popup(`Money available: ${coins + totalValue}`, 1000, 'resource');
-
-    let granaries = document.querySelector(`.learned.granaries#${gamestate}`);
-    granaries = granaries.classList.contains('true');
-    let food = parseInt(document.querySelector(`.value.food#${gamestate}`).textContent);
-    if (granaries && food > 0) {
-      let sell;
-      document.querySelector('.yes').innerHTML = 'Yes';
-      document.querySelector('.no').innerHTML = 'No';
-      this.popup('Would you like sell food for coins?', 1000, 'choice');
-      document.querySelector('.choice').addEventListener('submit', (event) => {
-        event.stopPropagation();
-        sell = event.target.textContent;
-        this.popup('Would you like sell food for coins?', 1, 'choice');
-      });
-      let sold;
-      if (sell === 'Yes') {
-        document.querySelector('.rangeFinder').setAttribute('max', food);
-        document.querySelector('.bar').innerHTML = food;
-        this.popup('How much food to sell?', 1000, 'range');
-        document.querySelector('.range').addEventListener('submit', (event) => {
-          event.preventDefault();
-          event.stopPropagation();
-          sold = document.querySelector('.rangeFinder').value;
-          this.popup('How much food to sell?', 1, 'range');
-        });
-        food = food - sold;
-        coins += sold * 4;
-        updateItem(food, 'food', 'amount');
-        updateItem(food, 'food', 'value');
-      }
-    }
-
-    this.popup(`Money available: ${coins + totalValue}`, 1000, 'resource');
-    let whichName;
-    document.querySelector('devButt').classList.remove('none');
-    document.querySelectorAll('.development').addEventListener('click', (event) => {
-      event.stopPropagation();
-      which = event.target;
-      if (which.classList.contains('development')) {
-        whichName = document.querySelector(which).textContent;
-      }
-    });
-
-    let goods = 0;
-    let goodType, cost, goodValue;
-    if (whichName !== 'No development') {
-      cost = parseInt(document.querySelector(`.cost.${whichName}#${gamestate}`).textContent);
-      if (cost > totalValue + coins) {
-        this.popup('Not enough for that', 150, 'announcement');
-      } else {
-        cost = cost - coins;
-        while (goods < cost) {
-          this.popup(`${cost} still needed. Choose resource to sell.`, 1000, 'resource');
-
-          document.querySelectorAll('.good').addEventListener('click', (event) => {
-            event.stopPropagation();
-            goodType = event.target;
-            if (goodType.classList.contains('good')) {
-              goodType = document.querySelector(goodType).textContent;
-            }
-          });
-
-          goodValue = parseInt(document.querySelector(`.value.${goodType}#${gamestate}`).textContent);
-          goods += goodValue;
-
-          updateItem(0, goodType, 'amount');
-          updateItem(0, goodType, 'value');
-        }
-        let score = parseInt(document.querySelector(`.score#${player}`).textContent);
-        let points = parseInt(document.querySelector(`.points.${goodType}#${gamestate}`));
-        score += points;
-
-        updateItem(score, 'score');
-        updateItem(true, which, 'learned');
-      }
-    }
-    document.querySelector('devButt').classList.add('none');
   }
 
   cleanup(player) {
