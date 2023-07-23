@@ -5,7 +5,9 @@ const Game = require('./game');
 class Turn {
   turn(player1, player2){
     this.popup(`${player1}'s turn`, 150, 'announcement');
-    const dice = this.rollDice(player1);
+    let dice = new Dice();
+    dice.resetDice();
+    dice = dice.rollDice();
     this.feedCities(player1, dice.food);
     this.resolveDisasters(player1, player2, dice.skulls);
     this.useLabor(player1, player2, dice.labor);
@@ -14,117 +16,15 @@ class Turn {
     this.cleanUp(player1);
   }
 
-  rollDice(gamestate) {
-    let cities = parseInt(document.querySelector(`.cities#${gamestate}`).textContent);
-    let diceToRoll = cities;
-    let recordDie = [];
-
-    for (let l = 1; l < 9; l++) {
-      if (l <= diceToRoll) {
-        const dieClass = document.querySelector(`#${l}`);
-        dieClass.classList.remove('kept');
-        dieClass.classList.remove('none');
-      } else {
-        dieClass.classList.add('none');
-      }
-      recordDie[l] = 0;
-    }
-
-    let dice = new Dice();
-
-    for (let j = 1; j <= 3; j++) {
-      if (diceToRoll > 0) {
-        const announcement = `Die Roll: ${j}`;
-        this.popup(announcement, 150, 'announcement');
-        let diceKept = 0;
-        for (let i = 1; i <= diceToRoll; i++) {
-          const kept = document.querySelector(`#${i}`);
-          if (!kept.classList.contains('kept')) {
-            let dieResult = Math.floor(Math.random() * 6);
-            recordDie[i] = dieResult;
-            dice.displayDice(dieResult, i);
-            if (dieResult === 1) {
-              kept.classList.add('kept');
-              diceKept += 1;
-            }
-          }
-        }
-        let checkKept;
-        while (checkKept !== 'Done' || diceKept !== diceToRoll){
-          const doneAvailable = document.querySelector('#8');
-          doneAvailable.classList.remove('none');
-          document.querySelectorAll('.die').addEventListener('click', async (event) => {
-            event.stopPropagation();
-            checkKept = event.target;
-            if (checkKept.classList.contains('die') && !checkKept.classList.contains('kept')) {
-              checkKept.classList.add('kept');
-              diceKept += 1;
-            } else if (checkKept.classList.contains('done')){
-              checkKept = 'Done';
-            }
-          });
-        }
-        diceToRoll = diceToRoll - diceKept;
-      }
-    }
-
-    let leadership = document.querySelector(`.learned.leadership#${gamestate}`);
-    leadership = leadership.classList.contains('true');
-    let decision;
-    if (leadership) {
-      document.querySelector('.yes').innerHTML = 'Yes';
-      document.querySelector('.no').innerHTML = 'No';
-      this.popup('Would you like to reroll a die?', 1000, 'choice');
-      document.querySelector('.choice').addEventListener('submit', (event) => {
-        event.stopPropagation();
-        decision = event.target.textContent;
-      });
-      if (decision === 'Yes'){
-        this.popup('Choose which die to reroll?', 200, 'announcement');
-        let reroll, dieValue;
-        while (reroll !== 1) {
-          document.querySelectorAll('.die').addEventListener('click', (event) => {
-            reroll = event.target;
-            reroll = reroll.getAttribute('id');
-          });
-          let rerollResult = Math.floor(Math.random() * 6);
-          recordDie[dieValue] = rerollResult;
-          dice.displayDice(rerollResult, dieValue);
-        }
-      }
-    }
-
-    let dieState, choice;
-    for (let k = 1; k <= cities; k++) {
-      if (recordDie[k] === 6) {
-        document.querySelector('.yes').innerHTML = 'Food';
-        document.querySelector('.no').innerHTML = 'Labor';
-        this.popup('Would you like food or labor from your die?', 1000, 'announcement');
-        document.querySelector('.choice').addEventListener('submit', (event) => {
-          event.stopPropagation();
-          choice = event.target.textContent;
-          if (choice === 'Food') {
-            document.querySelector(`#${k}`).innerHTML = '2&#127806;';
-          } else {
-            document.querySelector(`#${k}`).innerHTML = '2&#9792;';
-          }
-        });
-      }
-      this.popup('Would you like food or labor from your die?', 1, 'announcement');
-      dieState = dice.applyDieResult(recordDie[k], dice, choice);
-    }
-    return dieState;
-  }
-
   feedCities(gamestate, diceFood) {
     this.popup('Feeding cities...', 200, 'announcement');
-    let food = parseInt(document.querySelector(`.amount.food#${gamestate}`).textContent);
+    let food = parseInt(document.querySelector(`#${gamestate} .food .amount`).textContent);
     food = food + diceFood;
     if (food > 15) {
       food = 15;
     }
-    const cities = document.querySelector(`.cities#${gamestate}`).textContent;
-    let disasters = parseInt(document.querySelector(`.disasters#${gamestate}`).textContent);
+    const cities = document.querySelector(`#${gamestate} .cities`).textContent;
+    let disasters = parseInt(document.querySelector(`#${gamestate} .disasters`).textContent);
     for (let i = 0; i < cities; i++) {
       if (food > 0) {
         food = food - 1;
@@ -139,29 +39,30 @@ class Turn {
 
   resolveDisasters(gamestate, othergamestate, skulls) {
     this.popup('Resolving disasters...', 200, 'announcement');
-    let irrigation = document.querySelector(`.learned.irrigation#${gamestate}`);
+    let irrigation = document.querySelector(`#${gamestate} .irrigation .learned`);
     irrigation = irrigation.classList.contains('true');
-    let medicine = document.querySelector(`.learned.medicine#${othergamestate}`);
+    let medicine = document.querySelector(`#${othergamestate} .medicine .learned`);
     medicine = medicine.classList.contains('true');
-    let laborForGreatWall = parseInt(document.querySelector(`.needed.great_wall#${gamestate}`).textContent);
-    let religion = document.querySelector(`.learned.religion${gamestate}`);
+    let laborForGreatWall = parseInt(document.querySelector(`#${gamestate} .great_wall .needed`).textContent);
+    let religion = document.querySelector(`${gamestate} .religion .learned`);
     religion = religion.classList.contains('true');
-    let otherreligion = document.querySelector(`.learned.religion${othergamestate}`);
-    otherreligion = religion.classList.contains('true');
-    let disasters = parseInt(document.querySelector(`.disasters#${gamestate}`).textContent);
-    let otherDisasters = parseInt(document.querySelector(`.disasters#${othergamestate}`).textContent);
+    let otherReligion = document.querySelector(`${othergamestate} .religion .learned`);
+    otherReligion = religion.classList.contains('true');
+    let disasters = parseInt(document.querySelector(`#${gamestate} .disasters`).textContent);
+    let otherDisasters = parseInt(document.querySelector(`#${othergamestate} .disasters`).textContent);
     let revolt;
+
     if (skulls === 2 && !irrigation) {
       disasters = disasters + 2;
     } else if (skulls === 3 && !medicine){
       otherDisasters = otherDisasters + 3;
       updateItem(otherDisasters, 'disasters', '', othergamestate);
-    } else if (skulls === 4 && laborForGreatWall === 0){
+    } else if (skulls === 4 && laborForGreatWall !== 0){
       disasters = disasters + 4;
     } else if (skulls <= 5 ){
       if (!religion) {
         revolt = gamestate;
-      } else if (!otherreligion){
+      } else if (!otherReligion){
         revolt = othergamestate;
       }
       if (revolt) {
@@ -177,9 +78,9 @@ class Turn {
   useLabor(gamestate, player2, labor) {
     this.popup('Using labor...', 200, 'announcement');
     this.popup(`Labor available: ${labor}`, 1000, 'resource');
-    let engineering = document.querySelector(`.learned.engineering#${gamestate}`);
+    let engineering = document.querySelector(`#${gamestate} .engineering .learned`);
     engineering = engineering.classList.contains('true');
-    let stone = parseInt(document.querySelector(`.amount.stone#${gamestate}`).textContent);
+    let stone = parseInt(document.querySelector(`#${gamestate} .amount .stone`).textContent);
     let decision;
     if (engineering && stone > 0) {
 
@@ -282,10 +183,10 @@ class Turn {
   assignGoods(gamestate, goods) {
     this.popup('Assigning goods...', 200, 'announcement');
     let goodType = 1;
-    let quarrying = document.querySelector(`.learned.quarrying#${gamestate}`);
+    let quarrying = document.querySelector(`#${gamestate} .learned .quarrying`);
     quarrying = quarrying.classList.contains('true');
     for (let i = 0; i < goods; i++) {
-      let goodTypeAmt = parseInt(document.querySelector(`.amount.${goodType}#${gamestate}`).textContent);
+      let goodTypeAmt = parseInt(document.querySelector(`#${gamestate} .${goodType} .amount`).textContent);
       if (goodTypeAmt < 9 - goodType) {
         goodTypeAmt += 1;
       }
@@ -293,7 +194,7 @@ class Turn {
         goodTypeAmt += 1;
       }
 
-      let goodTypeVal = parseInt(document.querySelector(`.value.${goodType}#${gamestate}`).textContent);
+      let goodTypeVal = parseInt(document.querySelector(`#${gamestate} .${goodType} .value`).textContent);
       goodTypeVal = goodTypeVal + (goodType * goodTypeAmt);
 
       updateItem(goodTypeAmt, goodType, 'amount');
@@ -306,7 +207,6 @@ class Turn {
       }
     }
   }
-
 
   buyDevelopment(gamestate, coins) {
     this.popup('Buying developments...', 200, 'announcement');
@@ -450,8 +350,7 @@ class Turn {
   popup(message, time, type) {
     const classGet = document.querySelector(`.${type}`);
     classGet.classList.remove('none');
-    const popupGet = document.querySelector(`.message.${type}`);
-    popupGet.innerHTML(message);
+    document.querySelector(`.${type} .message.`).innerHTML = message;
     let timeLeft = time;
     const timeInterval = setInterval( () => {
       timeLeft--;
