@@ -15,10 +15,6 @@
   font-size: 28px;
 }
 
-.none{
-  display: none;
-}
-
 .kept{
   background-color: aquamarine;
 }
@@ -103,4 +99,8 @@ p{
 
 .rules p{
   font-size: 15px;
+}
+
+.none{
+  display: none;
 }
