@@ -13,75 +13,91 @@
                         <div class="col-5 container">
                             <h5>Developments: </h5>
                             <div class="developments">
-                            {{#each gamestate.developments as |development|}}
-                            {{> developments development}}
-                            {{!-- {{log gamestate.developments}} --}}
+                                <div class="row">
+                                    <span class="col-1">Cost</span>
+                                    <span class="col-1"></span>
+                                    <span class="col-3">Name</span>
+                                    <span class="col-1">Pts</span>
+                                    <span class="col-5">Effect</span>
+                                </div>
+                                {{#each gamestate.developments as |development|}}
+                                {{> developments development}}
+                                {{/each}}
+                            </div>
+                        </div>
+                        <div class="col-4 container">
+                            <h5>Monuments: </h5>
+                            <div class="segment-header row">
+                                <span class="col-7">Name</span>
+                                <span class="col-2">Need</span>
+                                <span class="col-3">Pts</span>
+                            </div>
+                            {{#each gamestate.monuments as |monument|}}
+                            {{> monuments monument}}
                             {{/each}}
-                            </div>
+                            <span class="note">Great Wall prevents Invasion</span>
                         </div>
-                            <div class="col-4 container">
-                                <h5>Monuments: </h5>
-                                {{#each gamestate.monuments as |monument|}}
-                                {{> monuments monument}}
-                                {{/each}}
-                                <span class="note">Great Wall prevents Invasion</span>
+                        <div class="col-3 container">
+                            <h5>Goods: </h5>
+                            <div class="segment-header row">
+                                <span class="col-7">Name</span>
+                                <span class="col-2">Amt</span>
+                                <span class="col-2">Val</span>
                             </div>
-                            <div class="col-3 container">
-                                <h5>Goods: </h5>
-                                {{#each gamestate.goods as |good|}}
-                                {{> goods good}}
-                                {{/each}}
-                            </div>
-                            <div class="row">
-                                <span class="disasters col">Disasters: {{gamestate.disasters}}</span>
-                                <span class="score col">Score: {{gamestate.score}}</span>
-                            </div>
+                            {{#each gamestate.goods as |good|}}
+                            {{> goods good}}
+                            {{/each}}
+                        </div>
+                        <div class="row">
+                            <span class="disasters col">Disasters: {{gamestate.disasters}}</span>
+                            <span class="score col">Score: {{gamestate.score}}</span>
                         </div>
                     </div>
                 </div>
-                {{/each}}
             </div>
-            <div class="col-2">
-                <div id="dice-tray" class="container">
-                    <div class="die container" id="die1"></div>
-                    <div class="die container" id="die2"></div>
-                    <div class="die container" id="die3"></div>
-                    <div class="die none container" id="die4">4</div>
-                    <div class="die none container" id="die5">5</div>
-                    <div class="die none container" id="die6">6</div>
-                    <div class="die none container" id="die7">7</div>
-                    <button class="done die none" id="die8">Done</button>
+            {{/each}}
+        </div>
+        <div class="col-2">
+            <div id="dice-tray" class="container">
+                <div class="die container" id="die1"></div>
+                <div class="die container" id="die2"></div>
+                <div class="die container" id="die3"></div>
+                <div class="die none container" id="die4">4</div>
+                <div class="die none container" id="die5">5</div>
+                <div class="die none container" id="die6">6</div>
+                <div class="die none container" id="die7">7</div>
+                <button class="done die none" id="die8">Done</button>
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="quick-reference">
+                <div>
+                    <h4>Order of Play</h4>
+                    <p>1. Roll dice and collect goods and food.</p>
+                    <p>2. Feed cities and resolve disasters.</p>
+                    <p>3. Build cities and/or monuments.</p>
+                    <p>4. May buy a development.</p>
+                    <p>5. Discard goods in excess of 6.</p>
                 </div>
-            </div>
-            <div class="col-2">
-                <div class="quick-reference">
-                    <div>
-                        <h4>Order of Play</h4>
-                        <p>1. Roll dice and collect goods and food.</p>
-                        <p>2. Feed cities and resolve disasters.</p>
-                        <p>3. Build cities and/or monuments.</p>
-                        <p>4. May buy a development.</p>
-                        <p>5. Discard goods in excess of 6.</p>
-                    </div>
-                    <div>
-                        <h4>Disasters</h4>
-                        <p>No food - 1 per city unfed</p>
-                        <p>1 skull - No effect</p>
-                        <p>2 skulls - 2 unless have Irrigation</p>
-                        <p>3 skulls - 3 for opponent unless have Medicine</p>
-                        <p>4 skulls - 4 unless have Great Wall</p>
-                        <p>5+ skulls - Lose all goods unless have Religion and then opponents
-                            lose all goods</p>
-                    </div>
-                    <div>
-                        <h4>Game End</h4>
-                        <p>All monuments are built or</p>
-                        <p>One player has 5 developments</p>
-                    </div>
+                <div>
+                    <h4>Disasters</h4>
+                    <p>No food - 1 per city unfed</p>
+                    <p>1 skull - No effect</p>
+                    <p>2 skulls - 2 unless have Irrigation</p>
+                    <p>3 skulls - 3 for opponent unless have Medicine</p>
+                    <p>4 skulls - 4 unless have Great Wall</p>
+                    <p>5+ skulls - Lose all goods unless have Religion and then opponents
+                        lose all goods</p>
+                </div>
+                <div>
+                    <h4>Game End</h4>
+                    <p>All monuments are built or</p>
+                    <p>One player has 5 developments</p>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 <div class="announcement container none">
     <div class="message"></div>
@@ -111,9 +127,16 @@
 <div class="dropdown container none">
     <div class="message"></div>
     <div class="row">
-    <select id="developmentsDropdown" class="col-8">
-    </select>
-    <div class="col-1"></div>
-    <button type="submit" class="col-3" id="done">Done</button>
+        <select id="developmentsDropdown" class="col-8">
+        </select>
+        <div class="col-1"></div>
+        <button type="submit" class="col-3" id="done">Done</button>
     </div>
 </div>
+<script src="/js/utilities.js"></script>
+<script src="/js/dice.js"></script>
+<script src="/js/development.js"></script>
+<script src="/js/labor.js"></script>
+<script src="/js/game.js"></script>
+<script src="/js/turn.js"></script>
+<script src="/js/index.js"></script>

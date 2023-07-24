@@ -1,11 +1,7 @@
-<div class="segment-header row">
-    <span class="col-7">Name</span>
-    <span class="col-2">Amt</span>
-    <span class="col-2">Val</span>
-</div>
+
 <div class="goods">
     {{!-- {{#each goods as |good|}} --}}
-    <div class={{this.dataValues.name}}{{this.dataValues.number}}"row">
+    <div class="{{this.dataValues.name}}{{this.dataValues.number}} row">
         <span class="good col-7">{{this.dataValues.name}}</span>
         <span class="amount col-2">{{this.dataValues.amount}}</span>
         <span class="value col-2">{{this.dataValues.value}}</span>
