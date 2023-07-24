@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-use-before-define */
 /* eslint-disable default-case */
 
@@ -10,29 +11,7 @@ const laborHandler = async () => {
 };
 
 const rollDiceHandler = async () =>{
-  let allKept;
-  let cities = document.querySelector('.cities').textContent;
-  cities =parseInt(cities.slice(-1));
-  for (let i = 1; i <= cities; i++) {
-    allKept = document.querySelector(`#die${i}`).classList.contains('kept');
-    if (!allKept) {
-      break;
-    }
-  }
-  if (dice.timesRolled === 0) {
-    dice.resetDice(cities);
-  } else if (dice.timesRolled === 3 || allKept) {
-    document.querySelector('#die8').classList.add('none');
-    document.querySelector('#die8').removeEventListener('click', rollDiceHandler);
-    for (let j = 1; j <= cities; j++) {
-      document.querySelector(`#die${j}`).classList.add('kept');
-    }
-    dice.compileDieResults();
-  }
-  if (dice.timesRolled <= 3 && !allKept) {
-    dice.rollDice();
-    dice.keepDice();
-  }
+  dice.diceHandler();
 };
 
 class Dice {
@@ -49,6 +28,31 @@ class Dice {
     this.chose = 0;
   }
 
+  diceHandler(){
+    let allKept;
+    this.cities = parseInt(document.querySelector('.cities').textContent);
+    for (let i = 1; i <= this.cities; i++) {
+      allKept = document.querySelector(`#die${i}`).classList.contains('kept');
+      if (!allKept) {
+        break;
+      }
+    }
+    if (this.timesRolled === 0) {
+      this.resetDice(this.cities);
+    } else if (this.timesRolled === 3 || allKept) {
+      document.querySelector('#die8').classList.add('none');
+      document.querySelector('#die8').removeEventListener('click', rollDiceHandler);
+      for (let j = 1; j <= this.cities; j++) {
+        document.querySelector(`#die${j}`).classList.add('kept');
+      }
+      this.compileDieResults();
+      popup('Moving to feeding cities.', 500, 'ok');
+    }
+    if (this.timesRolled <= 3 && !allKept) {
+      this.rollDice();
+      this.keepDice();
+    }
+  }
   displayDice(dieResult, dieNumber) {
     let display;
     switch (dieResult) {
@@ -74,7 +78,7 @@ class Dice {
     document.querySelector(`#die${dieNumber}`).innerHTML = display;
   }
 
-  applyDieResult(dieResult, choice, player) {
+  applyDieResult(dieResult, choice) {
     const agriculture = false;//document.querySelector(`#${player} .agriculture .learned`);
     //agriculture = agriculture.classList.contains('true');
     const masonry = false;//document.querySelector(`#${player} .masonry .learned`);
@@ -88,7 +92,7 @@ class Dice {
       this.goods += 1;
       break;
     case 3:
-      let coinage = document.querySelector(`#${player} .coinage .learned`);
+      let coinage = document.querySelector('.coinage .learned');
       if (coinage) {
         this.coins += 12;
       } else {
@@ -207,23 +211,23 @@ class Dice {
         if (diceCheck === this.chose) {
           if (choice === 'food') {
             document.querySelector(`#die${i}`).innerHTML = '2&#127806;';
+            this.applyDieResult(6, choice);
             break;
           } else if (choice === 'labor') {
             document.querySelector(`#die${i}`).innerHTML = '2&#9792;';
+            this.applyDieResult(6, choice);
             break;
           }
-
         } else {
           diceCheck += 1;
         }
       }
-      this.applyDieResult(6, choice);
     }
   }
 }
 
-
+let dice = new Dice;
 document.querySelector('#die8').addEventListener('click', rollDiceHandler);
-document.querySelector('#test').addEventListener('click', rollDiceHandler);
+// document.querySelector('#test').addEventListener('click', rollDiceHandler);
 
-const dice = new Dice;
+// const dice = new Dice;

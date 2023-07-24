@@ -10,9 +10,11 @@
             <div id={{gamestate.player.name}} class="player">
                 <div class="container">
                     <div class="row">
-                        <h3 class="col-8">{{gamestate.user.dataValues.name}}</h3>
-                        <div class="cities build col-2">Cities: {{gamestate.cities}}</div>
-                        <div class="citiesNeed col-2">Needed: {{gamestate.citiesNeed}}</div>
+                        <h3 class="col-6">{{gamestate.user.dataValues.name}}</h3>
+                        <span class="build col-2">Cities: </span>
+                        <span class="cities col-1">{{gamestate.cities}}</span>
+                        <span class="col-2">Needed: </span>
+                        <span class="citiesNeed col-1">{{gamestate.citiesNeed}}</span>
                     </div>
                     <div class="row">
                         <div class="col-5 container">
@@ -54,8 +56,10 @@
                             {{/each}}
                         </div>
                         <div class="row">
-                            <span class="disasters col">Disasters: {{gamestate.disasters}}</span>
-                            <span class="score col">Score: {{gamestate.score}}</span>
+                            <span class="col">Disasters: </span>
+                            <span class="disasters col">{{gamestate.disasters}}</span>
+                            <span class="col">Score: </span>
+                            <span class="score col">{{gamestate.score}}</span>
                         </div>
                     </div>
                 </div>
@@ -103,6 +107,10 @@
         </div>
     </div>
 </div>
+</div>
+<div class="ok container none">
+    <div class="message"></div>
+    <button type="submit" class="btn" id="okay">Ok</button>
 </div>
 <div class="announcement container none">
     <div class="message"></div>

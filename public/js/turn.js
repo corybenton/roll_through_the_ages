@@ -2,11 +2,13 @@
 /* eslint-disable default-case */
 /* eslint-disable no-use-before-define */
 class Turn {
+  constructor(){
+    this.dice = 0;
+  }
+
   turn(player1, player2){
     popup(`${player1}'s turn`, 150, 'announcement');
-    let dice = new Dice();
-    dice.resetDice();
-    dice = dice.rollDice();
+
     this.feedCities(player1, dice.food);
     this.resolveDisasters(player1, player2, dice.skulls);
     let workIt = new Labor;
@@ -17,15 +19,21 @@ class Turn {
     this.cleanUp(player1);
   }
 
-  feedCities(gamestate, diceFood) {
+  startRoll(){
+    dice.diceHandler();
+    document.querySelector('#okay').addEventListener('click', moveToFeed);
+  }
+
+  feedCities() {
     popup('Feeding cities...', 200, 'announcement');
-    let food = parseInt(document.querySelector(`#${gamestate} .food .amount`).textContent);
-    food = food + diceFood;
+    let disasters = parseInt(document.querySelector('.disasters').textContent);
+
+    let food = parseInt(document.querySelector('.Food .amount').textContent);
+    food = food + dice.food;
     if (food > 15) {
       food = 15;
     }
-    const cities = document.querySelector(`#${gamestate} .cities`).textContent;
-    let disasters = parseInt(document.querySelector(`#${gamestate} .disasters`).textContent);
+    const cities = parseInt(document.querySelector('.cities').textContent);
     for (let i = 0; i < cities; i++) {
       if (food > 0) {
         food = food - 1;
@@ -33,8 +41,8 @@ class Turn {
         disasters = disasters + 1;
       }
     }
-    updateItem(food, 'amount', 'food');
-    updateItem(food, 'value', 'food');
+    updateItem(food, 'amount', 'Food');
+    updateItem(food, 'value', 'Food');
     updateItem(disasters, 'disasters');
   }
 
@@ -184,3 +192,7 @@ const cleanupGoods = () => {
 // document.querySelector('#test').addEventListener('click', startUp4);
 // const takeTurn = new Turn();
 // takeTurn.turn();
+
+const moveToFeed = () => {
+  newTurn.feedCities();
+};
