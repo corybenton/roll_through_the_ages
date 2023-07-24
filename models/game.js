@@ -11,6 +11,7 @@ Game.init(
       primaryKey: true,
       autoIncrement: true,
     },
+    //either 1 or two, point to which players turn it is
     turn: {
       type: DataTypes.INTEGER,
       defaultValue: 1,

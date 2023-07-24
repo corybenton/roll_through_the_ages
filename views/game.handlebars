@@ -1,6 +1,11 @@
 <div class="container">
     <div class="row">
         <div class="col-8">
+            {{#if isMyTurn}}
+            <h2>It Is your turn!</h2>
+            {{ else }}
+            <h2>Waiting for opponent</h2>
+            {{/if}}
             {{#each gamestates as |gamestate|}}
             <div id={{gamestate.player.name}} class="player">
                 <div class="container">

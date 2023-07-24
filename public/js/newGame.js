@@ -94,3 +94,11 @@ document.querySelectorAll('.joinBtn').forEach((button) => {
     }
   });
 });
+
+//Put where current players turn ends.
+async function switchToNewTurn(gameId) {
+  await fetch(`/game/${gameId}/turnover`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+  });
+}
