@@ -11,26 +11,10 @@ Game.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    // board1: {
-    //   type: DataTypes.INTEGER,
-    //   allowNull: true,
-    //   references: {
-    //     model: 'gameState',
-    //     key: 'id',
-    //   }
-    // },
-    // board2: {
-    //   type: DataTypes.INTEGER,
-    //   allowNull: true,
-    //   references: {
-    //     model: 'gameState',
-    //     key: 'id',
-    //   }
-    // },
-    // winner: {
-    //   type: DataTypes.INTEGER,
-    //   defaultValue: 3,
-    //},
+    turn: {
+      type: DataTypes.INTEGER,
+      defaultValue: 1,
+    },
   },
   {
     sequelize,
