@@ -24,7 +24,7 @@ document.querySelector('#newGameBtn').addEventListener('click', async () => {
   }
 });
 
-document.querySelectorAll('#playBtn').forEach((button) => {
+document.querySelectorAll('.playBtn').forEach((button) => {
   button.addEventListener('click', async (event) => {
     const gameId = event.target.dataset.gameId;
     //console.log('gameId #playBtn outside try', gameId);
@@ -68,27 +68,29 @@ document.querySelectorAll('#playBtn').forEach((button) => {
   });
 });
 
-document.querySelector('#joinBtn').addEventListener('click', async () => {
-  console.log('Button clicked!');
-  try {
-    const response = await fetch('/join', {
-      method: 'POST',
-      body: JSON.stringify({ player: 2}),
-      headers: { 'Content-Type': 'application/json' },
-    });
+document.querySelectorAll('.joinBtn').forEach((button) => {
+  button.addEventListener('click', async () => {
+    console.log('Button clicked!');
+    try {
+      const response = await fetch('/join', {
+        method: 'POST',
+        body: JSON.stringify({ player: 2}),
+        headers: { 'Content-Type': 'application/json' },
+      });
 
-    //console.log('Response joinBtn find relocation gameId:', response);
+      //console.log('Response joinBtn find relocation gameId:', response);
 
-    if (response.ok) {
-      const responseData = await response.json();
-      //console.log('gamestate id newgame.js:', responseData.gameStateId);
+      if (response.ok) {
+        const responseData = await response.json();
+        //console.log('gamestate id newgame.js:', responseData.gameStateId);
 
-      window.location.href = `/game/${responseData.newgame}`;
-    } else {
-      alert('Failed to Join game.');
+        window.location.href = `/game/${responseData.newgame}`;
+      } else {
+        alert('Failed to Join game.');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('An error occurred.');
     }
-  } catch (err) {
-    console.error(err);
-    alert('An error occurred.');
-  }
+  });
 });
