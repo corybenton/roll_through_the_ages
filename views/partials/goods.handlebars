@@ -4,12 +4,12 @@
     <span class="col-2">Val</span>
 </div>
 <div class="goods">
-    {{#each goods as |good|}}
-    <div class={{good.name}}{{good.number}}"row">
-        <span class="good col-7">{{good.name}}</span>
-        <span class="amount col-2">{{good.amount}}</span>
-        <span class="value col-2">{{good.value}}</span>
+    {{!-- {{#each goods as |good|}} --}}
+    <div class={{this.dataValues.name}}{{this.dataValues.number}}"row">
+        <span class="good col-7">{{this.dataValues.name}}</span>
+        <span class="amount col-2">{{this.dataValues.amount}}</span>
+        <span class="value col-2">{{this.dataValues.value}}</span>
     </div>
-    {{/each}}
+    {{!-- {{/each}} --}}
 </div>
 {{!-- <p>Total Trade Good Value: {{gamestate.goods}}</p> --}}

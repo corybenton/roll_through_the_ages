@@ -13,16 +13,24 @@
                         <div class="col-5 container">
                             <h5>Developments: </h5>
                             <div class="developments">
-                            {{> developments}}
+                            {{#each gamestate.developments as |development|}}
+                            {{> developments development}}
+                            {{!-- {{log gamestate.developments}} --}}
+                            {{/each}}
                             </div>
                         </div>
                             <div class="col-4 container">
                                 <h5>Monuments: </h5>
-                                {{> monuments}}
+                                {{#each gamestate.monuments as |monument|}}
+                                {{> monuments monument}}
+                                {{/each}}
+                                <span class="note">Great Wall prevents Invasion</span>
                             </div>
                             <div class="col-3 container">
                                 <h5>Goods: </h5>
-                                {{> goods}}
+                                {{#each gamestate.goods as |good|}}
+                                {{> goods good}}
+                                {{/each}}
                             </div>
                             <div class="row">
                                 <span class="disasters col">Disasters: {{gamestate.disasters}}</span>

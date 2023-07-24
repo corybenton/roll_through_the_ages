@@ -4,13 +4,16 @@
     <span class="col-3">Pts</span>
 </div>
 <div class="monuments">
-    {{#each monuments as |monument|}}
-    <div class={{monument.name}}{{monument.number}}"row">
-        <span class="build col-7">{{monument.name}}</span>
-        <span class="needed col-2">{{monument.needed}}</span>
-        <span class="points col-3">{{monument.points_first}}/{{monument.points_second}}</span>
+
+=======
+    {{!-- {{#each monuments as |monument|}} --}}
+    <div class={{this.dataValues.name}}{{this.dataValues.number}}"row">
+        <span class="build col-7">{{this.dataValues.name}}</span>
+        <span class="needed col-2">{{this.dataValues.needed}}</span>
+        <span class="points col-3">{{this.dataValues.points_first}}{{this.dataValues.points_second}}</span>
+
     </div>
-    {{/each}}
-    <span class="note">Great Wall prevents Invasion</span>
+    {{!-- {{/each}} --}}
+    {{!-- <span class="note">Great Wall prevents Invasion</span> --}}
 </div>
 {{!-- <p>Global Monuments Completed: {{gamestate.monuments}}</p> --}}

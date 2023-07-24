@@ -1,22 +1,17 @@
-<div class="segment-header row">
-    <span class="col-1">Cost</span>
-    <span class="col-1"></span>
-    <span class="col-3">Name</span>
-    <span class="col-1">Pts</span>
-    <span class="col-5">Effect</span>
-</div>
-<div class="developments">
-    {{#each developments as |development|}}
-    <div class={{development.name}}{{development.number}} "row">
-        <span class="col-1 cost">1{{development.cost}}</span>
-        {{#if development.learned}}
-        <span class="learned col-1">&#9745;</span>
+
+{{!-- <div class="developments"> --}}
+    {{!-- {{#each developments as |development|}} --}}
+    {{log this}}
+    <div class={{this.dataValues.name}}{{this.dataValues.number}} "row">
+        <span class="col-1 cost">{{this.dataValues.cost}}</span>
+        {{#if this.dataValues.learned}}
+        <span class="learned">&#9745;</span>
         {{else}}
         <span class="learned col-1">&#9744;</span>
         {{/if}}
-        <span class="col-3 development">{{development.name}}</span>
-        <span class="col-1 points">{{development.points}}</span>
-        <span class="col-5 effect">{{development.effect}}</span>
+        <span class="col-3 development">{{this.dataValues.name}}</span>
+        <span class="col-1 points">{{this.dataValues.points}}</span>
+        <span class="col-5 effect">{{this.dataValues.effect}}</span>
     </div>
     {{/each}}
     {{!-- <button class="development none devbutt">No development</button> --}}
