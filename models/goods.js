@@ -11,7 +11,7 @@ Goods.init(
       autoIncrement: true,
     },
     number:{
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
     },
     name: {
       type: DataTypes.STRING,
