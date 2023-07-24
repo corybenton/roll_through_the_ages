@@ -56,11 +56,11 @@ router.get('/game/:id', async (req, res) => {
         isMyTurn = true;
       }
     }
-    if (GameData.player2board.dataValues.player === userId) {
-      if (GameData.turn === 2) {
-        isMyTurn = true;
-      }
-    }
+    // if (GameData.player2board.dataValues.player === userId) {
+    //   if (GameData.turn === 2) {
+    //     isMyTurn = true;
+    //   }
+    // }
 
 
 

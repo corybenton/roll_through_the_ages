@@ -79,10 +79,10 @@ class Dice {
   }
 
   applyDieResult(dieResult, choice) {
-    const agriculture = false;//document.querySelector(`#${player} .agriculture .learned`);
-    //agriculture = agriculture.classList.contains('true');
-    const masonry = false;//document.querySelector(`#${player} .masonry .learned`);
-    //masonry = masonry.classList.contains('true');
+    let agriculture = document.querySelector('.Agriculture .learned');
+    agriculture = agriculture.classList.contains('true');
+    let masonry = document.querySelector('.Masonry .learned');
+    masonry = masonry.classList.contains('true');
     switch (dieResult) {
     case 1:
       this.skulls += 1;

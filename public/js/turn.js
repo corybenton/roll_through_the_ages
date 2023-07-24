@@ -2,9 +2,9 @@
 /* eslint-disable default-case */
 /* eslint-disable no-use-before-define */
 class Turn {
-  constructor(){
-    this.dice = 0;
-  }
+  // constructor(){
+  //   this.dice = 0;
+  // }
 
   turn(player1, player2){
     popup(`${player1}'s turn`, 150, 'announcement');
@@ -25,7 +25,7 @@ class Turn {
   }
 
   feedCities() {
-    popup('Feeding cities...', 200, 'announcement');
+    popup('Feeding cities, resolving disasters, assigning goods...', 200, 'announcement');
     let disasters = parseInt(document.querySelector('.disasters').textContent);
 
     let food = parseInt(document.querySelector('.Food .amount').textContent);
@@ -44,37 +44,37 @@ class Turn {
     updateItem(food, 'amount', 'Food');
     updateItem(food, 'value', 'Food');
     updateItem(disasters, 'disasters');
+    this.resolveDisasters();
   }
 
-  resolveDisasters(gamestate, othergamestate, skulls) {
-    popup('Resolving disasters...', 200, 'announcement');
-    let irrigation = document.querySelector(`#${gamestate} .irrigation .learned`);
+  resolveDisasters() {
+    let irrigation = document.querySelector('.Irrigation .learned');
     irrigation = irrigation.classList.contains('true');
-    let medicine = document.querySelector(`#${othergamestate} .medicine .learned`);
+    let medicine = document.querySelector('.Medicine .learned');
     medicine = medicine.classList.contains('true');
-    let laborForGreatWall = parseInt(document.querySelector(`#${gamestate} .Great_Wall .needed`).textContent);
-    let religion = document.querySelector(`${gamestate} .religion .learned`);
+    let laborForGreatWall = parseInt(document.querySelector('.mon4 .needed').textContent);
+    let religion = document.querySelector('.Religion .learned');
     religion = religion.classList.contains('true');
-    let otherReligion = document.querySelector(`${othergamestate} .religion .learned`);
-    otherReligion = religion.classList.contains('true');
-    let disasters = parseInt(document.querySelector(`#${gamestate} .disasters`).textContent);
-    let otherDisasters = parseInt(document.querySelector(`#${othergamestate} .disasters`).textContent);
+    // let otherReligion = document.querySelector(`${othergamestate} .religion .learned`);
+    // otherReligion = religion.classList.contains('true');
+    let disasters = parseInt(document.querySelector('.disasters').textContent);
+    // let otherDisasters = parseInt(document.querySelector(`#${othergamestate} .disasters`).textContent);
     let revolt;
 
-    if (skulls === 2 && !irrigation) {
+    if (dice.skulls === 2 && !irrigation) {
       disasters = disasters + 2;
-    } else if (skulls === 3 && !medicine){
-      otherDisasters = otherDisasters + 3;
-      updateItem(otherDisasters, 'disasters', '', othergamestate);
-    } else if (skulls === 4 && laborForGreatWall !== 0){
+    } else if (dice.skulls === 3 && !medicine){
+      // otherDisasters = otherDisasters + 3;
+      // updateItem(otherDisasters, 'disasters', '', othergamestate);
+    } else if (dice.skulls === 4 && laborForGreatWall !== 0){
       disasters = disasters + 4;
-    } else if (skulls <= 5 ){
+    } else if (dice.skulls <= 5 ){
       if (!religion) {
-        revolt = gamestate;
-      } else if (!otherReligion){
-        revolt = othergamestate;
-      }
-      if (revolt) {
+      //   revolt = gamestate;
+      // // } else if (!otherReligion){
+      // //   revolt = othergamestate;
+      // }
+      // if (revolt) {
         for (let i = 1; i < 6; i++) {
           const goodType = document.querySelector(`good${i} .good`);
           updateItem(0, 'amount', goodType, revolt);
@@ -83,32 +83,51 @@ class Turn {
       }
     }
     updateItem(disasters, 'disasters');
+    this.assignGoods();
   }
 
-  assignGoods(gamestate, goods) {
-    popup('Assigning goods...', 200, 'announcement');
-    let goodType = 1;
-    let quarrying = document.querySelector('.learned .quarrying');
+  assignGoods() {
+    let goodNum = 1;
+    let quarrying = document.querySelector('.Quarrying .learned');
     quarrying = quarrying.classList.contains('true');
-    for (let i = 0; i < goods; i++) {
-      let goodTypeAmt = parseInt(document.querySelector(`.good${goodType} .amount`).textContent);
-      if (goodTypeAmt < 9 - goodType) {
+    for (let i = 1; i <= dice.goods; i++) {
+      let goodTypeAmt = parseInt(document.querySelector(`.good${goodNum} .amount`).textContent);
+      if (goodTypeAmt < 9 - goodNum) {
         goodTypeAmt += 1;
       }
-      if (goodType = 2 && quarrying && goodTypeAmt < 9 - goodType) {
+      if (goodNum === 2 && quarrying && goodTypeAmt < 9 - goodNum) {
         goodTypeAmt += 1;
       }
 
-      let goodTypeVal = parseInt(document.querySelector(`.${goodType} .value`).textContent);
-      goodTypeVal = goodTypeVal + (goodType * goodTypeAmt);
+      let goodTypeVal = parseInt(document.querySelector(`.good${goodNum} .value`).textContent);
+      goodTypeVal = goodTypeVal + (goodNum * goodTypeAmt);
 
-      updateItem(goodTypeAmt, goodType, 'amount');
-      updateItem(goodTypeVal, goodType, 'value');
+      let goodNumType;
+      switch(goodNum){
+      case 1:
+        goodNumType = 'Wood';
+        break;
+      case 2:
+        goodNumType = 'Stone';
+        break;
+      case 3:
+        goodNumType = 'Pottery';
+        break;
+      case 4:
+        goodNumType = 'Cloth';
+        break;
+      case 5:
+        goodNumType = 'Spearheads';
+        break;
+      }
 
-      if (goodType === 5) {
-        goodType = 1;
+      updateItem(goodTypeAmt, goodNumType, 'amount');
+      updateItem(goodTypeVal, goodNumType, 'value');
+
+      if (goodNum === 5) {
+        goodNum = 1;
       } else {
-        goodType += 1;
+        goodNum += 1;
       }
     }
   }
