@@ -2,7 +2,7 @@
 {{!-- <div class="developments"> --}}
     {{!-- {{#each developments as |development|}} --}}
     {{log this}}
-    <div class={{this.dataValues.name}}{{this.dataValues.id}} "row">
+    <div class={{this.dataValues.name}}{{this.dataValues.number}} "row">
         <span class="col-1 cost">{{this.dataValues.cost}}</span>
         {{#if this.dataValues.learned}}
         <span class="learned">&#9745;</span>
@@ -13,7 +13,7 @@
         <span class="col-1 points">{{this.dataValues.points}}</span>
         <span class="col-5 effect">{{this.dataValues.effect}}</span>
     </div>
-    {{!-- {{/each}} --}}
+    {{/each}}
     {{!-- <button class="development none devbutt">No development</button> --}}
-{{!-- </div> --}}
+</div>
 {{!-- <p>Developments Learned: {{gamestate.developments}}</p> --}}

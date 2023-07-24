@@ -1,2 +1,42 @@
 <p>Through the Ages &#169; 2009 by Matt Leacock. Published by Gryphon Games.  All rights reserved.</p>
+<button id="test">Test</button>
+<div class="segment-header row">
+    <span class="col-7">Name</span>
+    <span class="col-2">Need</span>
+    <span class="col-3">Pts</span>
+</div>
 
+<div class="announcement container none">
+    <div class="message"></div>
+</div>
+<div class="resource container none">
+    <div class="message"></div>
+</div>
+<form class="range container none">
+    <div>
+        <label for="rangeFinder" class="form-label message">How many food to sell?</label>
+        <input type="range" class="form-range rangeFinder" min="0" max="2">
+        <div class="row">
+            <span class="col-1">0</span>
+            <span class="col-9"></span>
+            <span class="col-2 bar">2</span>
+        </div>
+        <button type="submit" class="btn btn-danger">Submit</button>
+    </div>
+</form>
+<div class="choice container none">
+    <div class="message">Which would you like from your die?</div>
+    <div class="row">
+        <button type="submit" class="yes btn col-4 btn-warning">Food</button>
+        <button type="submit" class="no btn col-4 btn-warning">Labor</button>
+    </div>
+</div>
+<div class="dropdown container none">
+    <div class="message"></div>
+    <div class="row">
+    <select id="developmentsDropdown" class="col-8">
+    </select>
+    <div class="col-1"></div>
+    <button type="submit" class="col-3" id="done">Done</button>
+    </div>
+</div>
