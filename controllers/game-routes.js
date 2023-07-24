@@ -48,10 +48,26 @@ router.get('/game/:id', async (req, res) => {
       player2data = GameData.player2board.dataValues;
     }
 
+    let isMyTurn = false;
+    const userId = req.session.user_id;
+    //if true, I am player 1 of this game
+    if (GameData.player1board.dataValues.player === userId) {
+      if (GameData.turn === 1) {
+        isMyTurn = true;
+      }
+    }
+    if (GameData.player2board.dataValues.player === userId) {
+      if (GameData.turn === 2) {
+        isMyTurn = true;
+      }
+    }
+
+
+
     //console.log('p2Data gameroutes game:id : ', player2data);
     //console.log('GameData gameroutes game:id :', GameData);
     //console.log('GameData.player1board.dataValues, player2data gameroutes: ', GameData.player1board.dataValues, player2data);
-    res.render('game', { gamestates: [GameData.player1board.dataValues, player2data] });
+    res.render('game', { gamestates: [GameData.player1board.dataValues, player2data], isMyTurn });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal server error' });
@@ -249,5 +265,37 @@ router.put('/game', async (req, res) => {
     console.log(err);
   }
 });
+
+router.post('/game/:id/turnover', async (req, res) => {
+  try {
+
+    const gameId = req.params.id;
+    const game = await Game.findByPk(gameId);
+
+    console.log(game);
+    console.log('!!!!!!!!!!! INSIDE GAME/ID/TURNOVER');
+
+    let nextTurn;
+
+    if (game.turn === 1) {
+      nextTurn = 2;
+    } else {
+      nextTurn = 1;
+    }
+
+    await Game.update({ turn: nextTurn }, {
+      where: {
+        id: gameId
+      }
+    });
+
+
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 
 module.exports = router;
