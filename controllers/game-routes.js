@@ -6,7 +6,7 @@ router.get('/game/:id', async (req, res) => {
   try {
     // const gameId = req.session.id;
     const gameId = req.params.id;
-    console.log('gameId gameroutes: ', gameId);
+    //console.log('gameId gameroutes: ', gameId);
     //instead of gamestate primary key, get all gamestates connected to this game.
     //if 2 gamestates connected to game, render handlebars, if its only 1, game waiting.
     const GameData = await Game.findByPk(gameId, {
@@ -33,7 +33,7 @@ router.get('/game/:id', async (req, res) => {
         },
       ],
     });
-    console.log(GameData);
+    //console.log(GameData);
     //console.log('gameData gameroutes: ', GameData);
 
     if (!GameData) {
@@ -50,7 +50,7 @@ router.get('/game/:id', async (req, res) => {
 
     //console.log('p2Data gameroutes game:id : ', player2data);
     //console.log('GameData gameroutes game:id :', GameData);
-    console.log('GameData.player1board.dataValues, player2data gameroutes: ', GameData.player1board.dataValues, player2data);
+    //console.log('GameData.player1board.dataValues, player2data gameroutes: ', GameData.player1board.dataValues, player2data);
     res.render('game', { gamestates: [GameData.player1board.dataValues, player2data] });
   } catch (err) {
     console.error(err);
