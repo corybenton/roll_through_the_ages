@@ -10,6 +10,9 @@ Goods.init(
       primaryKey: true,
       autoIncrement: true,
     },
+    number:{
+      type: DataTypes.INTEGER,
+    },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -23,7 +26,7 @@ Goods.init(
       type: DataTypes.INTEGER,
       defaultValue: 0,
     },
-    gameState_id: {
+    gamestate_id: {
       type: DataTypes.INTEGER,
       references: {
         model: 'gameState',

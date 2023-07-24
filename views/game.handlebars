@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-8">
             {{#each gamestates as |gamestate|}}
-            <div id={{gamestate.user.name}} class="player">
+            <div id={{gamestate.player.name}} class="player">
                 <div class="container">
                     <div class="row">
                         <h3 class="col-8">{{gamestate.user.dataValues.name}}</h3>
@@ -12,7 +12,18 @@
                     <div class="row">
                         <div class="col-5 container">
                             <h5>Developments: </h5>
+                            <div class="segment-header row">
+                                <span class="col-1">Cost</span>
+                                <span class="col-1"></span>
+                                <span class="col-3">Name</span>
+                                <span class="col-1">Pts</span>
+                                <span class="col-5">Effect</span>
+                            </div>
+                            <div class="developments">
+                            {{#each player1board.developments as |development|}}
                             {{> developments}}
+                            {{/each}}
+                            </div>
                         </div>
                             <div class="col-4 container">
                                 <h5>Monuments: </h5>

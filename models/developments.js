@@ -10,6 +10,9 @@ Developments.init(
       primaryKey: true,
       autoIncrement: true,
     },
+    number:{
+      type: DataTypes.INTEGER,
+    },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -28,7 +31,7 @@ Developments.init(
     effect: {
       type: DataTypes.STRING,
     },
-    gameState_id: {
+    gamestate_id: {
       type: DataTypes.INTEGER,
       references: {
         model: 'gameState',

@@ -11,6 +11,9 @@ Monuments.init(
       primaryKey: true,
       autoIncrement: true,
     },
+    number:{
+      type: DataTypes.INTEGER,
+    },
     name: {
       type: DataTypes.STRING,
       allowNull: false,

@@ -33,7 +33,7 @@ router.get('/game/:id', async (req, res) => {
         },
       ],
     });
-
+    console.log(GameData);
     //console.log('gameData gameroutes: ', GameData);
 
     if (!GameData) {

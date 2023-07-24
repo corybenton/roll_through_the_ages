@@ -10,23 +10,23 @@ Monuments.belongsTo(GameState, {
 });
 
 Goods.belongsTo(GameState, {
-  foreignKey: 'gameState_id',
+  foreignKey: 'gamestate_id',
 });
 
 Developments.belongsTo(GameState, {
-  foreignKey: 'gameState_id',
+  foreignKey: 'gamestate_id',
 });
 
 GameState.hasMany(Monuments, {
-  foreignKey: 'gameState_id',
+  foreignKey: 'gamestate_id',
 });
 
 GameState.hasMany(Goods, {
-  foreignKey: 'gameState_id',
+  foreignKey: 'gamestate_id',
 });
 
 GameState.hasMany(Developments, {
-  foreignKey: 'gameState_id',
+  foreignKey: 'gamestate_id',
 });
 
 GameState.belongsTo(User, {
