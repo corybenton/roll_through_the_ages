@@ -1,10 +1,16 @@
-
-{{!-- <div class="developments"> --}}
-    {{!-- {{#each developments as |development|}} --}}
-    <div class={{development.name}}{{development.id}} "row">
-        <span class="col-1 cost">{{development.cost}}</span>
+<div class="segment-header row">
+    <span class="col-1">Cost</span>
+    <span class="col-1"></span>
+    <span class="col-3">Name</span>
+    <span class="col-1">Pts</span>
+    <span class="col-5">Effect</span>
+</div>
+<div class="developments">
+    {{#each developments as |development|}}
+    <div class={{development.name}}{{development.number}} "row">
+        <span class="col-1 cost">1{{development.cost}}</span>
         {{#if development.learned}}
-        <span class="learned">&#9745;</span>
+        <span class="learned col-1">&#9745;</span>
         {{else}}
         <span class="learned col-1">&#9744;</span>
         {{/if}}
@@ -12,7 +18,7 @@
         <span class="col-1 points">{{development.points}}</span>
         <span class="col-5 effect">{{development.effect}}</span>
     </div>
-    {{!-- {{/each}} --}}
+    {{/each}}
     {{!-- <button class="development none devbutt">No development</button> --}}
-{{!-- </div> --}}
+</div>
 {{!-- <p>Developments Learned: {{gamestate.developments}}</p> --}}

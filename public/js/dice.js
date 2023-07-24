@@ -1,5 +1,5 @@
+/* eslint-disable no-use-before-define */
 /* eslint-disable default-case */
-const Turn = require('./turn');
 
 const foodHandler = async () => {
   dice.chosenForSix('food');
@@ -11,7 +11,8 @@ const laborHandler = async () => {
 
 const rollDiceHandler = async () =>{
   let allKept;
-  const cities = parseInt(document.querySelector(`#${gamestate} .cities`).textContent);
+  let cities = document.querySelector('.cities').textContent;
+  cities =parseInt(cities.slice(-1));
   for (let i = 1; i <= cities; i++) {
     allKept = document.querySelector(`#die${i}`).classList.contains('kept');
     if (!allKept) {
@@ -19,11 +20,11 @@ const rollDiceHandler = async () =>{
     }
   }
   if (dice.timesRolled === 0) {
-    dice.resetDice();
+    dice.resetDice(cities);
   } else if (dice.timesRolled === 3 || allKept) {
     document.querySelector('#die8').classList.add('none');
     document.querySelector('#die8').removeEventListener('click', rollDiceHandler);
-    for (let j = 1; j <= dice.cities; j++) {
+    for (let j = 1; j <= cities; j++) {
       document.querySelector(`#die${j}`).classList.add('kept');
     }
     dice.compileDieResults();
@@ -44,8 +45,9 @@ class Dice {
     this.timesRolled = 0;
     this.recordDie = [];
     this.sixesRolled = 0;
-    this.cities = parseInt(document.querySelector(`#${gamestate} .cities`).textContent);
-    this.chose;
+    this.cities = 0;
+    this.chose = 0;
+    this.diceCheck = 1;
   }
 
   displayDice(dieResult, dieNumber) {
@@ -74,10 +76,10 @@ class Dice {
   }
 
   applyDieResult(dieResult, choice, player) {
-    let agriculture = document.querySelector(`#${player} .agriculture .learned`);
-    agriculture = agriculture.classList.contains('true');
-    const masonry = document.querySelector(`#${player} .masonry .learned`);
-    masonry = masonry.classList.contains('true');
+    const agriculture = false;//document.querySelector(`#${player} .agriculture .learned`);
+    //agriculture = agriculture.classList.contains('true');
+    const masonry = false;//document.querySelector(`#${player} .masonry .learned`);
+    //masonry = masonry.classList.contains('true');
     switch (dieResult) {
     case 1:
       this.skulls += 1;
@@ -126,14 +128,14 @@ class Dice {
   rollDice(){
     if (this.timesRolled < 3) {
       this.timesRolled += 1;
-      const announcement = `Die Roll: ${timesRolled}`;
-      Turn.popup(announcement, 40, 'announcement');
+      const announcement = `Die Roll: ${this.timesRolled}`;
+      popup(announcement, 40, 'announcement');
       for (let i = 1; i <= this.cities; i++) {
         const kept = document.querySelector(`#die${i}`);
         if (!kept.classList.contains('kept')) {
           const dieResult = Math.floor(Math.random() * 6) + 1;
           this.recordDie[i] = dieResult;
-          dice.displayDice(dieResult, i);
+          this.displayDice(dieResult, i);
           if (dieResult === 1) {
             kept.classList.add('kept');
           }
@@ -149,17 +151,22 @@ class Dice {
       dieArray[n].addEventListener('click', (event) => {
         event.stopPropagation();
         const checkKept = event.target;
+        // let parseDie = checkKept.getAttribute('id');
+        // parseDie = parseDie.slice(-1);
         if (checkKept.classList.contains('die') && !checkKept.classList.contains('kept') && !checkKept.classList.contains('done')) {
           checkKept.classList.add('kept');
-        }
+        } //else if (checkKept.classList.contains('die') && this.recordDie[parseDie] !== 1){
+        //checkKept.classList.remove('kept');
+        //}
       });
     }
   }
 
-  resetDice() {
+  resetDice(cities) {
+    this.cities = cities;
     for (let l = 1; l < 9; l++) {
       const dieClass = document.querySelector(`#die${l}`).classList;
-      if (l <= cities) {
+      if (l <= this.cities) {
         dieClass.remove('kept');
         dieClass.remove('none');
       } else {
@@ -170,15 +177,15 @@ class Dice {
   }
 
   choose() {
-    document.querySelector('#yes').innerHTML = 'Food';
-    document.querySelector('#no').innerHTML = 'Labor';
-    document.querySelector('#yes').addEventListener('click', foodHandler);
-    document.querySelector('#no').addEventListener('click', laborHandler);
-    Turn.popup(`Would you like food or labor from your die? ${sixesRolled}x`, 3000, 'choice');
+    document.querySelector('.yes').innerHTML = 'Food';
+    document.querySelector('.no').innerHTML = 'Labor';
+    document.querySelector('.yes').addEventListener('click', foodHandler);
+    document.querySelector('.no').addEventListener('click', laborHandler);
+    popup(`Would you like food or labor from your die? ${this.sixesRolled}x`, 3000, 'choice');
   }
 
   compileDieResults() {
-    for (let k = 1; k <= cities; k++) {
+    for (let k = 1; k <= this.cities; k++) {
       if (this.recordDie[k] === 6) {
         this.sixesRolled += 1;
         this.choose();
@@ -188,15 +195,36 @@ class Dice {
     }
   }
 
-  chosenForSix(choice){
+  chosenForSix(choice) {
     this.chose += 1;
     if (this.chose === this.sixesRolled) {
       popup('Would you like food or labor from your die?', 1, 'choice');
+    } else {
+      popup(`Would you like food or labor from your die? ${this.sixesRolled - this.chose}x`, 3000, 'choice');
     }
-    this.applyDieResult(6, choice);
+    let diceCheck = 1;
+    for (let i = 1; i <= this.cities; i++) {
+      if (this.recordDie[i] === 6) {
+        if (diceCheck === this.chose) {
+          if (choice === 'food') {
+            document.querySelector(`#die${i}`).innerHTML = '2&#127806;';
+            break;
+          } else if (choice === 'labor') {
+            document.querySelector(`#die${i}`).innerHTML = '2&#9792;';
+            break;
+          }
+
+        } else {
+          diceCheck += 1;
+        }
+      }
+      this.applyDieResult(6, choice);
+    }
   }
 }
 
-document.querySelector('#die8').addEventListener('click', rollDiceHandler);
 
-module.exports = Dice;
+document.querySelector('#die8').addEventListener('click', rollDiceHandler);
+document.querySelector('#test').addEventListener('click', rollDiceHandler);
+
+const dice = new Dice;

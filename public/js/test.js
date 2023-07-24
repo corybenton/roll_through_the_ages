@@ -1,1 +1,0 @@
-document.querySelector('#test').addEventListener('click', startUp);

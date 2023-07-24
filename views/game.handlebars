@@ -12,17 +12,8 @@
                     <div class="row">
                         <div class="col-5 container">
                             <h5>Developments: </h5>
-                            <div class="segment-header row">
-                                <span class="col-1">Cost</span>
-                                <span class="col-1"></span>
-                                <span class="col-3">Name</span>
-                                <span class="col-1">Pts</span>
-                                <span class="col-5">Effect</span>
-                            </div>
                             <div class="developments">
-                            {{#each player1board.developments as |development|}}
                             {{> developments}}
-                            {{/each}}
                             </div>
                         </div>
                             <div class="col-4 container">
@@ -44,14 +35,14 @@
             </div>
             <div class="col-2">
                 <div id="dice-tray" class="container">
-                    <div class="die container" id="1"></div>
-                    <div class="die container" id="2"></div>
-                    <div class="die container" id="3"></div>
-                    <div class="die none container" id="4">4</div>
-                    <div class="die none container" id="5">5</div>
-                    <div class="die none container" id="6">6</div>
-                    <div class="die none container" id="7">7</div>
-                    <button class="done die none" id="8">Done</button>
+                    <div class="die container" id="die1"></div>
+                    <div class="die container" id="die2"></div>
+                    <div class="die container" id="die3"></div>
+                    <div class="die none container" id="die4">4</div>
+                    <div class="die none container" id="die5">5</div>
+                    <div class="die none container" id="die6">6</div>
+                    <div class="die none container" id="die7">7</div>
+                    <button class="done die none" id="die8">Done</button>
                 </div>
             </div>
             <div class="col-2">

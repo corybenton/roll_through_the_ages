@@ -1,10 +1,8 @@
-const Turn = require('/turn');
-const Game = require('/game');
-
+/* eslint-disable no-use-before-define */
 const buyDevelopment = () => {
   document.querySelector('#done').removeEventListener('click', buyDevelopment);
   let development = document.querySelector('#developmentsDropdown').value;
-  learn.removeChildren();
+  removeChildren();
   document.querySelector(`.${development} .learned`).classList = true;
   const cost = document.querySelector(`.${development} .cost`).textContent;
   learn.payForDevelopment(cost);
@@ -23,9 +21,15 @@ const parseGoods = () => {
   learn.removeGoods(amountSold, typeSold);
 };
 
+// const startUp = () => {
+//   learn.devStarter(7);
+// };
+
+// document.querySelector('#test').addEventListener('click', startUp);
+
 class LearnDev {
   constructor(){
-    this.totalValue = Game.totalValue(),
+    this.totalValue = 15;//getGoodsValue(),
     this.coins = 0;
     this.cost = 0;
   }
@@ -33,7 +37,7 @@ class LearnDev {
   devStarter(coins){
     popup('Buying developments...', 40, 'announcement');
     this.coins = coins;
-    popup(`Money available: ${totalValue + this.coins}`, 10000, 'resource');
+    popup(`Money available: ${this.totalValue + this.coins}`, 10000, 'resource');
     //granaries();
     this.chooseDevelopment();
   }
@@ -56,6 +60,7 @@ class LearnDev {
         newDev.appendChild(name);
         document.querySelector('#developmentsDropdown').appendChild(newDev);
       }
+      break;
     }
     popup('Which development to learn?', 20000, 'dropdown');
     document.querySelector('#done').addEventListener('click', buyDevelopment);
@@ -66,17 +71,18 @@ class LearnDev {
       this.cost = cost - this.coins;
       document.querySelector('#done').addEventListener('click', parseGoods);
       for (let i = 1; i <= 5; i++) {
-        let goodAmt = parseInt(document.querySelector(`#${gamestate} .good${i} .amount`).value);
-        if (goodAmt > 0) {
+        let goodVal = parseInt(document.querySelector(`.good${i} .value`).textContent);
+        if (goodVal > 0) {
 
           const newGood = document.createElement('option');
 
           let name = document.querySelector(`.good${i} .good`).innerHTML;
-          name = `${name}: ${goodAmt}`;
+          name = `${name}: ${goodVal}`;
           name = document.createTextNode(name);
           newGood.appendChild(name);
           document.querySelector('#developmentsDropdown').appendChild(newGood);
         }
+        break;
       }
       popup('Which good to sell?', 20000, 'dropdown');
     } else {
@@ -85,19 +91,11 @@ class LearnDev {
     }
   }
 
-  removeChildren() {
-    const erase = document.querySelector('#developmentsDropdown');
-    while (erase.hasChildNodes()){
-      erase.removeChild(erase.firstChild);
-    }
-  }
-
   removeGoods(amountSold, typeSold) {
     this.cost = this.cost - amountSold;
+    updateItem(0, 'value', typeSold);
+    updateItem(0, 'amount', typeSold);
     this.payForDevelopment(this.cost);
-    Turn.updateItem(0, 'value', typeSold);
-    Turn.updateItem(0, 'amount', typeSold);
-    this.payForDevelopment(cost);
   }
 
   // function granaries(){
@@ -144,4 +142,4 @@ class LearnDev {
 
 }
 
-module.exports = LearnDev;
+const learn = new LearnDev();

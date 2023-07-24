@@ -1,4 +1,3 @@
-const Turn = require('./turn');
 
 class Game {
   checkGameEnd(player) {
@@ -35,7 +34,7 @@ class Game {
   }
 
   gameEnd(player) {
-    Turn.popup('Game is over.', 300, 'announcement');
+    popup('Game is over.', 300, 'announcement');
     let winner;
     const playerScore = [];
     const playerGoods = [];
@@ -79,20 +78,11 @@ class Game {
   }
 
   round(player) {
-    Turn.turn(player[1], player[2]);
-    Turn.turn(player[2], player[1]);
-    Game.checkGameEnd(player);
+    // Turn.turn(player[1], player[2]);
+    // Turn.turn(player[2], player[1]);
+    this.checkGameEnd(player);
   }
 
-  getGoodsValue(player) {
-    let totalVal, goodVal;
-    for (let i = 1; i < 6; i++) {
-      goodVal = parseInt(document.querySelector(`.value.${i}#${player}`));
-      totalVal += goodVal;
-    }
-    return totalVal;
-  }
 
 }
 
-module.exports = Game;
