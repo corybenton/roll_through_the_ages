@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { GameState, Monuments, Developments, Goods, Game, } = require('../models');
+const { GameState, Monuments, Developments, Goods, Game, User } = require('../models');
 
 router.get('/game/:id', async (req, res) => {
   try {
@@ -15,6 +15,7 @@ router.get('/game/:id', async (req, res) => {
           model: GameState,
           as: 'player1board',
           include: [
+            User,
             Monuments,
             Developments,
             Goods,
@@ -24,6 +25,7 @@ router.get('/game/:id', async (req, res) => {
           model: GameState,
           as: 'player2board',
           include: [
+            User,
             Monuments,
             Developments,
             Goods,
@@ -48,7 +50,7 @@ router.get('/game/:id', async (req, res) => {
 
     //console.log('p2Data gameroutes game:id : ', player2data);
     //console.log('GameData gameroutes game:id :', GameData);
-
+    console.log('GameData.player1board.dataValues, player2data gameroutes: ', GameData.player1board.dataValues, player2data);
     res.render('game', { gamestates: [GameData.player1board.dataValues, player2data] });
   } catch (err) {
     console.error(err);
