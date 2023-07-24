@@ -142,4 +142,4 @@ class LearnDev {
 
 }
 
-const learn = new LearnDev();
+const learn = new LearnDev;

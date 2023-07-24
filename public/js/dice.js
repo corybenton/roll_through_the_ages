@@ -47,7 +47,6 @@ class Dice {
     this.sixesRolled = 0;
     this.cities = 0;
     this.chose = 0;
-    this.diceCheck = 1;
   }
 
   displayDice(dieResult, dieNumber) {
