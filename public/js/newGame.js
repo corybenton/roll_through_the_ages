@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 
 document.querySelector('#newGameBtn').addEventListener('click', async () => {
   console.log('Button clicked!');
