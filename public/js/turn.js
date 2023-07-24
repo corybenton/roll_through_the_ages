@@ -1,4 +1,6 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable default-case */
+/* eslint-disable no-use-before-define */
 class Turn {
   turn(player1, player2){
     popup(`${player1}'s turn`, 150, 'announcement');
