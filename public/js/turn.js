@@ -24,7 +24,7 @@ class Turn {
     document.querySelector('#okay').addEventListener('click', moveToFeed);
   }
 
-  feedCities() {
+  async feedCities() {
     popup('Feeding cities, resolving disasters, assigning goods...', 200, 'announcement');
     let disasters = parseInt(document.querySelector('.disasters').textContent);
 
@@ -41,13 +41,13 @@ class Turn {
         disasters = disasters + 1;
       }
     }
-    updateItem(food, 'amount', 'Food');
-    updateItem(food, 'value', 'Food');
-    updateItem(disasters, 'disasters');
+    await updateItem(food, 'amount', 'Food');
+    await updateItem(food, 'value', 'Food');
+    await updateItem(disasters, 'disasters');
     this.resolveDisasters();
   }
 
-  resolveDisasters() {
+  async resolveDisasters() {
     let irrigation = document.querySelector('.Irrigation .learned');
     irrigation = irrigation.classList.contains('true');
     let medicine = document.querySelector('.Medicine .learned');
@@ -68,7 +68,7 @@ class Turn {
       // updateItem(otherDisasters, 'disasters', '', othergamestate);
     } else if (dice.skulls === 4 && laborForGreatWall !== 0){
       disasters = disasters + 4;
-    } else if (dice.skulls <= 5 ){
+    } else if (dice.skulls >= 5 ){
       if (!religion) {
       //   revolt = gamestate;
       // // } else if (!otherReligion){
@@ -82,11 +82,17 @@ class Turn {
         }
       }
     }
-    updateItem(disasters, 'disasters');
+    await updateItem(disasters, 'disasters');
     this.assignGoods();
   }
 
-  assignGoods() {
+  moveToBuild(){
+    document.querySelector('#okay').removeEventListener('click', moveToFeed);
+    popup('Move to building monuments', 500, 'ok');
+    document.querySelector('#okay').addEventListener('click', timeForBuild);
+  }
+
+  async assignGoods() {
     let goodNum = 1;
     let quarrying = document.querySelector('.Quarrying .learned');
     quarrying = quarrying.classList.contains('true');
@@ -121,8 +127,8 @@ class Turn {
         break;
       }
 
-      updateItem(goodTypeAmt, goodNumType, 'amount');
-      updateItem(goodTypeVal, goodNumType, 'value');
+      await updateItem(goodTypeAmt, 'amount', goodNumType);
+      await updateItem(goodTypeVal, 'value', goodNumType);
 
       if (goodNum === 5) {
         goodNum = 1;
@@ -130,6 +136,7 @@ class Turn {
         goodNum += 1;
       }
     }
+    this.moveToBuild();
   }
 
   cleanup() {
@@ -214,4 +221,8 @@ const cleanupGoods = () => {
 
 const moveToFeed = () => {
   newTurn.feedCities();
+};
+
+const timeForBuild = () => {
+  workIt.laborStart();
 };

@@ -205,7 +205,7 @@ router.post('/join', joinGame);
 router.put('/game', async (req, res) => {
   try{
     // const gameId = req.session.userId;
-
+    console.log(req.session);
     if (req.body.place === 'learned') {
       await Developments.update({learned: req.body.value}, {
         where: {
@@ -216,7 +216,7 @@ router.put('/game', async (req, res) => {
     } else if (req.body.place === 'needed') {
       await Monuments.update({needed: req.body.value}, {
         where: {
-          name: req.body.category,
+          number: req.body.category,
           // gamestate_id: gameId,
         },
       });
@@ -259,8 +259,9 @@ router.put('/game', async (req, res) => {
         }
       });
     }
-
-    res.status(200).render('game');
+    res.status(200).json('Success');
+    console.log(`${req.body.place} updated to ${req.body.value}`);
+    //res.status(200).render('game');
   } catch (err) {
     console.log(err);
   }

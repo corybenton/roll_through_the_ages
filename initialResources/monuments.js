@@ -16,17 +16,17 @@ const monumentsData = [
   },
   {
     number: 'mon2',
-    name: 'Hanging Gardens',
-    needed: 11,
-    points_first: 8,
-    points_second: 4,
-  },
-  {
-    number: 'mon3',
     name: 'Obelisk',
     needed: 9,
     points_first: 6,
     points_second: 3,
+  },
+  {
+    number: 'mon3',
+    name: 'Hanging Gardens',
+    needed: 11,
+    points_first: 8,
+    points_second: 4,
   },
   {
     number: 'mon4',

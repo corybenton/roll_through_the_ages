@@ -37,11 +37,12 @@ async function updateItem(value, place, category, player) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(
-        { place, value, category, player },
+        { value, place, category, player },
       )
     });
+    console.log('Here.');
     if (category){
-      category = category.replace(' ', '_');
+    //   category = category.replace(' ', '_');
       document.querySelector(`.${category} .${place}`).innerHTML = value;
     } else {
       document.querySelector(`.${place}`).innerHTML = value;
