@@ -27,7 +27,7 @@ Monuments.init(
     points_second: {
       type: DataTypes.INTEGER
     },
-    gameState_id: {
+    gamestate_id: {
       type: DataTypes.INTEGER,
       references: {
         model: 'gameState',
