@@ -93,7 +93,9 @@ class Labor {
       await updateItem(this.buildNeed, 'needed', this.newBuild);
     }
     this.labor = this.labor - spentLabor;
-    popup('Finish', 50, 'announcement');
+    popup('Finish', 1, 'dropdown');
+    popup('Finish', 1, 'range');
+    popup('Finish', 1, 'resource');
   }
 }
 const buildIt = (e) => {
