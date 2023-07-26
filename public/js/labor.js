@@ -13,12 +13,12 @@ class Labor {
   laborStart() {
     popup('Using labor...', 40, 'announcement');
     this.labor = dice.labor;
-    popup(`Labor available: ${this.labor}`, 1000, 'resource');
     this.chooseBuild();
   }
 
   chooseBuild() {
     if (this.labor > 0){
+      popup(`Labor available: ${this.labor}`, 1000, 'resource');
       if (this.cities < 7) {
         const cityBuild = document.createElement('option');
         const cityBuildText = document.createTextNode('New city');
@@ -95,7 +95,7 @@ class Labor {
       await updateItem(this.buildNeed, 'needed', this.newBuild);
     }
     this.labor = this.labor - spentLabor;
-    this.finish();
+    this.chooseBuild();
   }
 
   finish() {

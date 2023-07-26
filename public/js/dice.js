@@ -2,15 +2,18 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable default-case */
 
-const foodHandler = async () => {
+const foodHandler = async (e) => {
+  e.preventDefault();
   dice.chosenForSix('food');
 };
 
-const laborHandler = async () => {
+const laborHandler = async (e) => {
+  e.preventDefault();
   dice.chosenForSix('labor');
 };
 
-const rollDiceHandler = async () =>{
+const rollDiceHandler = async (e) =>{
+  e.preventDefault();
   dice.diceHandler();
 };
 
