@@ -35,6 +35,9 @@ router.get('/game/:id', async (req, res) => {
     });
     //console.log(GameData);
     //console.log('gameData gameroutes: ', GameData);
+    console.log('dev array', GameData.player1board.dataValues.developments);
+    console.log('goods array', GameData.player1board.dataValues.goods);
+    console.log('mon array', GameData.player1board.dataValues.monuments);
 
     if (!GameData) {
       return res.status(404).json({ error: 'Game state not found' });
@@ -61,6 +64,25 @@ router.get('/game/:id', async (req, res) => {
     //     isMyTurn = true;
     //   }
     // }
+
+    //GameData.player1board.dataValues.monuments = GameData.player1board.dataValues.monuments.sort((a, b) => a.id - b.id);
+    //GameData.player1board.dataValues.monuments.sort((a, b) => a.id - b.id);
+
+    GameData.player1board.dataValues.goods.sort((a, b) => {
+      const numA = parseInt(a.number.replace('good', ''));
+      const numB = parseInt(b.number.replace('good', ''));
+
+      return numA - numB;
+    });
+
+    if (player2data) {
+      GameData.player2board.dataValues.goods.sort((a, b) => {
+        const numA = parseInt(a.number.replace('good', ''));
+        const numB = parseInt(b.number.replace('good', ''));
+
+        return numA - numB;
+      });
+    }
 
 
 
