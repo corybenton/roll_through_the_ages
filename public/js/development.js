@@ -16,6 +16,7 @@ const buyDevelopment = (e) => {
 
 const parseGoods = (e) => {
   e.preventDefault();
+  document.querySelector('#done').removeEventListener('click', parseGoods);
   const getValue = document.querySelector('#developmentsDropdown').value;
   const amountSold = parseInt(getValue.slice(-2));
   let numMod;
@@ -30,6 +31,8 @@ const parseGoods = (e) => {
 
 const goToChoose = (e) => {
   e.preventDefault();
+  document.querySelector('.yes').removeEventListener('click', sellFood);
+  document.querySelector('.no').removeEventListener('click', goToChoose);
   learn.chooseDevelopment();
 };
 
@@ -37,6 +40,7 @@ const sellFood = (e) => {
   e.preventDefault();
   popup('Would you like sell food for coins?', 1, 'choice');
   document.querySelector('.yes').removeEventListener('click', sellFood);
+  document.querySelector('.no').removeEventListener('click', goToChoose);
 
   document.querySelector('.rangeFinder').setAttribute('max', learn.food);
   document.querySelector('.bar').innerHTML = learn.food;

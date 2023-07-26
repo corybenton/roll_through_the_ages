@@ -226,6 +226,7 @@ const moveToFeed = (e) => {
 
 const timeForBuild = (e) => {
   e.preventDefault();
+  document.querySelector('#okay').removeEventListener('click', timeForBuild);
   workIt.laborStart();
 };
 
