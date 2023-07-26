@@ -213,6 +213,7 @@ router.put('/game', async (req, res) => {
           // gamestate_id: gameId,
         },
       });
+      res.render('/game/3');
     } else if (req.body.place === 'needed') {
       await Monuments.update({needed: req.body.value}, {
         where: {

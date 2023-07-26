@@ -6,18 +6,18 @@ class Turn {
   //   this.dice = 0;
   // }
 
-  turn(player1, player2){
-    popup(`${player1}'s turn`, 150, 'announcement');
+  // turn(player1, player2){
+  //   popup(`${player1}'s turn`, 150, 'announcement');
 
-    this.feedCities(player1, dice.food);
-    this.resolveDisasters(player1, player2, dice.skulls);
-    let workIt = new Labor;
-    workIt.laborStart(dice.labor);
-    this.assignGoods(dice.goods);
-    let learn = new LearnDev;
-    learn.devStarter(dice.coins);
-    this.cleanUp(player1);
-  }
+  //   this.feedCities(player1, dice.food);
+  //   this.resolveDisasters(player1, player2, dice.skulls);
+  //   let workIt = new Labor;
+  //   workIt.laborStart(dice.labor);
+  //   this.assignGoods(dice.goods);
+  //   let learn = new LearnDev;
+  //   learn.devStarter(dice.coins);
+  //   this.cleanUp(player1);
+  // }
 
   startRoll(){
     dice.diceHandler();
@@ -48,15 +48,15 @@ class Turn {
   }
 
   async resolveDisasters() {
-    let irrigation = document.querySelector('.Irrigation .learned');
-    irrigation = irrigation.classList.contains('true');
-    let medicine = document.querySelector('.Medicine .learned');
-    medicine = medicine.classList.contains('true');
+    let irrigation = document.querySelector('.Irrigation .learn');
+    irrigation = irrigation.classList.contains('learned');
+    let medicine = document.querySelector('.Medicine .learn');
+    medicine = medicine.classList.contains('learned');
     let laborForGreatWall = parseInt(document.querySelector('.mon4 .needed').textContent);
-    let religion = document.querySelector('.Religion .learned');
-    religion = religion.classList.contains('true');
-    // let otherReligion = document.querySelector(`${othergamestate} .religion .learned`);
-    // otherReligion = religion.classList.contains('true');
+    let religion = document.querySelector('.Religion .learn');
+    religion = religion.classList.contains('learned');
+    // let otherReligion = document.querySelector(`${othergamestate} .religion .learn`);
+    // otherReligion = religion.classList.contains('learned');
     let disasters = parseInt(document.querySelector('.disasters').textContent);
     // let otherDisasters = parseInt(document.querySelector(`#${othergamestate} .disasters`).textContent);
     let revolt;
@@ -94,19 +94,19 @@ class Turn {
 
   async assignGoods() {
     let goodNum = 1;
-    let quarrying = document.querySelector('.Quarrying .learned');
-    quarrying = quarrying.classList.contains('true');
+    let quarrying = document.querySelector('.Quarrying .learn');
+    quarrying = quarrying.classList.contains('learned');
     for (let i = 1; i <= dice.goods; i++) {
       let goodTypeAmt = parseInt(document.querySelector(`.good${goodNum} .amount`).textContent);
+      let goodTypeVal = parseInt(document.querySelector(`.good${goodNum} .value`).textContent);
       if (goodTypeAmt < 9 - goodNum) {
         goodTypeAmt += 1;
+        goodTypeVal = goodTypeVal + (goodNum * goodTypeAmt);
       }
       if (goodNum === 2 && quarrying && goodTypeAmt < 9 - goodNum) {
         goodTypeAmt += 1;
+        goodTypeVal = goodTypeVal + (goodNum * goodTypeAmt);
       }
-
-      let goodTypeVal = parseInt(document.querySelector(`.good${goodNum} .value`).textContent);
-      goodTypeVal = goodTypeVal + (goodNum * goodTypeAmt);
 
       let goodNumType;
       switch(goodNum){
@@ -143,15 +143,14 @@ class Turn {
     let totalAmount = 0;
     let goodAmount = 0;
     let goodValue = 0;
-    let caravans = false;//document.querySelector('.caravans .learned');
-    //caravans = caravans.classList.contains('true');
+    let caravans = document.querySelector('.Caravans .learn');
+    caravans = caravans.classList.contains('learned');
     for (let i = 1; i <= 5; i++){
       goodAmount = parseInt(document.querySelector(`.good${i} .amount`).textContent);
       totalAmount += goodAmount;
-      break;
     }
     if (!caravans && totalAmount > 6) {
-      document.querySelector('.dropdown').addEventListener('click', cleanupGoods);
+      document.querySelector('#done').addEventListener('click', cleanupGoods);
       removeChildren();
       for (let i = 1; i <= 5; i++){
         goodAmount = parseInt(document.querySelector(`.good${i} .amount`).textContent);
@@ -165,13 +164,13 @@ class Turn {
           newGood.appendChild(goodName);
           document.querySelector('#developmentsDropdown').appendChild(newGood);
         }
-        break;
       }
       popup('What will you get rid of?', 3000, 'dropdown');
       const message = `You have ${totalAmount} resources.  You can only keep 6`;
       popup(message, 1000, 'resource');
     } else {
-      document.querySelector('.dropdown').removeEventListener('click', cleanupGoods);
+      document.querySelector('#done').removeEventListener('click', cleanupGoods);
+      removeChildren();
       popup('Go away', 1, 'resource');
       popup('Go away', 1, 'dropdown');
     }
@@ -185,7 +184,6 @@ class Turn {
       const getGood = document.querySelector(`.good${i} .good`).textContent;
       if (getGood === getType){
         mod = i;
-        break;
       }
     }
 
@@ -201,13 +199,13 @@ class Turn {
 }
 
 
-let takeTurn;
+// let takeTurn;
 
 const cleanupGoods = () => {
   const getValue = document.querySelector('#developmentsDropdown').value;
   let getType = getValue.slice(0, getValue.length - 16);
   getType = getType.replace(' ', '');
-  takeTurn.doCleanup(getType);
+  newTurn.doCleanup(getType);
 };
 
 // const startUp4 = () => {
@@ -226,3 +224,5 @@ const moveToFeed = () => {
 const timeForBuild = () => {
   workIt.laborStart();
 };
+
+const newTurn = new Turn;

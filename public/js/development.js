@@ -1,14 +1,21 @@
 /* eslint-disable no-use-before-define */
-const buyDevelopment = () => {
-  document.querySelector('#done').removeEventListener('click', buyDevelopment);
+const buyDevelopment = (e) => {
+  e.preventDefault();
   let development = document.querySelector('#developmentsDropdown').value;
+  document.querySelector('#done').removeEventListener('click', buyDevelopment);
   removeChildren();
-  document.querySelector(`.${development} .learned`).classList = true;
-  const cost = document.querySelector(`.${development} .cost`).textContent;
-  learn.payForDevelopment(cost);
+  // document.querySelector(`.${development} .learn`).classList = 'learned';
+  if (development !== 'No development') {
+    const cost = document.querySelector(`.${development} .cost`).textContent;
+    learn.payForDevelopment(cost);
+    learn.getRewards(development);
+  } else {
+    learn.goToCleanUp();
+  }
 };
 
-const parseGoods = () => {
+const parseGoods = (e) => {
+  e.preventDefault();
   const getValue = document.querySelector('#developmentsDropdown').value;
   const amountSold = parseInt(getValue.slice(-2));
   let numMod;
@@ -29,14 +36,15 @@ const parseGoods = () => {
 
 class LearnDev {
   constructor(){
-    this.totalValue = 15;//getGoodsValue(),
+    this.totalValue = 0;
     this.coins = 0;
     this.cost = 0;
   }
 
-  devStarter(coins){
+  devStarter(){
     popup('Buying developments...', 40, 'announcement');
-    this.coins = coins;
+    this.totalValue = getGoodsValue();
+    this.coins = dice.coins;
     popup(`Money available: ${this.totalValue + this.coins}`, 10000, 'resource');
     //granaries();
     this.chooseDevelopment();
@@ -51,16 +59,15 @@ class LearnDev {
 
     for (let i = 0; i < 13; i++) {
       const getDevCost = document.querySelector(`.dev${i} .cost`).innerHTML;
-      let learned = document.querySelector(`.dev${i} .learned`);
-      learned = learned.classList.contains('true');
-      if (getDevCost < (this.totalValue + this.coins) && !learned) {
+      let learned = document.querySelector(`.dev${i} .learn`);
+      learned = learned.classList.contains('learned');
+      if (getDevCost <= (this.totalValue + this.coins) && !learned) {
         const newDev = document.createElement('option');
-        let name = document.querySelector(`.dev${i} .development`).innerHTML;
-        name = document.createTextNode(name);
-        newDev.appendChild(name);
+        let devName = document.querySelector(`.dev${i} .development`).innerHTML;
+        devName = document.createTextNode(devName);
+        newDev.appendChild(devName);
         document.querySelector('#developmentsDropdown').appendChild(newDev);
       }
-      break;
     }
     popup('Which development to learn?', 20000, 'dropdown');
     document.querySelector('#done').addEventListener('click', buyDevelopment);
@@ -68,7 +75,13 @@ class LearnDev {
 
   payForDevelopment(cost) {
     if (cost > 0) {
-      this.cost = cost - this.coins;
+      if (this.coins > 0) {
+        this.cost = cost - this.coins;
+        this.coins = 0;
+      } else {
+        this.cost = cost;
+      }
+      popup(`Cost: ${this.cost}`, 5000, 'resource');
       document.querySelector('#done').addEventListener('click', parseGoods);
       for (let i = 1; i <= 5; i++) {
         let goodVal = parseInt(document.querySelector(`.good${i} .value`).textContent);
@@ -76,28 +89,39 @@ class LearnDev {
 
           const newGood = document.createElement('option');
 
-          let name = document.querySelector(`.good${i} .good`).innerHTML;
-          name = `${name}: ${goodVal}`;
-          name = document.createTextNode(name);
-          newGood.appendChild(name);
+          let goodNm = document.querySelector(`.good${i} .good`).innerHTML;
+          goodNm = `${goodNm}: ${goodVal}`;
+          goodNm = document.createTextNode(goodNm);
+          newGood.appendChild(goodNm);
           document.querySelector('#developmentsDropdown').appendChild(newGood);
         }
-        break;
       }
       popup('Which good to sell?', 20000, 'dropdown');
     } else {
       popup('Go away', 1, 'resource');
       popup('Go away', 1, 'dropdown');
+      this.goToCleanUp();
     }
   }
 
-  removeGoods(amountSold, typeSold) {
+  async removeGoods(amountSold, typeSold) {
+    removeChildren();
     this.cost = this.cost - amountSold;
-    updateItem(0, 'value', typeSold);
-    updateItem(0, 'amount', typeSold);
+    await updateItem(0, 'value', typeSold);
+    await updateItem(0, 'amount', typeSold);
     this.payForDevelopment(this.cost);
   }
 
+  async getRewards(development) {
+    await updateItem(true, 'learned', development);
+    const devScore = parseInt(document.querySelector(`.${development} .points`).textContent);
+    const newScore = parseInt(document.querySelector('.score').textContent) + devScore;
+    await updateItem(newScore, 'score');
+  }
+
+  goToCleanUp() {
+    newTurn.cleanup();
+  }
   // function granaries(){
   //   const granaries = true;
   //   const food = 7;
