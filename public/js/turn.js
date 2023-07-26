@@ -220,6 +220,7 @@ const cleanupGoods = (e) => {
 
 const moveToFeed = (e) => {
   e.preventDefault();
+  popup(`You gained ${dice.coins} coins, ${dice.food} food, ${dice.labor} labor, ${dice.goods} goods, and ${dice.skulls} skulls`, 100, 'resource');
   newTurn.feedCities();
 };
 
