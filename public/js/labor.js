@@ -38,6 +38,8 @@ class Labor {
       }
       popup('Which object to build?', 20000, 'dropdown');
       document.querySelector('#done').addEventListener('click', buildIt);
+    } else {
+      this.finish();
     }
   }
 
@@ -93,15 +95,22 @@ class Labor {
       await updateItem(this.buildNeed, 'needed', this.newBuild);
     }
     this.labor = this.labor - spentLabor;
+    this.finish();
+  }
+
+  finish() {
     popup('Finish', 1, 'dropdown');
     popup('Finish', 1, 'range');
     popup('Finish', 1, 'resource');
+    document.querySelector('#okay').removeEventListener('click', timeForBuild);
+    document.querySelector('#okay').addEventListener('click', moveToDev);
+    popup('Move to developments', 5000, 'ok');
   }
 }
 const buildIt = (e) => {
   e.preventDefault();
   const newBuild = document.querySelector('#developmentsDropdown').value;
-  document.querySelector('#done').removeEventListener('submit', buildIt);
+  document.querySelector('#done').removeEventListener('click', buildIt);
   workIt.spendLabor(newBuild);
 };
 
@@ -110,6 +119,11 @@ const useIt = (e) => {
   const spentLabor = document.querySelector('.rangeFinder').value;
   document.querySelector('.range').removeEventListener('submit', useIt);
   workIt.updateLabor(spentLabor);
+};
+
+const moveToDev = (e) => {
+  e.preventDefault();
+  learn.devStarter();
 };
 
 // const startUp2 = () => {

@@ -53,6 +53,7 @@ class Dice {
       this.keepDice();
     }
   }
+
   displayDice(dieResult, dieNumber) {
     let display;
     switch (dieResult) {
@@ -79,10 +80,10 @@ class Dice {
   }
 
   applyDieResult(dieResult, choice) {
-    let agriculture = document.querySelector('.Agriculture .learned');
-    agriculture = agriculture.classList.contains('true');
-    let masonry = document.querySelector('.Masonry .learned');
-    masonry = masonry.classList.contains('true');
+    let agriculture = document.querySelector('.Agriculture .learn');
+    agriculture = agriculture.classList.contains('learned');
+    let masonry = document.querySelector('.Masonry .learn');
+    masonry = masonry.classList.contains('learned');
     switch (dieResult) {
     case 1:
       this.skulls += 1;
@@ -92,7 +93,8 @@ class Dice {
       this.goods += 1;
       break;
     case 3:
-      let coinage = document.querySelector('.coinage .learned');
+      let coinage = document.querySelector('.Coinage .learn');
+      coinage = coinage.classList.contains('learned');
       if (coinage) {
         this.coins += 12;
       } else {

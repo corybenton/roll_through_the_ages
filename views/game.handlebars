@@ -17,7 +17,7 @@
                         <span class="citiesNeed col-1">{{gamestate.citiesNeed}}</span>
                     </div>
                     <div class="row">
-                        <div class="col-5 container">
+                        <div class="col-7 container">
                             <h5>Developments: </h5>
                             <div class="developments">
                                 <div class="row">
@@ -32,7 +32,8 @@
                                 {{/each}}
                             </div>
                         </div>
-                        <div class="col-4 container">
+                        <div class="col-5">
+                        <div class="container">
                             <h5>Monuments: </h5>
                             <div class="segment-header row">
                                 <span class="col-7">Name</span>
@@ -44,7 +45,7 @@
                             {{/each}}
                             <span class="note">Great Wall prevents Invasion</span>
                         </div>
-                        <div class="col-3 container">
+                        <div class="container">
                             <h5>Goods: </h5>
                             <div class="segment-header row">
                                 <span class="col-7">Name</span>
@@ -54,6 +55,7 @@
                             {{#each gamestate.goods as |good|}}
                             {{> goods good}}
                             {{/each}}
+                        </div>
                         </div>
                         <div class="row">
                             <span class="col">Disasters: </span>
