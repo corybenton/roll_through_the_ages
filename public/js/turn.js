@@ -201,7 +201,8 @@ class Turn {
 
 // let takeTurn;
 
-const cleanupGoods = () => {
+const cleanupGoods = (e) => {
+  e.preventDefault();
   const getValue = document.querySelector('#developmentsDropdown').value;
   let getType = getValue.slice(0, getValue.length - 16);
   getType = getType.replace(' ', '');
@@ -217,11 +218,13 @@ const cleanupGoods = () => {
 // const takeTurn = new Turn();
 // takeTurn.turn();
 
-const moveToFeed = () => {
+const moveToFeed = (e) => {
+  e.preventDefault();
   newTurn.feedCities();
 };
 
-const timeForBuild = () => {
+const timeForBuild = (e) => {
+  e.preventDefault();
   workIt.laborStart();
 };
 

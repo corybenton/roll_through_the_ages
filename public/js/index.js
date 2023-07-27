@@ -6,7 +6,8 @@
 
 // const newTurn = new Turn;
 
-const startTurn = () => {
+const startTurn = (e) => {
+  e.preventDefault();
   newTurn.startRoll();
 };
 
