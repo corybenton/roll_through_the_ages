@@ -123,6 +123,7 @@ const useIt = (e) => {
 
 const moveToDev = (e) => {
   e.preventDefault();
+  document.querySelector('#okay').removeEventListener('click', moveToDev);
   learn.devStarter();
 };
 
