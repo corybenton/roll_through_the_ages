@@ -33,11 +33,12 @@ router.get('/game/:id', async (req, res) => {
         },
       ],
     });
-    //console.log(GameData);
-    //console.log('gameData gameroutes: ', GameData);
-    console.log('dev array', GameData.player1board.dataValues.developments);
-    console.log('goods array', GameData.player1board.dataValues.goods);
-    console.log('mon array', GameData.player1board.dataValues.monuments);
+    // console.log('GAMEDATATATATATATAT!!!!!!!!', GameData);
+    // console.log('GameData.player1board.dataValues.id', GameData.player1board.dataValues.id);
+    // console.log('GameData.player2board.dataValues.id', GameData.player2board.dataValues.id);
+    // console.log('dev array', GameData.player1board.dataValues.developments);
+    // console.log('goods array', GameData.player1board.dataValues.goods);
+    // console.log('mon array', GameData.player1board.dataValues.monuments);
 
     if (!GameData) {
       return res.status(404).json({ error: 'Game state not found' });
@@ -225,7 +226,29 @@ router.post('/join', joinGame);
 
 
 router.put('/game', async (req, res) => {
-  try{
+  try {
+    const gameId = req.params.id;
+    const GameData = await Game.findByPk(gameId, {
+      include: [
+        {
+          model: GameState,
+          as: 'player1board',
+        },
+        {
+          model: GameState,
+          as: 'player2board',
+        },
+      ],
+    });
+
+    //console.log('gameData put route!!!!!: ', GameData);
+    console.log('gameState_id of player1board', GameData.player1board.dataValues.id);
+    //console.log('gameState_id of player2board', GameData.player2board.dataValues.id);
+
+    if (!GameData) {
+      return res.status(404).json({ error: 'Game state not found' });
+    }
+
     // const gameId = req.session.userId;
     console.log(req.session);
     if (req.body.place === 'learned') {
@@ -295,8 +318,8 @@ router.post('/game/:id/turnover', async (req, res) => {
     const gameId = req.params.id;
     const game = await Game.findByPk(gameId);
 
-    console.log(game);
-    console.log('!!!!!!!!!!! INSIDE GAME/ID/TURNOVER');
+    //console.log(game);
+    //console.log('!!!!!!!!!!! INSIDE GAME/ID/TURNOVER');
 
     let nextTurn;
 
