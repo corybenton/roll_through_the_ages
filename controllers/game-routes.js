@@ -239,52 +239,52 @@ router.put('/gameState/:UsersGameStateId', async (req, res) => {
       await Developments.update({learned: req.body.value}, {
         where: {
           name: req.body.category,
-          // gamestate_id: gameId,
+          gamestate_id: currGSid,
         },
       });
     } else if (req.body.place === 'needed') {
       await Monuments.update({needed: req.body.value}, {
         where: {
           number: req.body.category,
-          // gamestate_id: gameId,
+          gamestate_id: currGSid,
         },
       });
     } else if (req.body.place === 'amount') {
       await Goods.update({amount: req.body.value}, {
         where: {
           name: req.body.category,
-          // gamestate_id: gameId,
+          gamestate_id: currGSid,
         },
       });
     } else if (req.body.place === 'value') {
       await Goods.update({value: req.body.value}, {
         where: {
           name: req.body.category,
-          // gamestate_id: gameId,
+          gamestate_id: currGSid,
         },
       });
     } else if (req.body.place === 'score') {
       await GameState.update({score: req.body.value}, {
         where: {
-          // gamestate_id: gameId,
+          id: currGSid,
         }
       });
     } else if (req.body.place === 'disasters') {
       await GameState.update({disasters: req.body.value}, {
         where: {
-          // gamestate_id: gameId,
+          id: currGSid,
         }
       });
     } else if (req.body.place === 'cities') {
       await GameState.update({cities: req.body.value}, {
         where: {
-          // gamestate_id: gameId,
+          id: currGSid,
         }
       });
     } else if (req.body.place === 'citiesNeed') {
       await GameState.update({citiesNeed: req.body.value}, {
         where: {
-          // gamestate_id: gameId,
+          id: currGSid,
         }
       });
     }
