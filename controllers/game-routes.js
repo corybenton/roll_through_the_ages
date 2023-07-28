@@ -4,11 +4,7 @@ const { GameState, Monuments, Developments, Goods, Game, User } = require('../mo
 
 router.get('/game/:id', async (req, res) => {
   try {
-    // const gameId = req.session.id;
     const gameId = req.params.id;
-    //console.log('gameId gameroutes: ', gameId);
-    //instead of gamestate primary key, get all gamestates connected to this game.
-    //if 2 gamestates connected to game, render handlebars, if its only 1, game waiting.
     const GameData = await Game.findByPk(gameId, {
       include: [
         {
@@ -33,12 +29,6 @@ router.get('/game/:id', async (req, res) => {
         },
       ],
     });
-    // console.log('GAMEDATATATATATATAT!!!!!!!!', GameData);
-    // console.log('GameData.player1board.dataValues.id', GameData.player1board.dataValues.id);
-    // console.log('GameData.player2board.dataValues.id', GameData.player2board.dataValues.id);
-    // console.log('dev array', GameData.player1board.dataValues.developments);
-    // console.log('goods array', GameData.player1board.dataValues.goods);
-    // console.log('mon array', GameData.player1board.dataValues.monuments);
 
     if (!GameData) {
       return res.status(404).json({ error: 'Game state not found' });
@@ -60,14 +50,11 @@ router.get('/game/:id', async (req, res) => {
         isMyTurn = true;
       }
     }
-    // if (GameData.player2board.dataValues.player === userId) {
+    // if (player2data && GameData.player2board.dataValues.player === userId) {
     //   if (GameData.turn === 2) {
     //     isMyTurn = true;
     //   }
     // }
-
-    //GameData.player1board.dataValues.monuments = GameData.player1board.dataValues.monuments.sort((a, b) => a.id - b.id);
-    //GameData.player1board.dataValues.monuments.sort((a, b) => a.id - b.id);
 
     GameData.player1board.dataValues.goods.sort((a, b) => {
       const numA = parseInt(a.number.replace('good', ''));
@@ -85,12 +72,19 @@ router.get('/game/:id', async (req, res) => {
       });
     }
 
+    let usersGameStateId;
 
+    if (GameData.player1board.dataValues.player === userId) {
+      usersGameStateId = GameData.player1board.dataValues.id;
+    }
 
-    //console.log('p2Data gameroutes game:id : ', player2data);
-    //console.log('GameData gameroutes game:id :', GameData);
-    //console.log('GameData.player1board.dataValues, player2data gameroutes: ', GameData.player1board.dataValues, player2data);
-    res.render('game', { gamestates: [GameData.player1board.dataValues, player2data], isMyTurn });
+    if (GameData.player2board.dataValues.player === userId) {
+      usersGameStateId = GameData.player2board.dataValues.id;
+    }
+
+    //console.log(usersGameStateId, '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+
+    res.render('game', { gamestates: [GameData.player1board.dataValues, player2data], isMyTurn, usersGameStateId });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal server error' });
@@ -99,11 +93,7 @@ router.get('/game/:id', async (req, res) => {
 
 router.get('/json/:id', async (req, res) => {
   try {
-    // const gameId = req.session.id;
     const gameId = req.params.id;
-    //console.log('gameId gameroutes json: ', gameId);
-    //instead of gamestate primary key, get all gamestates connected to this game.
-    //if 2 gamestates connected to game, render handlebars, if its only 1, game waiting.
     const GameData = await Game.findByPk(gameId, {
       include: [
         {
@@ -140,8 +130,6 @@ router.get('/json/:id', async (req, res) => {
     } else {
       player2data = GameData.player2board.dataValues;
     }
-    //console.log('p2Data gameroutes json : ', player2data);
-    //console.log('GameData gameroutes json :', GameData);
 
     res.json({ gamestates: [GameData.player1board.dataValues, player2data] });
   } catch (err) {
@@ -207,8 +195,6 @@ router.post('/game', newGame);
 //Add second player
 const joinGame = async (req, res) => {
   try {
-    //console.log('User ID Join Game:', req.session.user_id);
-
     const userId = req.session.user_id;
     const newGameState = await GameState.create({ player: userId });
     const existingGame = await Game.findOne({ where: { board2: null } });
@@ -225,29 +211,10 @@ const joinGame = async (req, res) => {
 router.post('/join', joinGame);
 
 
-router.put('/game', async (req, res) => {
+router.put('/gameState/:UsersGameStateId', async (req, res) => {
   try {
-    // const gameId = req.params.id;
-    // const GameData = await Game.findByPk(gameId, {
-    //   include: [
-    //     {
-    //       model: GameState,
-    //       as: 'player1board',
-    //     },
-    //     {
-    //       model: GameState,
-    //       as: 'player2board',
-    //     },
-    //   ],
-    // });
-
-    // //console.log('gameData put route!!!!!: ', GameData);
-    // // console.log('gameState_id of player1board', GameData.player1board.dataValues.id);
-    // //console.log('gameState_id of player2board', GameData.player2board.dataValues.id);
-
-    // if (!GameData) {
-    //   return res.status(404).json({ error: 'Game state not found' });
-    // }
+    const currGSid = req.params.UsersGameStateId;
+    //console.log(currGSid, '????????????????????????????????????????????????????????');
 
     // const gameId = req.session.userId;
     // console.log(req.session);
