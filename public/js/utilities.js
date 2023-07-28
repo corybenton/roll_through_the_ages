@@ -1,7 +1,6 @@
 //Accessing usersGameStateId through <script> in game.handlebars
 const UsersGameStateId = usersGameStateId;
 
-
 /* eslint-disable no-unused-vars */
 function popup(message, time, type) {
   const classGet = document.querySelector(`.${type}`);
