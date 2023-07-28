@@ -35,7 +35,7 @@ class Dice {
 
   diceHandler(){
     let allKept;
-    this.cities = parseInt(document.querySelector('.cities').textContent);
+    this.cities = parseInt(document.querySelector(`#${newTurn.currentPlayer} .cities`).textContent);
     for (let i = 1; i <= this.cities; i++) {
       allKept = document.querySelector(`#die${i}`).classList.contains('kept');
       if (!allKept) {
@@ -85,9 +85,9 @@ class Dice {
   }
 
   applyDieResult(dieResult, choice) {
-    let agriculture = document.querySelector('.Agriculture .learn');
+    let agriculture = document.querySelector(`#${newTurn.currentPlayer} .Agriculture .learn`);
     agriculture = agriculture.classList.contains('learned');
-    let masonry = document.querySelector('.Masonry .learn');
+    let masonry = document.querySelector(`#${newTurn.currentPlayer} .Masonry .learn`);
     masonry = masonry.classList.contains('learned');
     switch (dieResult) {
     case 1:
@@ -98,7 +98,7 @@ class Dice {
       this.goods += 1;
       break;
     case 3:
-      let coinage = document.querySelector('.Coinage .learn');
+      let coinage = document.querySelector(`#${newTurn.currentPlayer} .Coinage .learn`);
       coinage = coinage.classList.contains('learned');
       if (coinage) {
         this.coins += 12;

@@ -6,7 +6,7 @@ const buyDevelopment = (e) => {
   removeChildren();
   // document.querySelector(`.${development} .learn`).classList = 'learned';
   if (development !== 'No development') {
-    const cost = document.querySelector(`.${development} .cost`).textContent;
+    const cost = document.querySelector(`#${newTurn.currentPlayer} .${development} .cost`).textContent;
     learn.payForDevelopment(cost);
     learn.getRewards(development);
   } else {
@@ -93,12 +93,12 @@ class LearnDev {
     document.querySelector('#developmentsDropdown').appendChild(noDev);
 
     for (let i = 0; i < 13; i++) {
-      const getDevCost = document.querySelector(`.dev${i} .cost`).innerHTML;
-      let learned = document.querySelector(`.dev${i} .learn`);
+      const getDevCost = document.querySelector(`#${newTurn.currentPlayer} .dev${i} .cost`).innerHTML;
+      let learned = document.querySelector(`#${newTurn.currentPlayer} .dev${i} .learn`);
       learned = learned.classList.contains('learned');
       if (getDevCost <= (this.goodsValue + this.coins) && !learned) {
         const newDev = document.createElement('option');
-        let devName = document.querySelector(`.dev${i} .development`).innerHTML;
+        let devName = document.querySelector(`#${newTurn.currentPlayer} .dev${i} .development`).innerHTML;
         devName = document.createTextNode(devName);
         newDev.appendChild(devName);
         document.querySelector('#developmentsDropdown').appendChild(newDev);
@@ -120,12 +120,12 @@ class LearnDev {
         popup(`Cost: ${this.cost}`, 5000, 'resource');
         document.querySelector('#done').addEventListener('click', parseGoods);
         for (let i = 1; i <= 5; i++) {
-          let goodVal = parseInt(document.querySelector(`.good${i} .value`).textContent);
+          let goodVal = parseInt(document.querySelector(`#${newTurn.currentPlayer} .good${i} .value`).textContent);
           if (goodVal > 0) {
 
             const newGood = document.createElement('option');
 
-            let goodNm = document.querySelector(`.good${i} .good`).innerHTML;
+            let goodNm = document.querySelector(`#${newTurn.currentPlayer} .good${i} .good`).innerHTML;
             goodNm = `${goodNm}: ${goodVal}`;
             goodNm = document.createTextNode(goodNm);
             newGood.appendChild(goodNm);
@@ -151,8 +151,8 @@ class LearnDev {
 
   async getRewards(development) {
     await updateItem(true, 'learned', development);
-    const devScore = parseInt(document.querySelector(`.${development} .points`).textContent);
-    const newScore = parseInt(document.querySelector('.score').textContent) + devScore;
+    const devScore = parseInt(document.querySelector(`#${newTurn.currentPlayer} .${development} .points`).textContent);
+    const newScore = parseInt(document.querySelector(`#${newTurn.currentPlayer} .score`).textContent) + devScore;
     await updateItem(newScore, 'score');
   }
 
@@ -161,9 +161,9 @@ class LearnDev {
   }
 
   granaries(){
-    let granaries = document.querySelector('.Granaries .learn');
+    let granaries = document.querySelector(`#${newTurn.currentPlayer} .Granaries .learn`);
     granaries = granaries.classList.contains('learned');
-    this.food = parseInt(document.querySelector('.Food .value').textContent);
+    this.food = parseInt(document.querySelector(`#${newTurn.currentPlayer} .Food .value`).textContent);
     if (granaries && this.food > 0) {
       document.querySelector('.yes').innerHTML = 'Yes';
       document.querySelector('.yes').addEventListener('click', sellFood);

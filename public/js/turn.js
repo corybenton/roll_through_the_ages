@@ -2,9 +2,11 @@
 /* eslint-disable default-case */
 /* eslint-disable no-use-before-define */
 class Turn {
-  // constructor(){
-  //   this.dice = 0;
-  // }
+  constructor(){
+    //this.players = [];
+    this.turn = 2;
+    this.currentPlayer;
+  }
 
   // turn(player1, player2){
   //   popup(`${player1}'s turn`, 150, 'announcement');
@@ -20,20 +22,26 @@ class Turn {
   // }
 
   startRoll(){
+    if (this.turn === 0) {
+      this.turn = 1;
+    } else {
+      this.turn = 0;
+    }
+    this.currentPlayer = player[this.turn];
     dice.diceHandler();
     document.querySelector('#okay').addEventListener('click', moveToFeed);
   }
 
   async feedCities() {
     popup('Feeding cities, resolving disasters, assigning goods...', 200, 'announcement');
-    let disasters = parseInt(document.querySelector('.disasters').textContent);
+    let disasters = parseInt(document.querySelector(`#${this.currentPlayer} .disasters`).textContent);
 
-    let food = parseInt(document.querySelector('.Food .amount').textContent);
+    let food = parseInt(document.querySelector(`#${this.currentPlayer} .Food .amount`).textContent);
     food = food + dice.food;
     if (food > 15) {
       food = 15;
     }
-    const cities = parseInt(document.querySelector('.cities').textContent);
+    const cities = parseInt(document.querySelector(`#${this.currentPlayer} .cities`).textContent);
     for (let i = 0; i < cities; i++) {
       if (food > 0) {
         food = food - 1;
@@ -48,16 +56,16 @@ class Turn {
   }
 
   async resolveDisasters() {
-    let irrigation = document.querySelector('.Irrigation .learn');
+    let irrigation = document.querySelector(`#${this.currentPlayer} .Irrigation .learn`);
     irrigation = irrigation.classList.contains('learned');
-    let medicine = document.querySelector('.Medicine .learn');
+    let medicine = document.querySelector(`#${this.currentPlayer} .Medicine .learn`);
     medicine = medicine.classList.contains('learned');
-    let laborForGreatWall = parseInt(document.querySelector('.mon4 .needed').textContent);
-    let religion = document.querySelector('.Religion .learn');
+    let laborForGreatWall = parseInt(document.querySelector(`#${this.currentPlayer} .mon4 .needed`).textContent);
+    let religion = document.querySelector(`#${this.currentPlayer} .Religion .learn`);
     religion = religion.classList.contains('learned');
     // let otherReligion = document.querySelector(`${othergamestate} .religion .learn`);
     // otherReligion = religion.classList.contains('learned');
-    let disasters = parseInt(document.querySelector('.disasters').textContent);
+    let disasters = parseInt(document.querySelector(`#${this.currentPlayer} .disasters`).textContent);
     // let otherDisasters = parseInt(document.querySelector(`#${othergamestate} .disasters`).textContent);
     let revolt;
 
@@ -76,7 +84,7 @@ class Turn {
       // }
       // if (revolt) {
         for (let i = 1; i < 6; i++) {
-          const goodType = document.querySelector(`good${i} .good`);
+          const goodType = document.querySelector(`#${this.currentPlayer} good${i} .good`);
           updateItem(0, 'amount', goodType, revolt);
           updateItem(0, 'value', goodType, revolt);
         }
@@ -94,11 +102,11 @@ class Turn {
 
   async assignGoods() {
     let goodNum = 1;
-    let quarrying = document.querySelector('.Quarrying .learn');
+    let quarrying = document.querySelector(`#${this.currentPlayer} .Quarrying .learn`);
     quarrying = quarrying.classList.contains('learned');
     for (let i = 1; i <= dice.goods; i++) {
-      let goodTypeAmt = parseInt(document.querySelector(`.good${goodNum} .amount`).textContent);
-      let goodTypeVal = parseInt(document.querySelector(`.good${goodNum} .value`).textContent);
+      let goodTypeAmt = parseInt(document.querySelector(`#${this.currentPlayer} .good${goodNum} .amount`).textContent);
+      let goodTypeVal = parseInt(document.querySelector(`#${this.currentPlayer} .good${goodNum} .value`).textContent);
       if (goodTypeAmt < 9 - goodNum) {
         goodTypeAmt += 1;
         goodTypeVal = goodTypeVal + (goodNum * goodTypeAmt);
@@ -143,21 +151,21 @@ class Turn {
     let totalAmount = 0;
     let goodAmount = 0;
     let goodValue = 0;
-    let caravans = document.querySelector('.Caravans .learn');
+    let caravans = document.querySelector(`#${this.currentPlayer} .Caravans .learn`);
     caravans = caravans.classList.contains('learned');
     for (let i = 1; i <= 5; i++){
-      goodAmount = parseInt(document.querySelector(`.good${i} .amount`).textContent);
+      goodAmount = parseInt(document.querySelector(`#${this.currentPlayer} .good${i} .amount`).textContent);
       totalAmount += goodAmount;
     }
     if (!caravans && totalAmount > 6) {
       document.querySelector('#done').addEventListener('click', cleanupGoods);
       removeChildren();
       for (let i = 1; i <= 5; i++){
-        goodAmount = parseInt(document.querySelector(`.good${i} .amount`).textContent);
-        goodValue = parseInt(document.querySelector(`.good${i} .value`).textContent);
+        goodAmount = parseInt(document.querySelector(`#${this.currentPlayer} .good${i} .amount`).textContent);
+        goodValue = parseInt(document.querySelector(`#${this.currentPlayer} .good${i} .value`).textContent);
         if (goodAmount > 0) {
           const newGood = document.createElement('option');
-          let goodName = document.querySelector(`.good${i} .good`).innerHTML;
+          let goodName = document.querySelector(`#${this.currentPlayer} .good${i} .good`).innerHTML;
           const newValue = goodValue - (i * goodAmount);
           goodName = `${goodName} : ${goodAmount} new value=${newValue}`;
           goodName = document.createTextNode(goodName);
@@ -177,17 +185,17 @@ class Turn {
   }
 
   async doCleanup(getType) {
-    let goodAmount = parseInt(document.querySelector(`.${getType} .amount`).textContent);
+    let goodAmount = parseInt(document.querySelector(`#${newTurn.currentPlayer} .${getType} .amount`).textContent);
 
     let mod;
     for (let i = 1; i <= 5; i++) {
-      const getGood = document.querySelector(`.good${i} .good`).textContent;
+      const getGood = document.querySelector(`#${newTurn.currentPlayer} .good${i} .good`).textContent;
       if (getGood === getType){
         mod = i;
       }
     }
 
-    let goodValue = parseInt(document.querySelector(`.${getType} .value`).textContent);
+    let goodValue = parseInt(document.querySelector(`#${newTurn.currentPlayer} .${getType} .value`).textContent);
     goodValue = goodValue - (mod * goodAmount);
     goodAmount = goodAmount - 1;
 

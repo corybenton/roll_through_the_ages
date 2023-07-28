@@ -227,30 +227,31 @@ router.post('/join', joinGame);
 
 router.put('/game', async (req, res) => {
   try {
-    const gameId = req.params.id;
-    const GameData = await Game.findByPk(gameId, {
-      include: [
-        {
-          model: GameState,
-          as: 'player1board',
-        },
-        {
-          model: GameState,
-          as: 'player2board',
-        },
-      ],
-    });
+    // const gameId = req.params.id;
+    // const GameData = await Game.findByPk(gameId, {
+    //   include: [
+    //     {
+    //       model: GameState,
+    //       as: 'player1board',
+    //     },
+    //     {
+    //       model: GameState,
+    //       as: 'player2board',
+    //     },
+    //   ],
+    // });
 
-    //console.log('gameData put route!!!!!: ', GameData);
-    console.log('gameState_id of player1board', GameData.player1board.dataValues.id);
-    //console.log('gameState_id of player2board', GameData.player2board.dataValues.id);
+    // //console.log('gameData put route!!!!!: ', GameData);
+    // // console.log('gameState_id of player1board', GameData.player1board.dataValues.id);
+    // //console.log('gameState_id of player2board', GameData.player2board.dataValues.id);
 
-    if (!GameData) {
-      return res.status(404).json({ error: 'Game state not found' });
-    }
+    // if (!GameData) {
+    //   return res.status(404).json({ error: 'Game state not found' });
+    // }
 
     // const gameId = req.session.userId;
-    console.log(req.session);
+    // console.log(req.session);
+
     if (req.body.place === 'learned') {
       await Developments.update({learned: req.body.value}, {
         where: {
