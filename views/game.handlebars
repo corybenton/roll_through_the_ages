@@ -3,8 +3,10 @@
         <div class="col-8">
             {{#if isMyTurn}}
             <h2>It Is your turn!</h2>
+            <button id="nextBtn">All Set</button>
             {{ else }}
             <h2>Waiting for opponent</h2>
+            <button id="nextBtn" disabled>All Set</button>
             {{/if}}
             {{#each gamestates as |gamestate|}}
             <div id={{gamestate.user.dataValues.name}} class="player">
@@ -148,6 +150,8 @@
         <button type="submit" class="col-3" id="done">Done</button>
     </div>
 </div>
+
+<script>const gameId = "{{ gameId }}"</script>
 <script>const usersGameStateId = "{{ usersGameStateId }}"</script>
 
 <script src="/js/utilities.js"></script>
