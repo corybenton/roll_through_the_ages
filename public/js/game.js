@@ -5,21 +5,22 @@ let gameid = gameId;
 class Game {
   checkGameEnd(player) {
     let allMonumentsDone = true;
+    const monumentDone = [];
     for (let i = 0; i < 5; i++) {
-      monumentDone[1] = parseInt(document.querySelector(`.needed.${i}#${player[1]}`).textContent);
-      monumentDone[2] = parseInt(document.querySelector(`.needed.${i}#${player[2]}`).textContent);
-      if (monumentDone[1] !== 0 || monumentDone[2] !== 0) {
+      monumentDone[0] = parseInt(document.querySelector(`#${player[0]} .mon${i} .needed`).textContent);
+      //monumentDone[1] = parseInt(document.querySelector(`#${player[1]} .mon${i} .needed`).textContent);
+      if (monumentDone[0] !== 0 ){//&& monumentDone[2] !== 1) {
         allMonumentsDone = false;
         break;
       }
     }
-    for (let j = 1; j <= 2; j++) {
-      let developmentsDone = 0;
+    let developmentsDone = 0;
+    for (let j = 0; j < 2; j++) {
       for (let k = 0; k < 13; k++) {
-        let developmentLearned = document.querySelector(`.learned.#${k}#${player[j]}`);
-        developmentLearned = developmentLearned.classList.contains('true');
+        let developmentLearned = document.querySelector(`#${player[j]} .dev${k} .learn`);
+        developmentLearned = developmentLearned.classList.contains('learned');
         if (developmentLearned) {
-          developmentsDone += developmentsDone;
+          developmentsDone += 1;
         }
         if (developmentsDone === 5) {
           break;
@@ -28,11 +29,12 @@ class Game {
       if (developmentsDone === 5) {
         break;
       }
+      break;
     }
     if (allMonumentsDone || developmentsDone === 5){
       this.gameEnd(player);
     } else {
-      this.round(player);
+      newTurn.startRoll();
     }
   }
 
@@ -41,53 +43,55 @@ class Game {
     let winner;
     const playerScore = [];
     const playerGoods = [];
-    for (let i = 1; i <= 2; i++) {
-      playerScore[i] = parseInt(document.querySelector(`.score#${player[i]}`).textContent);
-      playerGoods[i] = this.getGoodsValue(player[i]);
-      let architecture = document.querySelector(`.learned.architecture#${player[i]}`);
-      architecture = architecture.classList.contains('true');
+    for (let i = 0; i < 2; i++) {
+      playerScore[i] = parseInt(document.querySelector(`#${player[i]} .score`).textContent);
+      playerGoods[i] = getGoodsValue(player[i]);
+      let architecture = document.querySelector(`#${player[i]} .Architecture .learn`);
+      architecture = architecture.classList.contains('learned');
       if (architecture) {
         let monuments = 0;
         for (let j = 0; j < 5; j++) {
-          const finished = document.querySelector(`.needed.${j}#${player[i]}`.textContent);
-          if (finished === '0') {
+          const finished = parseInt(document.querySelector(`#${player[i]} .mon${j} .needed`).textContent);
+          if (finished === 0) {
             monuments += 1;
           }
         }
         playerScore[i] += monuments;
       }
-      let empire = document.querySelector(`.learned.empire#${player[i]}`);
-      empire = empire.classList.contains('true');
+      let empire = document.querySelector(`#${player[i]} .Empire .learn`);
+      empire = empire.classList.contains('learned');
       if (empire) {
-        const cities = parseInt(document.querySelector(`.cities${player[i]}`).textContent);
+        const cities = parseInt(document.querySelector(`#${player[i]} .cities`).textContent);
         playerScore[i] += cities;
       }
+      break;
     }
-    if (playerScore[1] > playerScore[2] ||
-        (playerScore[1] === playerScore[2] &&
-            playerGoods[1] > playerGoods[2])) {
-      winner = `${player[1].name} wins!`;
+    if (playerScore[0] > playerScore[1] ||
+        (playerScore[0] === playerScore[1] &&
+            playerGoods[0] > playerGoods[1])) {
+      winner = `${player[0].name} wins!`;
 
-    } else if (playerScore[1] < playerScore[2] ||
-        (playerScore[1] === playerScore[2] &&
-            playerGoods[1] < playerGoods[2])) {
-      winner = `${player[2].name} wins!`;
+    } else if (playerScore[0] < playerScore[1] ||
+        (playerScore[0] === playerScore[1] &&
+            playerGoods[0] < playerGoods[1])) {
+      winner = `${player[1].name} wins!`;
     } else{
       winner = ('Its a tie!');
     }
-    popup(winner, 500, 'announcement');
-    const score = `${player[1].name}: ${player[1].score} ${player[2].name}: ${player[2].score}`;
+    popup(winner, 500, 'okay');
+    const score = `${player[0].name}: ${player[0].score} ${player[1].name}: ${player[1].score}`;
     popup(score, 700, 'announcement');
   }
 
-  round(player) {
-    // Turn.turn(player[1], player[2]);
-    // Turn.turn(player[2], player[1]);
-    this.checkGameEnd(player);
-  }
+  // round(player) {
+  //   // Turn.turn(player[1], player[2]);
+  //   // Turn.turn(player[2], player[1]);
+  //   this.checkGameEnd(player);
+  // }
 
 
 }
+const endCheck = new Game;
 
 async function switchToNewTurn(gameid) {
   await fetch(`/game/${gameid}/turnover`, {
@@ -97,7 +101,7 @@ async function switchToNewTurn(gameid) {
 }
 //previousTurn will show up undefined at first, but then have a value
 let previousTurn;
-console.log('previous', previousTurn);
+//console.log('previous', previousTurn);
 async function checkTurn(gameid) {
   try {
     const response = await fetch(`/json/${gameid}`, {
