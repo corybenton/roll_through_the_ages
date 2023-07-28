@@ -1,3 +1,6 @@
+const UsersGameStateId = usersGameStateId;
+//console.log(UsersGameStateId);
+
 /* eslint-disable no-unused-vars */
 function popup(message, time, type) {
   const classGet = document.querySelector(`.${type}`);
@@ -32,7 +35,7 @@ function getGoodsValue() {
 
 async function updateItem(value, place, category, player) {
   try {
-    const response = await fetch('/game', {
+    const response = await fetch(`/gameState/${UsersGameStateId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
