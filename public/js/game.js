@@ -1,4 +1,6 @@
 /* eslint-disable no-unused-vars */
+//accessing gameId through <script> in game.handlebars
+let gameid = gameId;
 
 class Game {
   checkGameEnd(player) {
@@ -87,3 +89,54 @@ class Game {
 
 }
 
+async function switchToNewTurn(gameid) {
+  await fetch(`/game/${gameid}/turnover`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+  });
+}
+//previousTurn will show up undefined at first, but then have a value
+let previousTurn;
+console.log('previous', previousTurn);
+async function checkTurn(gameid) {
+  try {
+    const response = await fetch(`/json/${gameid}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    if (response.ok) {
+      const GameData = await response.json();
+
+      if (GameData.isMyTurn === true) {
+        console.log('its your turn');
+
+        //Start the game
+        //Do your turn
+
+        if (previousTurn === false) {
+          window.location.href = `/game/${gameid}`;
+          return;
+        }
+      } else {
+        console.log('Waiting for opponents turn...');
+        previousTurn = false;
+        setTimeout(() => {
+          checkTurn(gameid);
+        }, 3000);
+      }
+    } else {
+      console.error('Error fetching game data');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+checkTurn(gameid);
+//This event listener will be modified to be attached to whatever button click
+//ends the players turn. I think its a button that says done?
+document.querySelector('#nextBtn').addEventListener('click', () => {
+  switchToNewTurn(gameid);
+  window.location.href = `/game/${gameid}`;
+});

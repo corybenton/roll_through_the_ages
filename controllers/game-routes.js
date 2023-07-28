@@ -50,11 +50,11 @@ router.get('/game/:id', async (req, res) => {
         isMyTurn = true;
       }
     }
-    // if (player2data && GameData.player2board.dataValues.player === userId) {
-    //   if (GameData.turn === 2) {
-    //     isMyTurn = true;
-    //   }
-    // }
+    if (player2data && GameData.player2board.dataValues.player === userId) {
+      if (GameData.turn === 2) {
+        isMyTurn = true;
+      }
+    }
 
     GameData.player1board.dataValues.goods.sort((a, b) => {
       const numA = parseInt(a.number.replace('good', ''));
@@ -84,7 +84,7 @@ router.get('/game/:id', async (req, res) => {
 
     //console.log(usersGameStateId, '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
 
-    res.render('game', { gamestates: [GameData.player1board.dataValues, player2data], isMyTurn, usersGameStateId });
+    res.render('game', { gamestates: [GameData.player1board.dataValues, player2data], isMyTurn, usersGameStateId, gameId });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal server error' });
@@ -131,7 +131,21 @@ router.get('/json/:id', async (req, res) => {
       player2data = GameData.player2board.dataValues;
     }
 
-    res.json({ gamestates: [GameData.player1board.dataValues, player2data] });
+    let isMyTurn = false;
+    const userId = req.session.user_id;
+    //if true, I am player 1 of this game
+    if (GameData.player1board.dataValues.player === userId) {
+      if (GameData.turn === 1) {
+        isMyTurn = true;
+      }
+    }
+    if (player2data && GameData.player2board.dataValues.player === userId) {
+      if (GameData.turn === 2) {
+        isMyTurn = true;
+      }
+    }
+
+    res.json({ gamestates: [GameData.player1board.dataValues, player2data], isMyTurn });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal server error' });
