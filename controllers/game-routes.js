@@ -79,7 +79,7 @@ router.get('/game/:id', async (req, res) => {
       usersGameStateId = GameData.player1board.dataValues.id;
     }
 
-    if (GameData.player2board.dataValues.player === userId) {
+    if (player2data && GameData.player2board.dataValues.player === userId) {
       usersGameStateId = GameData.player2board.dataValues.id;
     }
 
