@@ -7,7 +7,7 @@
             <h2>Waiting for opponent</h2>
             {{/if}}
             {{#each gamestates as |gamestate|}}
-            <div id={{gamestate.player.name}} class="player">
+            <div id={{gamestate.user.dataValues.name}} class="player">
                 <div class="container">
                     <div class="row">
                         <h3 class="col-6">{{gamestate.user.dataValues.name}}</h3>

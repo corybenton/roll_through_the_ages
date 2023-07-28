@@ -23,11 +23,14 @@ function removeChildren() {
   }
 }
 
-function getGoodsValue() {
+function getGoodsValue(player) {
   let totalVal = 0;
   let goodVal;
+  if (!player) {
+    player = newTurn.currentPlayer;
+  }
   for (let i = 1; i < 6; i++) {
-    goodVal = parseInt(document.querySelector(`.good${i} .value`).textContent);
+    goodVal = parseInt(document.querySelector(`#${player} .good${i} .value`).textContent);
     totalVal += goodVal;
   }
   return totalVal;
@@ -45,15 +48,21 @@ async function updateItem(value, place, category, player) {
       )
     });
     console.log('Here.');
+    let gamestate;
+    if (!player) {
+      gamestate = newTurn.currentPlayer;
+    } else {
+      gamestate = player;
+    }
     if (value === true) {
-      const addLearn = document.querySelector(`.${category} .learn`);
+      const addLearn = document.querySelector(`#${gamestate} .${category} .learn`);
       addLearn.classList.add('learned');
       addLearn.innerHTML = '&#9745';
     }else if (category){
     //   category = category.replace(' ', '_');
-      document.querySelector(`.${category} .${place}`).innerHTML = value;
+      document.querySelector(`#${gamestate} .${category} .${place}`).innerHTML = value;
     } else {
-      document.querySelector(`.${place}`).innerHTML = value;
+      document.querySelector(`#${gamestate} .${place}`).innerHTML = value;
     }
     await console.log(response);
   } catch(err) {
