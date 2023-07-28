@@ -20,11 +20,14 @@ function removeChildren() {
   }
 }
 
-function getGoodsValue() {
+function getGoodsValue(player) {
   let totalVal = 0;
   let goodVal;
+  if (!player) {
+    player = newTurn.currentPlayer;
+  }
   for (let i = 1; i < 6; i++) {
-    goodVal = parseInt(document.querySelector(`#${newTurn.currentPlayer} .good${i} .value`).textContent);
+    goodVal = parseInt(document.querySelector(`#${player} .good${i} .value`).textContent);
     totalVal += goodVal;
   }
   return totalVal;

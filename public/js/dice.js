@@ -4,8 +4,6 @@
 
 const foodHandler = async (e) => {
   e.preventDefault();
-  document.querySelector('.yes').removeEventListener('click', foodHandler);
-  document.querySelector('.no').removeEventListener('click', laborHandler);
   dice.chosenForSix('food');
 };
 
@@ -209,8 +207,6 @@ class Dice {
     this.chose += 1;
     if (this.chose === this.sixesRolled) {
       popup('Would you like food or labor from your die?', 1, 'choice');
-      document.querySelector('.yes').removeEventListener('click', foodHandler);
-      document.querySelector('.no').removeEventListener('click', laborHandler);
     } else {
       popup(`Would you like food or labor from your die? ${this.sixesRolled - this.chose}x`, 3000, 'choice');
     }

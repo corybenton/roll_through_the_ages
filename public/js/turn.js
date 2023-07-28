@@ -181,6 +181,7 @@ class Turn {
       removeChildren();
       popup('Go away', 1, 'resource');
       popup('Go away', 1, 'dropdown');
+      endCheck.checkGameEnd(player);
     }
   }
 
@@ -228,6 +229,8 @@ const cleanupGoods = (e) => {
 
 const moveToFeed = (e) => {
   e.preventDefault();
+  document.querySelector('.yes').removeEventListener('click', foodHandler);
+  document.querySelector('.no').removeEventListener('click', laborHandler);
   popup(`You gained ${dice.coins} coins, ${dice.food} food, ${dice.labor} labor, ${dice.goods} goods, and ${dice.skulls} skulls`, 100, 'resource');
   newTurn.feedCities();
 };

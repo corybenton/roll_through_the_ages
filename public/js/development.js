@@ -14,6 +14,12 @@ const buyDevelopment = (e) => {
   }
 };
 
+const moveToCleanup = (e) => {
+  e.preventDefault();
+  document.querySelector('#okay').removeEventListener('click', moveToCleanup);
+  newTurn.cleanup();
+};
+
 const parseGoods = (e) => {
   e.preventDefault();
   document.querySelector('#done').removeEventListener('click', parseGoods);
@@ -157,7 +163,8 @@ class LearnDev {
   }
 
   goToCleanUp() {
-    newTurn.cleanup();
+    document.querySelector('#okay').addEventListener('click', moveToCleanup);
+    popup('Moving to cleanup', 4000, 'ok');
   }
 
   granaries(){

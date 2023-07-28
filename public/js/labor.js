@@ -8,19 +8,23 @@ class Labor {
     this.buildNeed = 0;
     this.labor = 0;
     this.cities = 0;
+    this.stone = 0;
   }
 
   laborStart() {
     popup('Using labor...', 40, 'announcement');
     this.cities = parseInt(document.querySelector(`#${newTurn.currentPlayer} .cities`).textContent);
     this.labor = dice.labor;
-    this.chooseBuild();
+    this.engineering();
   }
 
   chooseBuild() {
+    popup('Would you like use stone for labor?', 1, 'choice');
     if (this.labor > 0){
+      let anyToBuild = false;
       popup(`Labor available: ${this.labor}`, 1000, 'resource');
       if (this.cities < 7) {
+        anyToBuild = true;
         const cityBuild = document.createElement('option');
         const cityBuildText = document.createTextNode('New city');
         cityBuild.appendChild(cityBuildText);
@@ -29,6 +33,7 @@ class Labor {
       for (let i = 0; i < 5; i++) {
         let buildNeed = parseInt(document.querySelector(`#${newTurn.currentPlayer} .mon${i} .needed`).textContent);
         if (buildNeed > 0) {
+          anyToBuild = true;
           const newMon = document.createElement('option');
           let nameEl = document.querySelector(`#${newTurn.currentPlayer} .mon${i} .build`).innerHTML;
           nameEl = document.createTextNode(nameEl);
@@ -37,8 +42,12 @@ class Labor {
           document.querySelector('#developmentsDropdown').appendChild(newMon);
         }
       }
-      popup('Which object to build?', 20000, 'dropdown');
-      document.querySelector('#done').addEventListener('click', buildIt);
+      if (!anyToBuild) {
+        this.finish();
+      } else {
+        popup('Which object to build?', 20000, 'dropdown');
+        document.querySelector('#done').addEventListener('click', buildIt);
+      }
     } else {
       this.finish();
     }
@@ -107,6 +116,21 @@ class Labor {
     document.querySelector('#okay').addEventListener('click', moveToDev);
     popup('Move to developments', 5000, 'ok');
   }
+
+  engineering(){
+    let engineering = document.querySelector(`#${newTurn.currentPlayer} .Engineering .learn`);
+    engineering = engineering.classList.contains('learned');
+    this.stone = parseInt(document.querySelector(`#${newTurn.currentPlayer} .Stone .amount`).textContent);
+    if (engineering && this.stone > 0) {
+      document.querySelector('.yes').innerHTML = 'Yes';
+      document.querySelector('.yes').addEventListener('click', sellStone);
+      document.querySelector('.no').innerHTML = 'No';
+      document.querySelector('.no').addEventListener('click', goToBuild);
+      popup('Would you like use stone for labor?', 10000, 'choice');
+    } else {
+      this.chooseBuild();
+    }
+  }
 }
 const buildIt = (e) => {
   e.preventDefault();
@@ -128,6 +152,42 @@ const moveToDev = (e) => {
   learn.devStarter();
 };
 
+const goToBuild = (e) => {
+  e.preventDefault();
+  document.querySelector('.yes').removeEventListener('click', sellStone);
+  document.querySelector('.no').removeEventListener('click', goToBuild);
+  workIt.chooseBuild();
+};
+
+const sellStone = (e) => {
+  e.preventDefault();
+  popup('Would you like use stone for labor?', 1, 'choice');
+  document.querySelector('.yes').removeEventListener('click', sellStone);
+  document.querySelector('.no').removeEventListener('click', goToBuild);
+
+  document.querySelector('.rangeFinder').setAttribute('max', workIt.stone);
+  document.querySelector('.bar').innerHTML = workIt.stone;
+  popup('How much stone to use?', 10000, 'range');
+  document.querySelector('.range').addEventListener('submit', usedStone);
+};
+
+const usedStone = (e) => {
+  e.preventDefault();
+  const sold = document.querySelector('.rangeFinder').value;
+  document.querySelector('.range').removeEventListener('submit', usedStone);
+  popup('How much stone to use?', 1, 'range');
+
+  workIt.stone = workIt.stone - sold;
+  updateItem(workIt.stone, 'amount', 'Stone');
+  let stoneValue = 0;
+  for (let s = 1; s <= workIt.stone; s++){
+    stoneValue += s * 2;
+  }
+  updateItem(stoneValue, 'value', 'Stone');
+  workIt.labor += sold * 3;
+  // popup(`Labor available: ${workIt.labor}`, 1000, 'resource');
+  workIt.chooseBuild();
+};
 // const startUp2 = () => {
 //   workIt.laborStart(4);
 // };
