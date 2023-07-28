@@ -17,6 +17,44 @@ const rollDiceHandler = async (e) =>{
   dice.diceHandler();
 };
 
+const goToCompile = (e) => {
+  e.preventDefault();
+  popup('Leadership', 1, 'choice');
+  document.querySelector('.yes').removeEventListener('click', chooseDie);
+  document.querySelector('.no').removeEventListener('click', goToCompile);
+  dice.compileDieResults();
+};
+
+const chooseDie = (e) => {
+  e.preventDefault();
+  popup('Leadership', 1, 'choice');
+  document.querySelector('.yes').removeEventListener('click', chooseDie);
+  document.querySelector('.no').removeEventListener('click', goToCompile);
+  for (let q = 1; q <= dice.cities; q++) {
+    if (dice.recordDie[q] !== 1){
+      document.querySelector(`#die${q}`).addEventListener('click', reroll);
+    }
+  }
+  popup('Choose die to reroll', 500, 'announcement');
+};
+
+const reroll = (e) => {
+  for (let p = 1; p <= dice.cities; p++) {
+    if (dice.recordDie[p] !== 1){
+      document.querySelector(`#die${p}`).removeEventListener('click', reroll);
+    }
+  }
+  let rerollDie = e.target;
+  rerollDie = rerollDie.getAttribute('id');
+  rerollDie = rerollDie.slice(-1);
+  const rerollResult = Math.floor(Math.random() * 6) + 1;
+  dice.recordDie[rerollDie] = rerollResult;
+  dice.displayDice(rerollResult, rerollDie);
+  dice.compileDieResults();
+  popup('reroll', 1, 'announcement');
+
+};
+
 class Dice {
   constructor (){
     this.coins = 0;
@@ -31,7 +69,7 @@ class Dice {
     this.chose = 0;
   }
 
-  diceHandler(){
+  diceHandler(e){
     let allKept;
     this.cities = parseInt(document.querySelector(`#${newTurn.currentPlayer} .cities`).textContent);
     for (let i = 1; i <= this.cities; i++) {
@@ -48,8 +86,13 @@ class Dice {
       for (let j = 1; j <= this.cities; j++) {
         document.querySelector(`#die${j}`).classList.add('kept');
       }
-      this.compileDieResults();
-      popup('Moving to feeding cities.', 500, 'ok');
+      let leadership = document.querySelector(`#${newTurn.currentPlayer} .Leadership .learn`);
+      leadership = leadership.classList.contains('learned') ;
+      if (leadership) {
+        this.leadership();
+      } else {
+        this.compileDieResults();
+      }
     }
     if (this.timesRolled <= 3 && !allKept) {
       this.rollDice();
@@ -155,18 +198,20 @@ class Dice {
   keepDice() {
     const dieArray = document.querySelectorAll('.die');
     document.querySelector('#die8').classList.remove('none');
-    for (let n = 0; n < 8; n++) {
-      dieArray[n].addEventListener('click', (event) => {
-        event.stopPropagation();
-        const checkKept = event.target;
-        // let parseDie = checkKept.getAttribute('id');
-        // parseDie = parseDie.slice(-1);
-        if (checkKept.classList.contains('die') && !checkKept.classList.contains('kept') && !checkKept.classList.contains('done')) {
-          checkKept.classList.add('kept');
-        } //else if (checkKept.classList.contains('die') && this.recordDie[parseDie] !== 1){
-        //checkKept.classList.remove('kept');
-        //}
-      });
+    if (this.timesRolled === 1) {
+      for (let n = 0; n < 8; n++) {
+        dieArray[n].addEventListener('click', (event) => {
+          event.stopPropagation();
+          const checkKept = event.target;
+          let parseDie = checkKept.getAttribute('id');
+          parseDie = parseDie.slice(-1);
+          if (checkKept.classList.contains('die') && !checkKept.classList.contains('kept') && !checkKept.classList.contains('done')) {
+            checkKept.classList.add('kept');
+          } else if (checkKept.classList.contains('die') && this.recordDie[parseDie] !== 1){
+            checkKept.classList.remove('kept');
+          }
+        });
+      }
     }
   }
 
@@ -201,6 +246,7 @@ class Dice {
         this.applyDieResult(this.recordDie[k]);
       }
     }
+    popup('Moving to feeding cities.', 500, 'ok');
   }
 
   chosenForSix(choice) {
@@ -229,6 +275,15 @@ class Dice {
       }
     }
   }
+
+  leadership() {
+    document.querySelector('.yes').innerHTML = 'Yes';
+    document.querySelector('.no').innerHTML = 'No';
+    document.querySelector('.yes').addEventListener('click', chooseDie);
+    document.querySelector('.no').addEventListener('click', goToCompile);
+    popup('Would you like to reroll one more die (not a skull)?', 500, 'choice');
+  }
+
 }
 
 let dice = new Dice;
