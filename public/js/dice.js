@@ -35,7 +35,7 @@ const chooseDie = (e) => {
       document.querySelector(`#die${q}`).addEventListener('click', reroll);
     }
   }
-  popup('Choose die to reroll', 500, 'announcement');
+  popup('Choose die to reroll', 5000, 'announcement');
 };
 
 const reroll = (e) => {
@@ -234,7 +234,7 @@ class Dice {
     document.querySelector('.no').innerHTML = 'Labor';
     document.querySelector('.yes').addEventListener('click', foodHandler);
     document.querySelector('.no').addEventListener('click', laborHandler);
-    popup(`Would you like food or labor from your die? ${this.sixesRolled}x`, 3000, 'choice');
+    popup(`Would you like food or labor from your die? ${this.sixesRolled}x`, 5000, 'choice');
   }
 
   compileDieResults() {
@@ -246,7 +246,7 @@ class Dice {
         this.applyDieResult(this.recordDie[k]);
       }
     }
-    popup('Moving to feeding cities.', 500, 'ok');
+    popup('Moving to feeding cities.', 20000, 'ok');
   }
 
   chosenForSix(choice) {
@@ -254,7 +254,7 @@ class Dice {
     if (this.chose === this.sixesRolled) {
       popup('Would you like food or labor from your die?', 1, 'choice');
     } else {
-      popup(`Would you like food or labor from your die? ${this.sixesRolled - this.chose}x`, 3000, 'choice');
+      popup(`Would you like food or labor from your die? ${this.sixesRolled - this.chose}x`, 5000, 'choice');
     }
     let diceCheck = 1;
     for (let i = 1; i <= this.cities; i++) {
@@ -281,7 +281,7 @@ class Dice {
     document.querySelector('.no').innerHTML = 'No';
     document.querySelector('.yes').addEventListener('click', chooseDie);
     document.querySelector('.no').addEventListener('click', goToCompile);
-    popup('Would you like to reroll one more die (not a skull)?', 500, 'choice');
+    popup('Would you like to reroll one more die (not a skull)?', 5000, 'choice');
   }
 
 }

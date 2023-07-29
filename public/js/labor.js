@@ -22,7 +22,7 @@ class Labor {
     popup('Would you like use stone for labor?', 1, 'choice');
     if (this.labor > 0){
       let anyToBuild = false;
-      popup(`Labor available: ${this.labor}`, 1000, 'resource');
+      popup(`Labor available: ${this.labor}`, 20000, 'resource');
       if (this.cities < 7) {
         anyToBuild = true;
         const cityBuild = document.createElement('option');
@@ -83,7 +83,7 @@ class Labor {
         this.cities += 1;
       } else {
         let score = parseInt(document.querySelector(`#${newTurn.currentPlayer} .score`).textContent);
-        const alreadyBuilt = 3;//parseInt(document.querySelector(`#player2 .${this.newBuild} .needed`));
+        const alreadyBuilt = parseInt(document.querySelector(`#${newTurn.otherPlayer} .${this.newBuild} .needed`));
         let points = document.querySelector(`#${newTurn.currentPlayer} .${this.newBuild} .points`).textContent;
         if (alreadyBuilt === 0) {
           points = parseInt(points.slice(-1));
@@ -114,7 +114,8 @@ class Labor {
     popup('Finish', 1, 'resource');
     document.querySelector('#okay').removeEventListener('click', timeForBuild);
     document.querySelector('#okay').addEventListener('click', moveToDev);
-    popup('Move to developments', 5000, 'ok');
+    document.querySelector('.range').removeEventListener('submit', useIt);
+    popup('Move to developments', 20000, 'ok');
   }
 
   engineering(){
@@ -142,13 +143,13 @@ const buildIt = (e) => {
 const useIt = (e) => {
   e.preventDefault();
   const spentLabor = document.querySelector('.rangeFinder').value;
-  document.querySelector('.range').removeEventListener('submit', useIt);
   workIt.updateLabor(spentLabor);
 };
 
 const moveToDev = (e) => {
   e.preventDefault();
   document.querySelector('#okay').removeEventListener('click', moveToDev);
+  popup('Dev', 1, 'ok');
   learn.devStarter();
 };
 

@@ -17,6 +17,7 @@ const buyDevelopment = (e) => {
 const moveToCleanup = (e) => {
   e.preventDefault();
   document.querySelector('#okay').removeEventListener('click', moveToCleanup);
+  popup('Cleanup', 1, 'ok');
   newTurn.cleanup();
 };
 
@@ -123,7 +124,7 @@ class LearnDev {
         this.cost = cost;
       }
       if (this.cost > 0) {
-        popup(`Cost: ${this.cost}`, 5000, 'resource');
+        popup(`Cost: ${this.cost}`, 10000, 'resource');
         document.querySelector('#done').addEventListener('click', parseGoods);
         for (let i = 1; i <= 5; i++) {
           let goodVal = parseInt(document.querySelector(`#${newTurn.currentPlayer} .good${i} .value`).textContent);
@@ -164,7 +165,7 @@ class LearnDev {
 
   goToCleanUp() {
     document.querySelector('#okay').addEventListener('click', moveToCleanup);
-    popup('Moving to cleanup', 4000, 'ok');
+    popup('Moving to cleanup', 20000, 'ok');
   }
 
   granaries(){

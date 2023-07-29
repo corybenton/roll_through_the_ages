@@ -1,3 +1,8 @@
+body{
+  background-color: brown;
+  color: azure;
+}
+
 .container{
   border: 3px black solid;
   padding-top: 15px;
@@ -13,6 +18,8 @@
   align-items: center;
   justify-content: center;
   font-size: 28px;
+  background-color: blanchedalmond;
+  color: black;
 }
 
 .kept{
@@ -42,11 +49,12 @@ p{
 .announcement{
   position: fixed;
   background-color: lightgoldenrodyellow;
-  top: 100px;
+  top: 10%;
   width: 60%;
   left: 20%; 
   text-align: center;
   padding-bottom: 15px;
+  color: black;
 }
 
 .message{
@@ -56,19 +64,20 @@ p{
 .resource{
   position:fixed;
   background-color: lightgreen;
-  top: 200px;
+  top: 25%;
   width: 25%;
-  left: 70%;
+  left: 5%;
   text-align: center;
   padding-bottom: 15px;
+  color: black;
 }
 
 .range{
   position:fixed;
   background-color: lightsteelblue;
-  top: 300px;
-  width: 25%;
-  left: 70%;
+  top: 55%;
+  width: 20%;
+  left: 65%;
   text-align: center;
   padding-bottom: 15px;
 }
@@ -80,19 +89,19 @@ p{
 .choice{
   position:fixed;
   background-color: lightcoral;
-  top: 300px;
+  top: 45%;
   width: 30%;
-  left: 30%;
+  left: 35%;
   text-align: center;
   padding-bottom: 15px;
 }
 
 .dropdown{
   position:fixed;
-  background-color: beige;
-  top: 50px;
-  width:30%;
-  left: 10%;
+  background-color: lightsalmon;
+  top: 25%;
+  width:20%;
+  left: 65%;
   text-align: center;
   padding-bottom: 15px;
 }
@@ -113,7 +122,28 @@ p{
 
 #developmentsDropdown,
 #done {
+  width: 90%;
+  text-align: center;
   margin: 10px;
+}
+
+h1{
+  text-align: center;
+}
+
+.rangeFinder .row {
+  justify-content: space-evenly;
+}
+
+.ok {
+  position: fixed;
+  height: 100%;
+  width: 15%;
+  background-color: violet;
+  text-align: center;
+  padding-bottom: 15px;
+  left: 85%;
+  top: 0%;
 }
 
 .none{
