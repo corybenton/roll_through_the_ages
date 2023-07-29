@@ -3,10 +3,10 @@
         <div class="col-8">
             {{#if isMyTurn}}
             <h2>It Is your turn!</h2>
-            <button id="nextBtn">All Set</button>
+            {{!-- <button id="nextBtn">All Set</button> commented out incase addition at end of checkGameEnd(player) fails --}}
             {{ else }}
             <h2>Waiting for opponent</h2>
-            <button id="nextBtn" disabled>All Set</button>
+            {{!-- <button id="nextBtn" disabled>All Set</button> commented out incase addition at end of checkGameEnd(player) fails --}}
             {{/if}}
             {{#each gamestates as |gamestate|}}
             <div id={{gamestate.user.dataValues.name}} class="player">
