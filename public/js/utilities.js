@@ -1,5 +1,5 @@
 //Accessing usersGameStateId through <script> in game.handlebars
-const UsersGameStateId = usersGameStateId;
+
 
 /* eslint-disable no-unused-vars */
 function popup(message, time, type) {
@@ -38,6 +38,7 @@ function getGoodsValue(player) {
 
 async function updateItem(value, place, category, player) {
   try {
+    const UsersGameStateId = usersGameStateId;
     const response = await fetch(`/gameState/${UsersGameStateId}`, {
       method: 'PUT',
       headers: {
