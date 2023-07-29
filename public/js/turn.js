@@ -32,7 +32,7 @@ class Turn {
     }
     this.currentPlayer = player[this.turn];
     this.resolveCarryoverDisasters;
-    let dice = new Dice;
+    dice.timesRolled = 0;
     dice.diceHandler();
     document.querySelector('#okay').addEventListener('click', moveToFeed);
   }
