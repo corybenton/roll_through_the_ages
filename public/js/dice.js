@@ -80,7 +80,7 @@ class Dice {
     if (this.timesRolled === 0) {
       this.resetDice(this.cities);
     } else if (this.timesRolled === 3 || allKept) {
-      document.querySelector('#die8').classList.add('none');
+      //document.querySelector('#die8').classList.add('none');
       document.querySelector('#die8').removeEventListener('click', rollDiceHandler);
       for (let j = 1; j <= this.cities; j++) {
         document.querySelector(`#die${j}`).classList.add('kept');
@@ -196,7 +196,7 @@ class Dice {
 
   keepDice() {
     const dieArray = document.querySelectorAll('.die');
-    document.querySelector('#die8').classList.remove('none');
+    //document.querySelector('#die8').classList.remove('none');
     if (this.timesRolled === 1) {
       for (let n = 0; n < 8; n++) {
         dieArray[n].addEventListener('click', (event) => {
@@ -216,7 +216,7 @@ class Dice {
 
   resetDice(cities) {
     this.cities = cities;
-    for (let l = 1; l < 9; l++) {
+    for (let l = 1; l < 8; l++) {
       const dieClass = document.querySelector(`#die${l}`).classList;
       if (l <= this.cities) {
         dieClass.remove('kept');
