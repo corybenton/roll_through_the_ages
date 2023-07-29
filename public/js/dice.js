@@ -69,7 +69,7 @@ class Dice {
     this.chose = 0;
   }
 
-  diceHandler(e){
+  diceHandler(){
     let allKept;
     this.cities = parseInt(document.querySelector(`#${newTurn.currentPlayer} .cities`).textContent);
     for (let i = 1; i <= this.cities; i++) {
