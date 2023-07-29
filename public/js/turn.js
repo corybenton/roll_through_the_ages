@@ -32,6 +32,7 @@ class Turn {
     }
     this.currentPlayer = player[this.turn];
     this.resolveCarryoverDisasters;
+    dice.timesRolled = 0;
     dice.diceHandler();
     document.querySelector('#okay').addEventListener('click', moveToFeed);
   }
@@ -247,7 +248,6 @@ const moveToFeed = (e) => {
 const timeForBuild = (e) => {
   e.preventDefault();
   document.querySelector('#okay').removeEventListener('click', timeForBuild);
-  popup('Build', 1, 'ok');
   workIt.laborStart();
 };
 

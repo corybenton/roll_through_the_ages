@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-use-before-define */
 /* eslint-disable default-case */
-
 const foodHandler = async (e) => {
   e.preventDefault();
   dice.chosenForSix('food');
