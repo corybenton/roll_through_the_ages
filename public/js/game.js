@@ -15,8 +15,8 @@ class Game {
     const monumentDone = [];
     for (let i = 0; i < 5; i++) {
       monumentDone[0] = parseInt(document.querySelector(`#${player[0]} .mon${i} .needed`).textContent);
-      //monumentDone[1] = parseInt(document.querySelector(`#${player[1]} .mon${i} .needed`).textContent);
-      if (monumentDone[0] !== 0 ){//&& monumentDone[2] !== 1) {
+      monumentDone[1] = parseInt(document.querySelector(`#${player[1]} .mon${i} .needed`).textContent);
+      if (monumentDone[0] !== 0 && monumentDone[2] !== 0) {
         allMonumentsDone = false;
         break;
       }
@@ -36,7 +36,7 @@ class Game {
       if (developmentsDone === 5) {
         break;
       }
-      break;
+      //break;
     }
     if (allMonumentsDone || developmentsDone === 5){
       this.gameEnd(player);
