@@ -2,6 +2,13 @@
 //accessing gameId through <script> in game.handlebars
 let gameid = gameId;
 
+async function switchToNewTurn(gameid) {
+  await fetch(`/game/${gameid}/turnover`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+  });
+}
+
 class Game {
   checkGameEnd(player) {
     let allMonumentsDone = true;
@@ -34,6 +41,10 @@ class Game {
     if (allMonumentsDone || developmentsDone === 5){
       this.gameEnd(player);
     } else {
+      //////turns and pages change when cleanup////////////
+      switchToNewTurn(gameid);
+      window.location.href = `/game/${gameid}`;
+      ///^leaving comments incase something goes wrong^/////
       newTurn.startRoll();
     }
   }
@@ -93,12 +104,7 @@ class Game {
 }
 const endCheck = new Game;
 
-async function switchToNewTurn(gameid) {
-  await fetch(`/game/${gameid}/turnover`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-  });
-}
+
 //previousTurn will show up undefined at first, but then have a value
 let previousTurn;
 //console.log('previous', previousTurn);
@@ -140,7 +146,11 @@ async function checkTurn(gameid) {
 checkTurn(gameid);
 //This event listener will be modified to be attached to whatever button click
 //ends the players turn. I think its a button that says done?
-document.querySelector('#nextBtn').addEventListener('click', () => {
-  switchToNewTurn(gameid);
-  window.location.href = `/game/${gameid}`;
-});
+
+
+////added this functionality to the end of checkGameEnd(player),////////////
+////it is surrounded by comments incase we need to revert.//////////////////
+// document.querySelector('#nextBtn').addEventListener('click', () => {
+//   switchToNewTurn(gameid);
+//   window.location.href = `/game/${gameid}`;
+// });
