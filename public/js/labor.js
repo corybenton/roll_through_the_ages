@@ -21,6 +21,7 @@ class Labor {
   chooseBuild() {
     popup('Would you like use stone for labor?', 1, 'choice');
     if (this.labor > 0){
+      popup('Build', 1, 'ok');
       let anyToBuild = false;
       popup(`Labor available: ${this.labor}`, 20000, 'resource');
       if (this.cities < 7) {
