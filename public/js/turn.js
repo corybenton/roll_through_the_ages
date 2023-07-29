@@ -6,6 +6,7 @@ class Turn {
     //this.players = [];
     this.turn = 2;
     this.currentPlayer;
+    this.otherPlayer;
   }
 
   // turn(player1, player2){
@@ -24,10 +25,13 @@ class Turn {
   startRoll(){
     if (this.turn === 0) {
       this.turn = 1;
+      this.otherPlayer = player[0];
     } else {
       this.turn = 0;
+      this.otherPlayer = player[1];
     }
     this.currentPlayer = player[this.turn];
+    this.resolveCarryoverDisasters;
     dice.diceHandler();
     document.querySelector('#okay').addEventListener('click', moveToFeed);
   }
@@ -58,45 +62,49 @@ class Turn {
   async resolveDisasters() {
     let irrigation = document.querySelector(`#${this.currentPlayer} .Irrigation .learn`);
     irrigation = irrigation.classList.contains('learned');
-    let medicine = document.querySelector(`#${this.currentPlayer} .Medicine .learn`);
-    medicine = medicine.classList.contains('learned');
     let laborForGreatWall = parseInt(document.querySelector(`#${this.currentPlayer} .mon4 .needed`).textContent);
     let religion = document.querySelector(`#${this.currentPlayer} .Religion .learn`);
     religion = religion.classList.contains('learned');
-    // let otherReligion = document.querySelector(`${othergamestate} .religion .learn`);
-    // otherReligion = religion.classList.contains('learned');
     let disasters = parseInt(document.querySelector(`#${this.currentPlayer} .disasters`).textContent);
-    // let otherDisasters = parseInt(document.querySelector(`#${othergamestate} .disasters`).textContent);
-    let revolt;
 
     if (dice.skulls === 2 && !irrigation) {
       disasters = disasters + 2;
-    } else if (dice.skulls === 3 && !medicine){
-      // otherDisasters = otherDisasters + 3;
-      // updateItem(otherDisasters, 'disasters', '', othergamestate);
     } else if (dice.skulls === 4 && laborForGreatWall !== 0){
       disasters = disasters + 4;
-    } else if (dice.skulls >= 5 ){
-      if (!religion) {
-      //   revolt = gamestate;
-      // // } else if (!otherReligion){
-      // //   revolt = othergamestate;
-      // }
-      // if (revolt) {
-        for (let i = 1; i < 6; i++) {
-          const goodType = document.querySelector(`#${this.currentPlayer} good${i} .good`);
-          updateItem(0, 'amount', goodType, revolt);
-          updateItem(0, 'value', goodType, revolt);
-        }
+    } else if (dice.skulls >= 5 && ! religion){
+      for (let i = 1; i < 6; i++) {
+        const goodType = document.querySelector(`#${this.currentPlayer} good${i} .good`);
+        await updateItem(0, 'amount', goodType);
+        await updateItem(0, 'value', goodType);
       }
+      dice.skulls = 0;
     }
+
     await updateItem(disasters, 'disasters');
     this.assignGoods();
   }
 
+  async resolveCarryoverDisasters() {
+    let medicine = document.querySelector(`#${this.currentPlayer} .Medicine .learn`);
+    medicine = medicine.classList.contains('learned');
+    let disasters = parseInt(document.querySelector(`#${this.currentPlayer} .disasters`).textContent);
+    let religion = document.querySelector(`#${this.currentPlayer} .Religion .learn`);
+    religion = religion.classList.contains('learned');
+    if (dice.skulls === 3) {
+      disasters = disasters + 3;
+      await updateItem(disasters, 'disasters');
+    } else if (dice.skulls >= 5 && !religion) {
+      for (let i = 1; i < 6; i++) {
+        const goodType = document.querySelector(`#${this.currentPlayer} good${i} .good`);
+        await updateItem(0, 'amount', goodType);
+        await updateItem(0, 'value', goodType);
+      }
+    }
+  }
+
   moveToBuild(){
     document.querySelector('#okay').removeEventListener('click', moveToFeed);
-    popup('Move to building monuments', 500, 'ok');
+    popup('Move to building monuments', 20000, 'ok');
     document.querySelector('#okay').addEventListener('click', timeForBuild);
   }
 
@@ -173,9 +181,9 @@ class Turn {
           document.querySelector('#developmentsDropdown').appendChild(newGood);
         }
       }
-      popup('What will you get rid of?', 3000, 'dropdown');
+      popup('What will you get rid of?', 5000, 'dropdown');
       const message = `You have ${totalAmount} resources.  You can only keep 6`;
-      popup(message, 1000, 'resource');
+      popup(message, 10000, 'resource');
     } else {
       document.querySelector('#done').removeEventListener('click', cleanupGoods);
       removeChildren();
@@ -231,13 +239,15 @@ const moveToFeed = (e) => {
   e.preventDefault();
   document.querySelector('.yes').removeEventListener('click', foodHandler);
   document.querySelector('.no').removeEventListener('click', laborHandler);
-  popup(`You gained ${dice.coins} coins, ${dice.food} food, ${dice.labor} labor, ${dice.goods} goods, and ${dice.skulls} skulls`, 100, 'resource');
+  popup(`You gained ${dice.coins} coins, ${dice.food} food, ${dice.labor} labor, ${dice.goods} goods, and ${dice.skulls} skulls`, 1000, 'resource');
+  popup('Feed', 1, 'ok');
   newTurn.feedCities();
 };
 
 const timeForBuild = (e) => {
   e.preventDefault();
   document.querySelector('#okay').removeEventListener('click', timeForBuild);
+  popup('Build', 1, 'ok');
   workIt.laborStart();
 };
 

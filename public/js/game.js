@@ -50,7 +50,7 @@ class Game {
   }
 
   gameEnd(player) {
-    popup('Game is over.', 300, 'announcement');
+    popup('Game is over.', 3000, 'announcement');
     let winner;
     const playerScore = [];
     const playerGoods = [];
@@ -89,9 +89,9 @@ class Game {
     } else{
       winner = ('Its a tie!');
     }
-    popup(winner, 500, 'okay');
+    popup(winner, 5000, 'okay');
     const score = `${player[0].name}: ${player[0].score} ${player[1].name}: ${player[1].score}`;
-    popup(score, 700, 'announcement');
+    popup(score, 7000, 'resource');
   }
 
   // round(player) {
