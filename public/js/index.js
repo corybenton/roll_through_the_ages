@@ -9,4 +9,4 @@ const startTurn = (e) => {
   newTurn.startRoll(player);
 };
 
-document.querySelector('#test').addEventListener('click', startTurn);
+document.querySelector('#start').addEventListener('click', startTurn);
