@@ -85,7 +85,7 @@ router.get('/game/:id', async (req, res) => {
 
     //console.log(usersGameStateId, '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
 
-    res.render('game', { gamestates: [GameData.player1board.dataValues, player2data], isMyTurn, usersGameStateId, gameId });
+    res.render('game', { gamestates: [GameData.player1board.dataValues, player2data], isMyTurn, usersGameStateId, gameId, userId });
 
   } catch (err) {
     console.error(err);
