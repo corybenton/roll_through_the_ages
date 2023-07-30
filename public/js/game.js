@@ -46,7 +46,6 @@ class Game {
       switchToNewTurn(gameid);
       window.location.href = `/game/${gameid}`;
       ///^leaving comments incase something goes wrong^/////
-      newTurn.startRoll();
     }
   }
 
@@ -120,9 +119,9 @@ async function checkP2Status(gameid) {
       // console.log('GameData.gamestates[0].player:', GameData.gamestates[0].player);
       // console.log('userid :', userid);
 
-      if (GameData.gamestates[1] != null) {
+      if (GameData.gamestates[1] !== null) {
         console.log('player 2 has joined the game');
-
+        document.querySelector('#start').classList.remove('none');
         if (prevPlayer2Joined === false) {
           window.location.href = `/game/${gameid}`;
           return;
@@ -160,14 +159,14 @@ async function checkTurn(gameid) {
 
       if (GameData.isMyTurn === true) {
         console.log('its your turn');
-
         //Start the game
         //Do your turn
-
+        
         if (previousTurn === false) {
           window.location.href = `/game/${gameid}`;
           return;
         }
+        newTurn.startRoll();
       } else {
         console.log('Waiting for opponents turn...');
         previousTurn = false;
