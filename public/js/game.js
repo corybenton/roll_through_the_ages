@@ -159,14 +159,14 @@ async function checkTurn(gameid) {
 
       if (GameData.isMyTurn === true) {
         console.log('its your turn');
-        newTurn.startRoll();
         //Start the game
         //Do your turn
-
+        
         if (previousTurn === false) {
           window.location.href = `/game/${gameid}`;
           return;
         }
+        newTurn.startRoll();
       } else {
         console.log('Waiting for opponents turn...');
         previousTurn = false;
