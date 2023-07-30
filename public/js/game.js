@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 //accessing gameId through <script> in game.handlebars
 let gameid = gameId;
+let userid = userId;
 
 async function switchToNewTurn(gameid) {
   await fetch(`/game/${gameid}/turnover`, {
@@ -104,6 +105,45 @@ class Game {
 }
 const endCheck = new Game;
 
+let prevPlayer2Joined;
+async function checkP2Status(gameid) {
+  try {
+    const response = await fetch(`/json/${gameid}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    if (response.ok) {
+      const GameData = await response.json();
+      // console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!GameData checkP2Status', GameData);
+      // console.log('player2:', GameData.gamestates[1]);
+      // console.log('GameData.gamestates[0].player:', GameData.gamestates[0].player);
+      // console.log('userid :', userid);
+
+      if (GameData.gamestates[1] != null) {
+        console.log('player 2 has joined the game');
+
+        if (prevPlayer2Joined === false) {
+          window.location.href = `/game/${gameid}`;
+          return;
+        }
+      } else {
+        console.log('waiting for opponent to join');
+        prevPlayer2Joined = false;
+        setTimeout(() => {
+          checkP2Status(gameid);
+        }, 8000);
+      }
+    } else {
+      console.error('big error');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+checkP2Status(gameid);
+
 
 //previousTurn will show up undefined at first, but then have a value
 let previousTurn;
@@ -133,7 +173,7 @@ async function checkTurn(gameid) {
         previousTurn = false;
         setTimeout(() => {
           checkTurn(gameid);
-        }, 3000);
+        }, 8000);
       }
     } else {
       console.error('Error fetching game data');
