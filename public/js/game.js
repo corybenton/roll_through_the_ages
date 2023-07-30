@@ -161,7 +161,7 @@ async function checkTurn(gameid) {
         console.log('its your turn');
         //Start the game
         //Do your turn
-        
+
         if (previousTurn === false) {
           window.location.href = `/game/${gameid}`;
           return;
