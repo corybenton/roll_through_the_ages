@@ -92,7 +92,6 @@ document.querySelectorAll('.joinBtn').forEach((button) => {
       const gameData = await gameResponse.json();
 
       const isUserInGame = gameData.gamestates[0].player === userId;
-
       if (isUserInGame) {
         alert('You are already a member of this game.');
       } else {
