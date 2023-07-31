@@ -362,4 +362,16 @@ router.delete('/delete/game/:id', async (req, res) => {
   }
 });
 
+
+router.get('/game/:id/getTurn', async (req, res) => {
+  try {
+
+    const gameId = req.params.id;
+    const game = await Game.findByPk(gameId);
+    res.json(game.turn);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
 module.exports = router;
