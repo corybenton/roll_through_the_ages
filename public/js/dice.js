@@ -16,11 +16,10 @@ const rollDiceHandler = async (e) =>{
   dice.diceHandler();
 };
 
-const goToCompile = (e) => {
+const goToChooseSix = async (e) => {
   e.preventDefault();
-  popup('Leadership', 1, 'choice');
   document.querySelector('.yes').removeEventListener('click', chooseDie);
-  document.querySelector('.no').removeEventListener('click', goToCompile);
+  document.querySelector('.no').removeEventListener('click', goToChooseSix);
   dice.compileDieResults();
 };
 
@@ -28,7 +27,7 @@ const chooseDie = (e) => {
   e.preventDefault();
   popup('Leadership', 1, 'choice');
   document.querySelector('.yes').removeEventListener('click', chooseDie);
-  document.querySelector('.no').removeEventListener('click', goToCompile);
+  document.querySelector('.no').removeEventListener('click', goToChooseSix);
   for (let q = 1; q <= dice.cities; q++) {
     if (dice.recordDie[q] !== 1){
       document.querySelector(`#die${q}`).addEventListener('click', reroll);
@@ -78,9 +77,11 @@ class Dice {
       }
     }
     if (this.timesRolled === 0) {
+      document.querySelector('#die8').removeEventListener('click', startRollHandler);
+      document.querySelector('#die8').addEventListener('click', rollDiceHandler);
       this.resetDice(this.cities);
     } else if (this.timesRolled === 3 || allKept) {
-      //document.querySelector('#die8').classList.add('none');
+      document.querySelector('#die8').classList.add('none');
       document.querySelector('#die8').removeEventListener('click', rollDiceHandler);
       for (let j = 1; j <= this.cities; j++) {
         document.querySelector(`#die${j}`).classList.add('kept');
@@ -95,7 +96,7 @@ class Dice {
     }
     if (this.timesRolled <= 3 && !allKept) {
       this.rollDice();
-      this.keepDice();
+      //this.keepDice();
     }
   }
 
@@ -197,21 +198,21 @@ class Dice {
   keepDice() {
     const dieArray = document.querySelectorAll('.die');
     //document.querySelector('#die8').classList.remove('none');
-    if (this.timesRolled === 1) {
-      for (let n = 0; n < 8; n++) {
-        dieArray[n].addEventListener('click', (event) => {
-          event.stopPropagation();
-          const checkKept = event.target;
-          let parseDie = checkKept.getAttribute('id');
-          parseDie = parseDie.slice(-1);
-          if (checkKept.classList.contains('die') && !checkKept.classList.contains('kept') && !checkKept.classList.contains('done')) {
-            checkKept.classList.add('kept');
-          } else if (checkKept.classList.contains('die') && this.recordDie[parseDie] !== 1){
-            checkKept.classList.remove('kept');
-          }
-        });
-      }
+    //if (this.timesRolled === 1) {
+    for (let n = 0; n < 8; n++) {
+      dieArray[n].addEventListener('click', (event) => {
+        event.stopPropagation();
+        const checkKept = event.target;
+        let parseDie = checkKept.getAttribute('id');
+        parseDie = parseDie.slice(-1);
+        if (checkKept.classList.contains('die') && !checkKept.classList.contains('kept') && !checkKept.classList.contains('done')) {
+          checkKept.classList.add('kept');
+        } else if (checkKept.classList.contains('die') && this.recordDie[parseDie] !== 1){
+          checkKept.classList.remove('kept');
+        }
+      });
     }
+    //}
   }
 
   resetDice(cities) {
@@ -279,14 +280,14 @@ class Dice {
     document.querySelector('.yes').innerHTML = 'Yes';
     document.querySelector('.no').innerHTML = 'No';
     document.querySelector('.yes').addEventListener('click', chooseDie);
-    document.querySelector('.no').addEventListener('click', goToCompile);
+    document.querySelector('.no').addEventListener('click', goToChooseSix);
     popup('Would you like to reroll one more die (not a skull)?', 5000, 'choice');
   }
 
 }
 
 let dice = new Dice;
-document.querySelector('#die8').addEventListener('click', rollDiceHandler);
+//document.querySelector('#die8').addEventListener('click', rollDiceHandler);
 // document.querySelector('#test').addEventListener('click', rollDiceHandler);
 
 // const dice = new Dice;

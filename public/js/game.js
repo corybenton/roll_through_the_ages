@@ -1,4 +1,7 @@
 /* eslint-disable no-unused-vars */
+
+//const { doc } = require('prettier');
+
 //accessing gameId through <script> in game.handlebars
 let gameid = gameId;
 let userid = userId;
@@ -43,8 +46,13 @@ class Game {
       this.gameEnd(player);
     } else {
       //////turns and pages change when cleanup////////////
+      //document.querySelector('#die8').removeEventListener('click', rollDiceHandler);
+      document.querySelector('#die8').addEventListener('click', startRollHandler);
+      document.querySelector('#die8').classList.remove('none');
+      popup('Go away', 1, 'resource');
+      popup('Cleanup', 1, 'ok');
       switchToNewTurn(gameid);
-      window.location.href = `/game/${gameid}`;
+      //window.location.href = `/game/${gameid}`;
       ///^leaving comments incase something goes wrong^/////
     }
   }
@@ -75,22 +83,21 @@ class Game {
         const cities = parseInt(document.querySelector(`#${player[i]} .cities`).textContent);
         playerScore[i] += cities;
       }
-      break;
     }
     if (playerScore[0] > playerScore[1] ||
         (playerScore[0] === playerScore[1] &&
             playerGoods[0] > playerGoods[1])) {
-      winner = `${player[0].name} wins!`;
+      winner = `${player[0]} wins!`;
 
     } else if (playerScore[0] < playerScore[1] ||
         (playerScore[0] === playerScore[1] &&
             playerGoods[0] < playerGoods[1])) {
-      winner = `${player[1].name} wins!`;
+      winner = `${player[1]} wins!`;
     } else{
       winner = ('Its a tie!');
     }
-    popup(winner, 5000, 'okay');
-    const score = `${player[0].name}: ${player[0].score} ${player[1].name}: ${player[1].score}`;
+    popup(winner, 5000, 'ok');
+    const score = `${player[0]}: ${playerScore[0]} ${player[1]}: ${playerScore[1]}`;
     popup(score, 7000, 'resource');
   }
 
@@ -166,7 +173,7 @@ async function checkTurn(gameid) {
           window.location.href = `/game/${gameid}`;
           return;
         }
-        newTurn.startRoll();
+        //newTurn.startRoll();
       } else {
         console.log('Waiting for opponents turn...');
         previousTurn = false;
@@ -182,7 +189,7 @@ async function checkTurn(gameid) {
   }
 }
 
-checkTurn(gameid);
+//checkTurn(gameid);
 //This event listener will be modified to be attached to whatever button click
 //ends the players turn. I think its a button that says done?
 
