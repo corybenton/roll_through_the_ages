@@ -212,8 +212,11 @@ router.post('/game', newGame);
 const joinGame = async (req, res) => {
   try {
     const userId = req.session.user_id;
+    const gameId = req.body.gameId;
+
     const newGameState = await GameState.create({ player: userId });
-    const existingGame = await Game.findOne({ where: { board2: null } });
+    const existingGame = await Game.findOne({ where: { id: gameId, board2: null } });
+
     if (existingGame) {
       await existingGame.update({ board2: newGameState.id });
       await createInitialResources(newGameState.id);
@@ -225,6 +228,7 @@ const joinGame = async (req, res) => {
   }
 };
 router.post('/join', joinGame);
+
 
 
 router.put('/gameState/:UsersGameStateId', async (req, res) => {
