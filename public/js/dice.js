@@ -226,6 +226,7 @@ class Dice {
         dieClass.add('none');
       }
       this.recordDie[l] = 0;
+      document.querySelector(`die${l}`).innerHTML = '';
     }
   }
 
