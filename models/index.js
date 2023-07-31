@@ -40,11 +40,13 @@ User.hasOne(GameState, {
 Game.belongsTo(GameState, {
   foreignKey: 'board1',
   as: 'player1board',
+  //onDelete: 'CASCADE',
 });
 
 Game.belongsTo(GameState, {
   foreignKey: 'board2',
   as: 'player2board',
+  //onDelete: 'CASCADE',
 });
 
 

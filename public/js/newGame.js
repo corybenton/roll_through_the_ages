@@ -98,16 +98,38 @@ document.querySelectorAll('.joinBtn').forEach((button) => {
       } else {
         const joinResponse = await fetch('/join', {
           method: 'POST',
-          body: JSON.stringify({ player: 2 }),
+          body: JSON.stringify({ player: 2, gameId }),
           headers: { 'Content-Type': 'application/json' },
         });
 
         if (joinResponse.ok) {
           const responseData = await joinResponse.json();
-          window.location.href = `/game/${responseData.newgame}`;
+          window.location.href = `/game/${gameId}`;
         } else {
           alert('Failed to Join game.');
         }
+      }
+    } catch (err) {
+      console.error(err);
+      alert('An error occurred.');
+    }
+  });
+});
+
+document.querySelectorAll('.deleteBtn').forEach((button) => {
+  button.addEventListener('click', async () => {
+    const gameId = button.dataset.gameId;
+
+    try {
+      const response = await fetch(`/delete/game/${gameId}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      if (response.ok) {
+        window.location.reload();
+      } else {
+        alert('Failed to delete the game.');
       }
     } catch (err) {
       console.error(err);

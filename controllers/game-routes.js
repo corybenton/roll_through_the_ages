@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { GameState, Monuments, Developments, Goods, Game, User } = require('../models');
+const sequelize = require('../config/connection');
 
 router.get('/game/:id', async (req, res) => {
   try {
@@ -198,6 +199,9 @@ const newGame = async (req, res) => {
 
     const board1 = newGameState.id;
     const newGame = await Game.create({ board1: board1 });
+
+    await newGameState.update({ game_id: newGame.id });
+
     await createInitialResources(newGameState.id);
     res.status(201).json({ newgame: newGame.id });
   } catch (err) {
@@ -208,12 +212,14 @@ const newGame = async (req, res) => {
 
 router.post('/game', newGame);
 
-//Add second player
 const joinGame = async (req, res) => {
   try {
     const userId = req.session.user_id;
-    const newGameState = await GameState.create({ player: userId });
-    const existingGame = await Game.findOne({ where: { board2: null } });
+    const gameId = req.body.gameId;
+
+    const newGameState = await GameState.create({ player: userId, game_id: gameId });
+    const existingGame = await Game.findOne({ where: { id: gameId, board2: null } });
+
     if (existingGame) {
       await existingGame.update({ board2: newGameState.id });
       await createInitialResources(newGameState.id);
@@ -327,5 +333,32 @@ router.post('/game/:id/turnover', async (req, res) => {
   }
 });
 
+router.delete('/delete/game/:id', async (req, res) => {
+  try {
+    const gameId = req.params.id;
+
+    await sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
+
+    const gameStates = await GameState.findAll({ where: { game_id: gameId } });
+
+    for (const gameState of gameStates) {
+      const gameStateId = gameState.id;
+
+      await Developments.destroy({ where: { gamestate_id: gameStateId } });
+      await Monuments.destroy({ where: { gamestate_id: gameStateId } });
+      await Goods.destroy({ where: { gamestate_id: gameStateId } });
+      await GameState.destroy({ where: { game_id: gameId } });
+    }
+
+    await Game.destroy({ where: { id: gameId } });
+
+    await sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
+
+    res.sendStatus(204);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 module.exports = router;
