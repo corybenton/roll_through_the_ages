@@ -6,7 +6,8 @@ const startTurn = (e) => {
   document.querySelector('#start').classList.add('none');
   player[0] = allPlayers[0].getAttribute('id');
   player[1] = allPlayers[1].getAttribute('id');
-  newTurn.startRoll(player);
+  document.querySelector('#die8').addEventListener('click', startRollHandler);
+  dice.keepDice();
 };
 
 document.querySelector('#start').addEventListener('click', startTurn);

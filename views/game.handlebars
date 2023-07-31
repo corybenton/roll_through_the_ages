@@ -1,9 +1,9 @@
 <div class="container">
     <div class="row">
-    <button id="start" class="none">Start Game</button>
+    <button id="start" class="">Start Game</button>
         <div class="col-8">
             {{#if isMyTurn}}
-            <h2>It Is your turn!</h2>
+            <h2>It is your turn!</h2>
             {{!-- <button id="nextBtn">All Set</button> commented out incase addition at end of checkGameEnd(player) fails --}}
             {{ else }}
             <h2>Waiting for opponent</h2>
@@ -80,7 +80,7 @@
                 <div class="die none container" id="die5">5</div>
                 <div class="die none container" id="die6">6</div>
                 <div class="die none container" id="die7">7</div>
-                <button class="done die" id="die8">Done</button>
+                <button class="done die" id="die8">Roll</button>
             </div>
         </div>
         <div class="col-2">

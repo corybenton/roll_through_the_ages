@@ -32,7 +32,7 @@ class Turn {
     }
     this.currentPlayer = player[this.turn];
     this.resolveCarryoverDisasters;
-    dice.timesRolled = 0;
+    dice = new Dice;
     dice.diceHandler();
     document.querySelector('#okay').addEventListener('click', moveToFeed);
   }
@@ -188,7 +188,6 @@ class Turn {
     } else {
       document.querySelector('#done').removeEventListener('click', cleanupGoods);
       removeChildren();
-      popup('Go away', 1, 'resource');
       popup('Go away', 1, 'dropdown');
       endCheck.checkGameEnd(player);
     }
@@ -249,6 +248,11 @@ const timeForBuild = (e) => {
   e.preventDefault();
   document.querySelector('#okay').removeEventListener('click', timeForBuild);
   workIt.laborStart();
+};
+
+const startRollHandler = (e) => {
+  e.preventDefault();
+  newTurn.startRoll();
 };
 
 const newTurn = new Turn;

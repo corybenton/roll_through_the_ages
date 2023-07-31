@@ -17,7 +17,6 @@ const buyDevelopment = (e) => {
 const moveToCleanup = (e) => {
   e.preventDefault();
   document.querySelector('#okay').removeEventListener('click', moveToCleanup);
-  popup('Cleanup', 1, 'ok');
   newTurn.cleanup();
 };
 
