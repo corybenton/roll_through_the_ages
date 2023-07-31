@@ -20,7 +20,7 @@ class Game {
     for (let i = 0; i < 5; i++) {
       monumentDone[0] = parseInt(document.querySelector(`#${player[0]} .mon${i} .needed`).textContent);
       monumentDone[1] = parseInt(document.querySelector(`#${player[1]} .mon${i} .needed`).textContent);
-      if (monumentDone[0] !== 0 && monumentDone[2] !== 0) {
+      if (monumentDone[0] !== 0 && monumentDone[1] !== 0) {
         allMonumentsDone = false;
         break;
       }
@@ -189,7 +189,7 @@ async function checkTurn(gameid) {
   }
 }
 
-//checkTurn(gameid);
+checkTurn(gameid);
 //This event listener will be modified to be attached to whatever button click
 //ends the players turn. I think its a button that says done?
 
