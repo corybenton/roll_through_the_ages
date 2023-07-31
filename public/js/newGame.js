@@ -73,21 +73,41 @@ document.querySelectorAll('.joinBtn').forEach((button) => {
   button.addEventListener('click', async () => {
     console.log('Button clicked!');
     try {
-      const response = await fetch('/join', {
-        method: 'POST',
-        body: JSON.stringify({ player: 2}),
+      const userResponse = await fetch('/api/user', {
+        method: 'GET',
+        body: JSON.stringify(),
         headers: { 'Content-Type': 'application/json' },
       });
 
-      //console.log('Response joinBtn find relocation gameId:', response);
+      const userData = await userResponse.json();
+      const userId = userData.id;
 
-      if (response.ok) {
-        const responseData = await response.json();
-        //console.log('gamestate id newgame.js:', responseData.gameStateId);
+      const gameId = button.dataset.gameId;
+      const gameResponse = await fetch(`/json/${gameId}`, {
+        method: 'GET',
+        body: JSON.stringify(),
+        headers: { 'Content-Type': 'application/json' },
+      });
 
-        window.location.href = `/game/${responseData.newgame}`;
+      const gameData = await gameResponse.json();
+
+      const isUserInGame = gameData.gamestates[0].player === userId;
+
+      if (isUserInGame) {
+        alert('You are already a member of this game.');
       } else {
-        alert('Failed to Join game.');
+        const joinResponse = await fetch('/join', {
+          method: 'POST',
+          body: JSON.stringify({ player: 2 }),
+          headers: { 'Content-Type': 'application/json' },
+        });
+
+        if (joinResponse.ok) {
+          const responseData = await joinResponse.json();
+          window.location.href = `/game/${responseData.newgame}`;
+        } else {
+          alert('Failed to Join game.');
+        }
       }
     } catch (err) {
       console.error(err);
@@ -95,4 +115,3 @@ document.querySelectorAll('.joinBtn').forEach((button) => {
     }
   });
 });
-
