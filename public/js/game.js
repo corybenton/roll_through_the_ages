@@ -47,12 +47,12 @@ class Game {
     } else {
       //////turns and pages change when cleanup////////////
       //document.querySelector('#die8').removeEventListener('click', rollDiceHandler);
+      switchToNewTurn(gameid);
+      window.location.href = `/game/${gameid}`;
       document.querySelector('#die8').addEventListener('click', startRollHandler);
       document.querySelector('#die8').classList.remove('none');
       popup('Go away', 1, 'resource');
       popup('Cleanup', 1, 'ok');
-      switchToNewTurn(gameid);
-      //window.location.href = `/game/${gameid}`;
       ///^leaving comments incase something goes wrong^/////
     }
   }
@@ -111,6 +111,7 @@ class Game {
 }
 const endCheck = new Game;
 
+let previousTurn;
 let prevPlayer2Joined;
 async function checkP2Status(gameid) {
   try {
@@ -131,6 +132,9 @@ async function checkP2Status(gameid) {
         document.querySelector('#start').classList.remove('none');
         if (prevPlayer2Joined === false) {
           window.location.href = `/game/${gameid}`;
+          //sets to false here so after player 1 finsishes first turn,
+          //screen refreshes to show waiting for opponent.
+          previousTurn = false;
           return;
         }
       } else {
@@ -152,7 +156,7 @@ checkP2Status(gameid);
 
 
 //previousTurn will show up undefined at first, but then have a value
-let previousTurn;
+//let previousTurn; Moved this to above checkP2Status
 //console.log('previous', previousTurn);
 async function checkTurn(gameid) {
   try {
@@ -189,7 +193,7 @@ async function checkTurn(gameid) {
   }
 }
 
-//checkTurn(gameid);
+checkTurn(gameid);
 //This event listener will be modified to be attached to whatever button click
 //ends the players turn. I think its a button that says done?
 
