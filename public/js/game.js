@@ -48,7 +48,7 @@ class Game {
       //////turns and pages change when cleanup////////////
       //document.querySelector('#die8').removeEventListener('click', rollDiceHandler);
       switchToNewTurn(gameid);
-      window.location.href = `/game/${gameid}`;
+      //nowindow.location.href = `/game/${gameid}`;
       document.querySelector('#die8').addEventListener('click', startRollHandler);
       document.querySelector('#die8').classList.remove('none');
       popup('Go away', 1, 'resource');
@@ -130,6 +130,7 @@ async function checkP2Status(gameid) {
       if (GameData.gamestates[1] !== null) {
         console.log('player 2 has joined the game');
         document.querySelector('#start').classList.remove('none');
+        window.location.href = `/game/${gameid}`;
         if (prevPlayer2Joined === false) {
           window.location.href = `/game/${gameid}`;
           //sets to false here so after player 1 finsishes first turn,
@@ -151,8 +152,6 @@ async function checkP2Status(gameid) {
     console.error('Error:', error);
   }
 }
-
-checkP2Status(gameid);
 
 
 //previousTurn will show up undefined at first, but then have a value
