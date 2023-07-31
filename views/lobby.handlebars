@@ -10,12 +10,14 @@
     <p>Player 1: {{game.player1board.user.dataValues.name}}</p>
     <p>Player 2: {{game.player2board.user.dataValues.name}}</p>
     <button class="playBtn" data-game-id="{{game.dataValues.id}}">Play Game</button>
+    <button class="deleteBtn" data-game-id="{{game.dataValues.id}}">Delete Game</button>
 </div>
 {{else}}
 <div>
     <p>Game ID: {{game.dataValues.id}}</p>
     <p>Player 1: {{game.player1board.user.dataValues.name}}</p>
-    <button class="joinBtn" data-game-id="{{game.dataValues.id}}">Join</button>
+    <button class="joinBtn" data-game-id="{{game.dataValues.id}}">Join Game</button>
+    <button class="deleteBtn" data-game-id="{{game.dataValues.id}}">Delete Game</button>
 </div>
 {{/if}}
 {{!-- {{log game.player1board.user}}

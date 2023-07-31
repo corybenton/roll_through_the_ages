@@ -114,3 +114,25 @@ document.querySelectorAll('.joinBtn').forEach((button) => {
     }
   });
 });
+
+document.querySelectorAll('.deleteBtn').forEach((button) => {
+  button.addEventListener('click', async () => {
+    const gameId = button.dataset.gameId;
+
+    try {
+      const response = await fetch(`/delete/game/${gameId}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      if (response.ok) {
+        window.location.reload();
+      } else {
+        alert('Failed to delete the game.');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('An error occurred.');
+    }
+  });
+});
