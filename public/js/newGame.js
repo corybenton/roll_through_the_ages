@@ -92,19 +92,18 @@ document.querySelectorAll('.joinBtn').forEach((button) => {
       const gameData = await gameResponse.json();
 
       const isUserInGame = gameData.gamestates[0].player === userId;
-
       if (isUserInGame) {
         alert('You are already a member of this game.');
       } else {
         const joinResponse = await fetch('/join', {
           method: 'POST',
-          body: JSON.stringify({ player: 2 }),
+          body: JSON.stringify({ player: 2, gameId }),
           headers: { 'Content-Type': 'application/json' },
         });
 
         if (joinResponse.ok) {
           const responseData = await joinResponse.json();
-          window.location.href = `/game/${responseData.newgame}`;
+          window.location.href = `/game/${gameId}`;
         } else {
           alert('Failed to Join game.');
         }
