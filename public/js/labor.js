@@ -57,7 +57,9 @@ class Labor {
   spendLabor(newBuild) {
     removeChildren();
     this.newBuild = newBuild;
-    if (this.newBuild === 'New city') {
+    if (!this.newBuild){
+      this.chooseBuild();
+    } else if (this.newBuild === 'New city') {
       this.buildNeed = parseInt(document.querySelector(`#${newTurn.currentPlayer} .citiesNeed`).textContent);
     } else {
     //   this.monName = document.querySelector(`.${newBuild} > .build`).textContent;
@@ -144,6 +146,7 @@ const buildIt = (e) => {
 const useIt = (e) => {
   e.preventDefault();
   const spentLabor = document.querySelector('.rangeFinder').value;
+  popup('Labor', 1, 'range');
   workIt.updateLabor(spentLabor);
 };
 

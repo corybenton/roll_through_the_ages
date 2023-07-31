@@ -2,9 +2,10 @@
 const buyDevelopment = (e) => {
   e.preventDefault();
   let development = document.querySelector('#developmentsDropdown').value;
+
   document.querySelector('#done').removeEventListener('click', buyDevelopment);
   removeChildren();
-  // document.querySelector(`.${development} .learn`).classList = 'learned';
+
   if (development !== 'No development') {
     const cost = document.querySelector(`#${newTurn.currentPlayer} .${development} .cost`).textContent;
     learn.payForDevelopment(cost);
