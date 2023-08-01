@@ -4,7 +4,7 @@
 class Turn {
   constructor(){
     //this.players = [];
-    this.turn = 2;
+    // this.turn = 2;
     this.currentPlayer;
     this.otherPlayer;
   }
@@ -23,14 +23,14 @@ class Turn {
   // }
 
   startRoll(){
-    if (this.turn === 0) {
-      this.turn = 1;
-      this.otherPlayer = player[0];
-    } else {
-      this.turn = 0;
-      this.otherPlayer = player[1];
-    }
-    this.currentPlayer = player[this.turn];
+    // if (this.turn === 0) {
+    //   this.turn = 1;
+    //   this.otherPlayer = player[0];
+    // } else {
+    //   this.turn = 0;
+    //   this.otherPlayer = player[1];
+    // }
+    // this.currentPlayer = player[this.turn];
     this.resolveCarryoverDisasters;
     dice = new Dice;
     dice.diceHandler();

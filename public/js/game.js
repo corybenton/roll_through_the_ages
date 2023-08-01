@@ -111,6 +111,7 @@ class Game {
 }
 const endCheck = new Game;
 
+let player = [];
 let previousTurn;
 let prevPlayer2Joined;
 async function checkP2Status(gameid) {
@@ -130,6 +131,7 @@ async function checkP2Status(gameid) {
       if (GameData.gamestates[1] !== null) {
         console.log('player 2 has joined the game');
         document.querySelector('#start').classList.remove('none');
+
         window.location.href = `/game/${gameid}`;
         if (prevPlayer2Joined === false) {
           window.location.href = `/game/${gameid}`;
@@ -203,3 +205,30 @@ checkTurn(gameid);
 //   switchToNewTurn(gameid);
 //   window.location.href = `/game/${gameid}`;
 // });
+
+
+async function getTurn() {
+  try{
+    const response = await fetch(`/game/${gameid}/getTurn`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    if (response.ok) {
+      const GameData = await response.json();
+
+      allPlayer = document.querySelectorAll('.player');
+      player[0] = allPlayer[0].getAttribute('id');
+      player[1] = allPlayer[1].getAttribute('id');
+
+      newTurn.currentPlayer = player[GameData - 1];
+      if (GameData - 1 === 0) {
+        newTurn.otherPlayer = player[1];
+      } else {
+        newTurn.otherPlayer = player[0];
+      }
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
