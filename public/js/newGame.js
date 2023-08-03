@@ -16,12 +16,13 @@ document.querySelector('#newGameBtn').addEventListener('click', async () => {
       //console.log('gamestate id newgame.js:', responseData.gameStateId);
 
       window.location.href = `/game/${responseData.newgame}`;
+      //checkP2Status(responseData.newgame);
     } else {
       alert('Failed to create a new game.');
     }
   } catch (err) {
     console.error(err);
-    alert('An error occurred.');
+    alert(err);
   }
 });
 
