@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-//import { checkP2Status } from './game.js';
 
 document.querySelector('#newGameBtn').addEventListener('click', async () => {
   console.log('Button clicked!');
