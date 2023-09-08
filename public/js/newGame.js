@@ -57,7 +57,6 @@ document.querySelectorAll('.playBtn').forEach((button) => {
       //console.log('playbtn gameData: ', gameData);
 
       const isUserInGame = gameData.gamestates.some(gamestate => gamestate.player === userId);
-      checkP2Status(gameid);
       if (isUserInGame) {
         window.location.href = `/game/${gameId}`;
       } else {
