@@ -6,6 +6,7 @@ This project is using the MIT License. [![MIT license](https://img.shields.io/ba
 
 ## Visuals
 [Demo](https://drive.google.com/file/d/18QZKdoOGtbq5g9e5EAE8nSLBN8ZNLk4o/view)
+<img width="682" alt="Screenshot 2023-08-27 114056" src="https://github.com/corybenton/roll_through_the_ages/assets/128768293/bc523abf-6498-4119-9953-a38f9b993c94">
 
 ## Installation
 Go to [the heroku page](https://protected-reaches-31766-0c143902740e.herokuapp.com/) to play.
